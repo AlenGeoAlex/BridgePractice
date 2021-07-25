@@ -1,0 +1,7 @@
+name: BridgePractice
+version: 1.0
+main: me.alen_alex.bridgepractice.BridgePractice
+authors: [ Alen_Alex ]
+description: A plugin for practicing bridging
+depend:
+  - CoreAPI

@@ -1,0 +1,18 @@
+version: "1.0"
+
+########################################################################################################################
+##                                                                                                                    ##
+##                                          Bridge Practice                                                           ##
+##                                                                                                                    ##
+########################################################################################################################
+##
+prefix: "&8[&cBridge&bPractice&8] &7: "
+##Mysql Connection Settings
+server:
+  use-mysql: true
+  host: "localhost"
+  port: "3306"
+  username: "root"
+  password: ""
+  database: "bridgepractice"
+  usessl: true
