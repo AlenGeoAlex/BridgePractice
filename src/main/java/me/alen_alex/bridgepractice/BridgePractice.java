@@ -4,6 +4,7 @@ import me.Abhigya.core.database.sql.SQL;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.data.Data;
+import me.alen_alex.bridgepractice.listener.PlayerJoinEvent;
 import me.alen_alex.bridgepractice.utility.Validation;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,11 +28,15 @@ public final class BridgePractice extends JavaPlugin {
         connection = dataConnection.getDatabaseConnection();
         Data.createDatabase();
         ArenaConfigurations.createArenaConfigurations();
-
+        registerListener();
     }
 
     @Override
     public void onDisable() {
+    }
+
+    public void registerListener(){
+        getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
     }
 
     public static BridgePractice getPlugin() {

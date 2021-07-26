@@ -3,8 +3,11 @@ package me.alen_alex.bridgepractice.playerdata;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerData {
@@ -14,6 +17,7 @@ public class PlayerData {
     private  Material playerMaterial;
     private int gamesPlayed;
     private  long currentTime, bestTime, blocksPlaced;
+    private List<Block> placedBlocks = new ArrayList<Block>();
 
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
@@ -71,6 +75,10 @@ public class PlayerData {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public List<Block> getPlacedBlocks() {
+        return placedBlocks;
     }
 
     public boolean isPlayerOnline(){
