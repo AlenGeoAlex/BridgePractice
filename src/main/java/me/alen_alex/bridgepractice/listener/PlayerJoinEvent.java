@@ -16,8 +16,11 @@ public class PlayerJoinEvent implements Listener {
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
 
-        if(!DataManager.isUserRegisetered(playerUUID))
+        if(!DataManager.isUserRegisetered(playerUUID)) {
+            System.out.println("run1");
             DataManager.registerUser(player);
+            System.out.println("run2");
+        }
         try {
             PlayerDataManager.loadPlayerData(playerUUID);
         } catch (SQLException throwables) {
