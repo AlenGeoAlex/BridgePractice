@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice.listener;
 
 import me.alen_alex.bridgepractice.data.DataManager;
+import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,12 +18,11 @@ public class PlayerJoinEvent implements Listener {
         UUID playerUUID = player.getUniqueId();
 
         if(!DataManager.isUserRegisetered(playerUUID)) {
-            System.out.println("run1");
             DataManager.registerUser(player);
-            System.out.println("run2");
         }
         try {
             PlayerDataManager.loadPlayerData(playerUUID);
+            PlayerData data = PlayerDataManager.getCachedPlayerData().get(playerUUID);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             player.kickPlayer("Seems like its unable to load the player data");

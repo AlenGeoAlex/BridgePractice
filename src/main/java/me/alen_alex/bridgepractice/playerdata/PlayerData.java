@@ -81,6 +81,14 @@ public class PlayerData {
         return placedBlocks;
     }
 
+    public String getStringUUID(){
+        return playerUUID.toString();
+    }
+
+    public String getStringMaterial(){
+        return playerMaterial.toString();
+    }
+
     public boolean isPlayerOnline(){
         return Bukkit.getPlayer(playerUUID).isOnline();
     }

@@ -1,7 +1,9 @@
 package me.alen_alex.bridgepractice.data;
 
+import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import org.bukkit.entity.Player;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -23,6 +25,32 @@ public class DataManager {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean savePlayerData(PlayerData playerData){
+        if(playerData == null)
+            return false;
+        //TODO
+        /*Data.getDatabaseConnection().set("playerdata","uuid",playerData.getStringUUID(),"`gamesplayed`");
+        try {
+            ResultSet set = Data.getDatabaseConnection().executeQuery();
+            set.close();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }*/
+        try {
+            PreparedStatement ps = Data.getDatabaseConnection().getConnection().prepareStatement("UPDATE playerdata SET `gamesplayed` = '"+playerData.getGamesPlayed()+"' , `besttime` = '"+playerData.getBestTime()+"', `currenttime` = '"+playerData.getCurrentTime()+"' , `material` = '"+ playerData.getStringMaterial()+"' WHERE `uuid` =  '"+playerData.getStringUUID()+"';");
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+
+
     }
 
 }

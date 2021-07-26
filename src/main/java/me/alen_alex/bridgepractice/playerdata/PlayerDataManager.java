@@ -12,14 +12,17 @@ import java.util.UUID;
 
 public class PlayerDataManager {
 
-    private static HashMap<Player, PlayerData> cachedPlayerData = new HashMap<>();
+    private static HashMap<UUID, PlayerData> cachedPlayerData = new HashMap<>();
 
     public static void loadPlayerData(UUID uuid) throws SQLException {
         ResultSet set = DataManager.fetchPlayerData(uuid);
         while(set.next()){
-            cachedPlayerData.put(Bukkit.getPlayer(uuid),new PlayerData(set.getString("name"),uuid, Material.getMaterial(set.getString("material")),set.getInt("gamesplayed"),set.getLong("currenttime"),set.getLong("bestTime"),set.getInt("blocksPlaced")));
+            cachedPlayerData.put(uuid,new PlayerData(set.getString("name"),uuid, Material.getMaterial(set.getString("material")),set.getInt("gamesplayed"),set.getLong("currenttime"),set.getLong("bestTime"),set.getInt("blocksPlaced")));
         }
         set.close();
     }
 
+    public static HashMap<UUID, PlayerData> getCachedPlayerData() {
+        return cachedPlayerData;
+    }
 }
