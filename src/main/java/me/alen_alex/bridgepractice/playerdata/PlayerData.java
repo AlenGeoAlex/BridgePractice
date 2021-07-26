@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.playerdata;
 
+import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +18,7 @@ public class PlayerData {
     private  Material playerMaterial;
     private int gamesPlayed;
     private  long currentTime, bestTime, blocksPlaced;
+    private PlayerState currentState;
     private List<Block> placedBlocks = new ArrayList<Block>();
 
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
@@ -99,6 +101,14 @@ public class PlayerData {
 
     public OfflinePlayer getOfflinePlayer(){
         return Bukkit.getOfflinePlayer(playerUUID);
+    }
+
+    public PlayerState getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(PlayerState currentState) {
+        this.currentState = currentState;
     }
 
     @Deprecated
