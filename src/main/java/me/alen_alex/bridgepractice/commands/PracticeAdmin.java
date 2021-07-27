@@ -2,6 +2,7 @@ package me.alen_alex.bridgepractice.commands;
 
 import me.alen_alex.bridgepractice.commands.admin.CreationCommand;
 import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
+import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Messages;
@@ -78,12 +79,16 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                         break;
                     case "GROUP":
                         if(Configuration.doUseGroups()) {
-                            if (args.length <= 3) {
+                            if (args.length <= 2) {
+                                System.out.println(args.length);
                                 Messages.sendIncorrectUsage(player);
                                 return true;
                             }
-                            if (args[1].equalsIgnoreCase("create"))
+                            System.out.println(args.length+"-"+args[1]+"-"+args[2]);
+                            if (args[1].equalsIgnoreCase("create")) {
+                                System.out.println(args.length + "-" + args[1] + "-" + args[2]);
                                 GroupCommand.createGroup(player, args[2]);
+                            }
                             if (args[1].equalsIgnoreCase("delete"))
                                 GroupCommand.deleteGroup(player, args[2]);
                         }else{

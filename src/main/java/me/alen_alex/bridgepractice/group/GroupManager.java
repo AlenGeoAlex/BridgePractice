@@ -29,7 +29,7 @@ public class GroupManager {
         boolean exist = false;
 
         try {
-            ResultSet rs = Data.getDatabaseConnection().executeQuery("SHOW TABLES LIKE "+groupName+";");
+            ResultSet rs = Data.getDatabaseConnection().executeQuery("SHOW TABLES LIKE '"+groupName+"';");
             exist = rs.next();
             rs.getStatement().close();
             rs.close();
@@ -41,6 +41,10 @@ public class GroupManager {
 
     public static HashMap<String, Group> getCachedGroups() {
         return cachedGroups;
+    }
+
+    public static Group getGroupByName(String groupName){
+        return cachedGroups.get(groupName);
     }
 
 

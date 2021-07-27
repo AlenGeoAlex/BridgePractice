@@ -32,12 +32,12 @@ public final class BridgePractice extends JavaPlugin {
         Data dataConnection = new Data();
         connection = dataConnection.getDatabaseConnection();
         Data.createDatabase();
-        ArenaConfigurations.createArenaConfigurations();
-        IslandManager.fetchIslandsFromFile();
         if(Configuration.doUseGroups()){
             GroupConfiguration.createGroupConfigurations();
             GroupManager.fetchGroups();
         }
+        ArenaConfigurations.createArenaConfigurations();
+        IslandManager.fetchIslandsFromFile();
         registerListener();
         registerCommands();
     }

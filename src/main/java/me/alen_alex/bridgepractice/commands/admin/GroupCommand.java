@@ -16,6 +16,7 @@ public class GroupCommand {
         if(!groupConfiguration.contains(groupName)){
             groupConfiguration.set(groupName+".leaderboardEnabled", true);
             groupConfiguration.set(groupName+".rewardMoney", 0);
+            Messages.sendMessage(player,"&aCreated Groups Succesfully, &fUse /practiceadmin save and restart the server",true);
         }else {
             Messages.sendMessage(player, "This group already exist!", true);
             return;

@@ -2,6 +2,7 @@ package me.alen_alex.bridgepractice.island;
 
 import co.aikar.taskchain.TaskChain;
 import me.alen_alex.bridgepractice.BridgePractice;
+import me.alen_alex.bridgepractice.group.Group;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.utility.Blocks;
 import org.bukkit.Bukkit;
@@ -16,15 +17,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Island {
-    private String name, worldName,group,permission;
+    private String name, worldName,permission;
     private Location spawnLocation,endLocation,quitLocation,pos1,pos2;
     private boolean ressetting, active, occupied;
     private PlayerData currentPlayer = null;
+    private Group islandGroup;
 
-    public Island(@NotNull String name, @NotNull String worldName, String group, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, @NotNull boolean active) {
+    public Island(@NotNull String name, @NotNull String worldName, Group islandGroup, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, @NotNull boolean active) {
         this.name = name;
         this.worldName = worldName;
-        this.group = group;
+        this.islandGroup = islandGroup;
         this.permission = permission;
         this.spawnLocation = spawnLocation;
         this.endLocation = endLocation;
@@ -42,9 +44,6 @@ public class Island {
         return worldName;
     }
 
-    public String getGroup() {
-        return group;
-    }
 
     public Location getSpawnLocation() {
         return spawnLocation;
@@ -99,6 +98,14 @@ public class Island {
         if(permission == null || permission == "" || player.isOp() || player.hasPermission(permission))
             hasPerm = true;
         return hasPerm;
+    }
+
+    public boolean hasGroup(){
+        return islandGroup != null;
+    }
+
+    public String getGroupName(){
+        return islandGroup.getGroupName();
     }
 
     public void teleportToIslandSpawn(Player player){
