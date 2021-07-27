@@ -72,7 +72,7 @@ public class Location {
     }
 
     public static World getWorldFromData(@NotNull String _location){
-        String[] rawData = _location.split("_");
+        String[] rawData = _location.split("/");
         return Bukkit.getWorld(rawData[0]);
     }
 

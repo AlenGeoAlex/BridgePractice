@@ -18,11 +18,10 @@ import java.util.List;
 public class Island {
     private String name, worldName,group,permission;
     private Location spawnLocation,endLocation,quitLocation,pos1,pos2;
-    private int blockDecay, islandReset;
     private boolean ressetting, active, occupied;
     private PlayerData currentPlayer = null;
 
-    public Island(@NotNull String name, @NotNull String worldName, String group, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, int blockDecay, int islandReset, boolean ressetting, boolean active, boolean occupied) {
+    public Island(@NotNull String name, @NotNull String worldName, String group, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, @NotNull boolean active) {
         this.name = name;
         this.worldName = worldName;
         this.group = group;
@@ -32,11 +31,7 @@ public class Island {
         this.quitLocation = quitLocation;
         this.pos1 = pos1;
         this.pos2 = pos2;
-        this.blockDecay = blockDecay;
-        this.islandReset = islandReset;
-        this.ressetting = ressetting;
         this.active = active;
-        this.occupied = occupied;
     }
 
     public String getName() {
@@ -69,14 +64,6 @@ public class Island {
 
     public Location getPos2() {
         return pos2;
-    }
-
-    public int getBlockDecay() {
-        return blockDecay;
-    }
-
-    public int getIslandReset() {
-        return islandReset;
     }
 
     public boolean isRessetting() {

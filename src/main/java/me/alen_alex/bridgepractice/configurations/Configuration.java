@@ -15,7 +15,7 @@ public class Configuration {
     private static BridgePractice plugin = BridgePractice.getPlugin();
     private static Config config;
     private static String host,username,password,port,database;
-    private static boolean useMysql,useSSL;
+    private static boolean useMysql,useSSL, useGroups;
     private static String prefixMain;
 
     public static void createConfiguration(){
@@ -50,6 +50,7 @@ public class Configuration {
         database = config.getString("server.database");
         useMysql = config.getBoolean("server.use-mysql");
         useSSL = config.getBoolean("server.usessl");
+        useGroups = config.getBoolean("enable-groups");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -87,6 +88,10 @@ public class Configuration {
 
     public static String getPrefixMain() {
         return ChatColor.translateAlternateColorCodes('&',prefixMain);
+    }
+
+    public static boolean doUseGroups() {
+        return useGroups;
     }
 }
 

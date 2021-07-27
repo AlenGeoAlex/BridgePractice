@@ -20,6 +20,7 @@ public class PlayerData {
     private  long currentTime, bestTime, blocksPlaced;
     private PlayerState currentState;
     private List<Block> placedBlocks = new ArrayList<Block>();
+    private boolean buildModeEnabled;
 
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
@@ -29,6 +30,7 @@ public class PlayerData {
         this.currentTime = currentTime;
         this.bestTime = bestTime;
         this.blocksPlaced = blocksPlaced;
+        this.buildModeEnabled = false;
     }
 
     public String getPlayerName() {
@@ -119,7 +121,13 @@ public class PlayerData {
             return (Player) Bukkit.getPlayer(playerUUID);
     }
 
+    public boolean isBuildModeEnabled() {
+        return buildModeEnabled;
+    }
 
+    public void setBuildModeEnabled(boolean buildModeEnabled) {
+        this.buildModeEnabled = buildModeEnabled;
+    }
 
     //TODO -> Player Saving savePlayer();
 

@@ -5,3 +5,8 @@ authors: [ Alen_Alex ]
 description: A plugin for practicing bridging
 depend:
   - CoreAPI
+commands:
+  practiceadmin:
+    description: "The adminstrative command for Bridgepractice."
+    permission: "practice.admin"
+

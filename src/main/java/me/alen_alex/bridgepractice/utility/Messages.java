@@ -114,4 +114,12 @@ public class Messages {
             Bukkit.getServer().broadcastMessage(parseColor(message));
     }
 
+    public static void sendIncorrectUsage(Player player){
+        TextComponent tc = new TextComponent();
+        tc.setText(Configuration.getPrefixMain() + parseColor("&cIncorrect usage."));
+        tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder(parseColor("&fClick here to show help message")).create())));
+        tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/practiceadmin help"));
+        player.spigot().sendMessage((BaseComponent) tc);
+    }
+
 }

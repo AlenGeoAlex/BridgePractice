@@ -2,6 +2,7 @@ package me.alen_alex.bridgepractice.configurations;
 
 import de.leonhard.storage.Yaml;
 import me.alen_alex.bridgepractice.BridgePractice;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -28,6 +29,19 @@ public class ArenaConfigurations {
             }
         }
         arenaConfiguration = YamlConfiguration.loadConfiguration(arenaFile);
+    }
+
+    public static YamlConfiguration getArenaConfiguration() {
+        return arenaConfiguration;
+    }
+
+    public static void saveArenaConfiguration(){
+        try {
+            arenaConfiguration.save(arenaFile);
+            Bukkit.getLogger().info("Successfully saved the arena configuration");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,9 +1,13 @@
 package me.alen_alex.bridgepractice;
 
 import me.Abhigya.core.database.sql.SQL;
+import me.alen_alex.bridgepractice.commands.PracticeAdmin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
+import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
+import me.alen_alex.bridgepractice.group.GroupManager;
+import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.listener.PlayerJoinEvent;
 import me.alen_alex.bridgepractice.listener.PlayerLeaveEvent;
 import me.alen_alex.bridgepractice.utility.Validation;
@@ -29,13 +33,23 @@ public final class BridgePractice extends JavaPlugin {
         connection = dataConnection.getDatabaseConnection();
         Data.createDatabase();
         ArenaConfigurations.createArenaConfigurations();
+        IslandManager.fetchIslandsFromFile();
+        if(Configuration.doUseGroups()){
+            GroupConfiguration.createGroupConfigurations();
+            GroupManager.setupDatabase();
+
+        }
         registerListener();
+        registerCommands();
     }
 
     @Override
     public void onDisable() {
     }
 
+    public void registerCommands(){
+        getCommand("practiceadmin").setExecutor(new PracticeAdmin());
+    }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveEvent(), this);
