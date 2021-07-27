@@ -1,20 +1,12 @@
 package me.alen_alex.bridgepractice.island;
-
-import co.aikar.taskchain.TaskChain;
-import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.group.Group;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
-import me.alen_alex.bridgepractice.utility.Blocks;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
-import java.util.List;
 
 public class Island {
     private String name, worldName,permission;
@@ -22,8 +14,9 @@ public class Island {
     private boolean ressetting, active, occupied;
     private PlayerData currentPlayer = null;
     private Group islandGroup;
+    private int minSeconds, minBlocks;
 
-    public Island(@NotNull String name, @NotNull String worldName, Group islandGroup, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, @NotNull boolean active) {
+    public Island(@NotNull String name, @NotNull String worldName, Group islandGroup, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, int minSeconds, int minBlocks, @NotNull boolean active) {
         this.name = name;
         this.worldName = worldName;
         this.islandGroup = islandGroup;
@@ -34,6 +27,8 @@ public class Island {
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.active = active;
+        this.minSeconds = minSeconds;
+        this.minBlocks = minBlocks;
     }
 
     public String getName() {
@@ -104,10 +99,6 @@ public class Island {
         return islandGroup != null;
     }
 
-    public String getGroupName(){
-        return islandGroup.getGroupName();
-    }
-
     public void teleportToIslandSpawn(Player player){
         player.teleport(spawnLocation);
         player.getLocation().setPitch(0.0F);
@@ -132,6 +123,31 @@ public class Island {
 
     public void removeCurrentPlayer(){
         currentPlayer = null;
+    }
+
+    public Group getIslandGroup() {
+        return islandGroup;
+    }
+
+    public int getMinSeconds() {
+        return minSeconds;
+    }
+
+    public int getMinBlocks() {
+        return minBlocks;
+    }
+
+    public boolean hasMinimumReqTime(){
+        return minSeconds != 0;
+    }
+
+    public boolean hasMinBlock(){
+        return minBlocks != 0;
+    }
+
+    public void disableIsland(){
+        this.setActive(false);
+        //TODO Kick Player from the island
     }
 
     /*public void resetIsland(){

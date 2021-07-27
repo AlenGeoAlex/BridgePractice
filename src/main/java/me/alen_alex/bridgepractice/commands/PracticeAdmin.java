@@ -4,6 +4,7 @@ import me.alen_alex.bridgepractice.commands.admin.CreationCommand;
 import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
+import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.GameMode;
@@ -116,7 +117,13 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                             player.setFlying(true);
                         }
                         break;
-
+                    case "DISABLE":
+                        if(args.length == 2) {
+                            IslandManager.getIslandData().get(args[1]).disableIsland();
+                            Messages.sendMessage(player,"&cDisabled the arena "+args[1], true);
+                        }else
+                            Messages.sendIncorrectUsage(player);
+                        break;
                     default:
 
                 }

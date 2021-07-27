@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class IslandManager {
 
@@ -17,7 +18,7 @@ public class IslandManager {
         for(String islandName : ArenaConfigurations.getArenaConfiguration().getKeys(false)){
             if(arenaConfigurations.getBoolean(islandName+".enabled")) {
                 try {
-                    islandData.put(islandName, new Island(islandName, Location.getWorldFromData(arenaConfigurations.getString(islandName + ".spawn.position")).getName(), GroupManager.getGroupByName(arenaConfigurations.getString(islandName + ".group")), arenaConfigurations.getString(islandName + ".permission"), Location.getLocation(arenaConfigurations.getString(islandName + ".spawn.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".end.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".lobby.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos1")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos2")), true));
+                    islandData.put(islandName, new Island(islandName, Location.getWorldFromData(arenaConfigurations.getString(islandName + ".spawn.position")).getName(), GroupManager.getGroupByName(arenaConfigurations.getString(islandName + ".group")), arenaConfigurations.getString(islandName + ".permission"), Location.getLocation(arenaConfigurations.getString(islandName + ".spawn.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".end.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".lobby.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos1")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos2")),arenaConfigurations.getInt(islandName+".mintimeRequired"),arenaConfigurations.getInt(islandName+".minblocksRequired"),true));
                 } catch (IllegalArgumentException e) {
                     arenaConfigurations.set(islandName + ".enabled", false);
                     e.printStackTrace();
@@ -38,5 +39,35 @@ public class IslandManager {
         return islandData;
     }
 
+    public static Island getAnIsland(){
+        Island selectedIsland = null;
+        for(Map.Entry<String,Island> entry : islandData.entrySet()){
+            Island checkIsland = entry.getValue();
+            if(!checkIsland.isOccupied() && checkIsland.isActive())
+                selectedIsland = checkIsland;
+        }
+        return selectedIsland;
+    }
 
-}
+    public static Island getAnIsland(String groupName){
+        Island selectedIsland = null;
+        for(Map.Entry<String, Island> entry : islandData.entrySet()){
+            Island checkIsland = entry.getValue();
+            if(!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName)){
+                selectedIsland = checkIsland;
+            }
+        }
+        return selectedIsland;
+    }
+
+    public static Island getIslandByName(String islandName){
+        Island islandSelected = null;
+         if(islandData.containsKey(islandName)) {
+             Island checkIsland = islandData.get(islandName);
+             if (!checkIsland.isOccupied() && checkIsland.isActive())
+                 islandSelected = checkIsland;
+         }
+         return islandSelected;
+        }
+
+    }
