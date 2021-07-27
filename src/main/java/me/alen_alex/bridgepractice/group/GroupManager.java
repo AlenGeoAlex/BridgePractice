@@ -7,20 +7,19 @@ import me.alen_alex.bridgepractice.data.DataManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class GroupManager {
 
-    public static void fetchGroupsFromFile(){
+    private static HashMap<String, Group> cachedGroups = new HashMap<String, Group>();
+
+    public static void fetchGroups(){
         for(String groupName : GroupConfiguration.getGroupConfigurations().getKeys(false)){
-            DataManager.createGroupDatabase(groupName);
+            cachedGroups.put(groupName,new Group(groupName,GroupConfiguration.getGroupConfigurations().getBoolean(groupName+".leaderboardEnabled"),GroupConfiguration.getGroupConfigurations().getInt(groupName+".rewardMoney")));
+            cachedGroups.get(groupName).buildDB();
         }
     }
 
-    public static void setupDatabase(){
-        for(String groupName : GroupConfiguration.getGroupConfigurations().getKeys(false)){
-            DataManager.createGroupDatabase(groupName);
-        }
-    }
 
     public static void deleteGroup(String groupName){
         DataManager.deleteGroupDatabase(groupName);
@@ -40,10 +39,10 @@ public class GroupManager {
         return exist;
     }
 
-
-    public static void registerUserInGroup(){
-
+    public static HashMap<String, Group> getCachedGroups() {
+        return cachedGroups;
     }
+
 
 
 }

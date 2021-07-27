@@ -36,7 +36,7 @@ public final class BridgePractice extends JavaPlugin {
         IslandManager.fetchIslandsFromFile();
         if(Configuration.doUseGroups()){
             GroupConfiguration.createGroupConfigurations();
-
+            GroupManager.fetchGroups();
         }
         registerListener();
         registerCommands();
