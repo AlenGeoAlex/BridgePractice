@@ -67,6 +67,10 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                                 CreationCommand.setPermission(player, args[2]);
                                 return true;
                             }
+                            if(args[1].equalsIgnoreCase("delete")){
+                                CreationCommand.deleteIsland(player, args[2]);
+                                return true;
+                            }
                         }else {
                             Messages.sendIncorrectUsage(player);
                             return true;
@@ -107,6 +111,7 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                             player.setFlying(true);
                         }
                         break;
+
                     default:
 
                 }

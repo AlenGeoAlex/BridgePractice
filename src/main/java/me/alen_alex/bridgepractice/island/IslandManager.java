@@ -29,4 +29,9 @@ public class IslandManager {
         ArenaConfigurations.saveArenaConfiguration();
     }
 
+    public static HashMap<String, Island> getIslandData() {
+        return islandData;
+    }
+
+
 }

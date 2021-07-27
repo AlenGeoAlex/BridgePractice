@@ -1,8 +1,10 @@
 package me.alen_alex.bridgepractice.commands.admin;
 
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
+import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -13,6 +15,10 @@ public class CreationCommand {
     public static void createAnIsland(Player player,String islandName){
         if(creatingIsland!=null){
             Messages.sendJSONExecuteCommand(player,"&cThere is already an island creation in progress.","/practiceadmin save","&fClick here to save the current island progress", false);
+            return;
+        }
+        if(arenaStorage.contains(creatingIsland)){
+            Messages.sendMessage(player,"&cIsland with this name already exist", true);
             return;
         }
         creatingIsland = islandName;
@@ -94,6 +100,20 @@ public class CreationCommand {
         }
         arenaStorage.set(creatingIsland+".permission",permissionNode);
         Messages.sendMessage(player,"&aPermission was set for island "+creatingIsland+" as "+permissionNode,true);
+    }
+    public static void deleteIsland(Player player, String islandName){
+        if(!arenaStorage.contains(islandName)){
+            Messages.sendMessage(player, "&cArena with the name does not exist", true);
+            return;
+        }
+        arenaStorage.set(islandName,null);
+        ArenaConfigurations.saveArenaConfiguration();
+        if(IslandManager.getIslandData().containsKey(islandName)){
+            IslandManager.getIslandData().remove(islandName);
+            Bukkit.getLogger().info("Deleted island Objects.");
+        }
+        Messages.sendMessage(player,"&aDeleted Island "+islandName, true);
+
     }
 
 

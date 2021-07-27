@@ -68,6 +68,14 @@ public class DataManager {
             return false;
         }
     }
+    
+    public static long getBestFromGroup(String GroupName, String PlayerName){
+        return Data.getDatabaseConnection().getLong(GroupName,"besttime", "name", PlayerName);
+    }
+
+    public static void setBestFromGroup(String groupName, String playerName, long newDuration){
+        Data.getDatabaseConnection().set(groupName,"name",playerName,"besttime",newDuration);
+    }
 
 
 }
