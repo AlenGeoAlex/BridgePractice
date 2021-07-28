@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IslandCommand implements CommandExecutor, TabCompleter {
@@ -47,6 +48,14 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> tabCompleter = new ArrayList<>();
+        if(args.length == 1){
+            tabCompleter.clear();
+            tabCompleter.add("request");
+            tabCompleter.add("leave");
+            tabCompleter.add("help");
+            return tabCompleter;
+        }
         return null;
     }
 }

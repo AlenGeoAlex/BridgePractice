@@ -1,17 +1,21 @@
 package me.alen_alex.bridgepractice.playerdata;
 
+import me.Abhigya.core.particle.ParticleBuilder;
+import me.Abhigya.core.particle.ParticleEffect;
+import me.Abhigya.core.util.tasks.Workload;
+
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.utility.Messages;
+import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class PlayerData {
@@ -22,9 +26,8 @@ public class PlayerData {
     private int gamesPlayed;
     private  long currentTime, bestTime, blocksPlaced;
     private PlayerState currentState;
-    private List<Block> placedBlocks = new ArrayList<Block>();
+    private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled;
-
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
         this.playerUUID = playerUUID;
@@ -84,8 +87,20 @@ public class PlayerData {
         this.gamesPlayed = gamesPlayed;
     }
 
-    public List<Block> getPlacedBlocks() {
+    public LinkedList<Location> getPlacedBlocks() {
         return placedBlocks;
+    }
+
+    public void setPlacedBlocks(LinkedList<Location> placedBlocks) {
+        this.placedBlocks = placedBlocks;
+    }
+
+    public void addPlacedBlocks(Location location){
+        placedBlocks.add(location);
+    }
+
+    public void addPlayerPlacedBlock(){
+        blocksPlaced+=1;
     }
 
     public String getStringUUID(){
@@ -116,6 +131,8 @@ public class PlayerData {
         this.currentState = currentState;
     }
 
+
+
     @Deprecated
     public Player getPlayer(){
         if(Bukkit.getPlayer(playerUUID).isOnline()){
@@ -140,7 +157,7 @@ public class PlayerData {
                 player.getInventory().addItem(item);
             }
 
-        ItemStack leaveGame = new ItemStack(Material.STONE_BUTTON);
+        ItemStack leaveGame = new ItemStack(Material.BARRIER);
         ItemMeta leaveGameMeta = leaveGame.getItemMeta();
         leaveGameMeta.setDisplayName(Messages.parseColor("&cLeave Session"));
         leaveGame.setItemMeta(leaveGameMeta);
@@ -152,6 +169,17 @@ public class PlayerData {
         player.getInventory().clear();
     }
 
+    public void resetPlacedBlocks(){
+        ParticleBuilder particleBuilder = new ParticleBuilder(ParticleEffect.SMOKE_NORMAL,placedBlocks.get(0));
+        placedBlocks.forEach((location -> {
+            Workload load = () -> {
+                location.getBlock().setType(Material.AIR);
+                particleBuilder.setLocation(location).display();
+            };
+            WorkloadScheduler.getSyncThread().add(load);
+        }));
+
+    }
     //TODO -> Player Saving savePlayer();
 
 }

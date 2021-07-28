@@ -9,9 +9,11 @@ import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
+import me.alen_alex.bridgepractice.listener.PlayerBlockPlaceEvent;
 import me.alen_alex.bridgepractice.listener.PlayerJoinEvent;
 import me.alen_alex.bridgepractice.listener.PlayerLeaveEvent;
 import me.alen_alex.bridgepractice.utility.Validation;
+import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BridgePractice extends JavaPlugin {
@@ -31,6 +33,7 @@ public final class BridgePractice extends JavaPlugin {
                 return;
             }
         Data dataConnection = new Data();
+        WorkloadScheduler.intializeThread();
         connection = dataConnection.getDatabaseConnection();
         Data.createDatabase();
         if(Configuration.doUseGroups()){
@@ -50,10 +53,12 @@ public final class BridgePractice extends JavaPlugin {
     public void registerCommands(){
         getCommand("practiceadmin").setExecutor(new PracticeAdmin());
         getCommand("island").setExecutor(new IslandCommand());
+        getCommand("island").setTabCompleter(new IslandCommand());
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeaveEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerBlockPlaceEvent(), this);
     }
 
     public static BridgePractice getPlugin() {
@@ -63,4 +68,5 @@ public final class BridgePractice extends JavaPlugin {
     public static SQL getConnection() {
         return connection;
     }
+
 }
