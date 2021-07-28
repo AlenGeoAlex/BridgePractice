@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice;
 
 import me.Abhigya.core.database.sql.SQL;
+import me.alen_alex.bridgepractice.commands.IslandCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
@@ -48,6 +49,7 @@ public final class BridgePractice extends JavaPlugin {
 
     public void registerCommands(){
         getCommand("practiceadmin").setExecutor(new PracticeAdmin());
+        getCommand("island").setExecutor(new IslandCommand());
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);

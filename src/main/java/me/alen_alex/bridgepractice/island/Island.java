@@ -88,11 +88,18 @@ public class Island {
         return permission;
     }
 
-    public boolean hasPermission(Player player){
+    /*public boolean hasPermission(Player player){
         boolean hasPerm = false;
         if(permission == null || permission == "" || player.isOp() || player.hasPermission(permission))
             hasPerm = true;
         return hasPerm;
+    }*/
+
+    public boolean hasIslandPermission(Player player){
+        if(permission == null)
+            return true;
+        else
+            return player.hasPermission(permission);
     }
 
     public boolean hasGroup(){
@@ -108,6 +115,7 @@ public class Island {
         player.teleport(quitLocation);
         player.getLocation().setPitch(0.0F);
     }
+
 
     public World getIslandWorld(){
         return Bukkit.getWorld(worldName);

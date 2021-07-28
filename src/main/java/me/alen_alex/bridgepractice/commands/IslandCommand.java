@@ -1,5 +1,7 @@
 package me.alen_alex.bridgepractice.commands;
 
+import com.google.gson.internal.bind.SqlDateTypeAdapter;
+import me.alen_alex.bridgepractice.commands.player.PlayerCommands;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +31,15 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
             Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----",false);
         }else{
             switch (args[0].toUpperCase()){
-
+                case "REQUEST":
+                    if(args.length == 2)
+                    PlayerCommands.islandRequestCommand(player,args[1]);
+                    else
+                    PlayerCommands.islandRequestCommand(player);
+                    break;
+                case "LEAVE":
+                    PlayerCommands.leaveRequestCommand(player);
+                    break;
             }
         }
         return false;

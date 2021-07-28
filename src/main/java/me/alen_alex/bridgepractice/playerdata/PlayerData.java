@@ -1,11 +1,14 @@
 package me.alen_alex.bridgepractice.playerdata;
 
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
+import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +130,26 @@ public class PlayerData {
 
     public void setBuildModeEnabled(boolean buildModeEnabled) {
         this.buildModeEnabled = buildModeEnabled;
+    }
+
+    public void fillPlayerBlocks(ItemStack item){
+        final int blockQuantity = 64*5;
+        Player player = getOnlinePlayer();
+        player.getInventory().clear();
+            for(int i=0; i<blockQuantity; i++){
+                player.getInventory().addItem(item);
+            }
+
+        ItemStack leaveGame = new ItemStack(Material.STONE_BUTTON);
+        ItemMeta leaveGameMeta = leaveGame.getItemMeta();
+        leaveGameMeta.setDisplayName(Messages.parseColor("&cLeave Session"));
+        leaveGame.setItemMeta(leaveGameMeta);
+        player.getInventory().setItem(8, leaveGame);
+    }
+
+    public void setLobbyItems(){
+        Player player = getOnlinePlayer();
+        player.getInventory().clear();
     }
 
     //TODO -> Player Saving savePlayer();

@@ -5,6 +5,8 @@ import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,32 +40,32 @@ public class IslandManager {
         return islandData;
     }
 
-    public static Island getAnIsland(){
+    public static Island getAnIsland(Player player){
         Island selectedIsland = null;
         for(Map.Entry<String,Island> entry : islandData.entrySet()){
             Island checkIsland = entry.getValue();
-            if(!checkIsland.isOccupied() && checkIsland.isActive())
+            if(!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player))
                 selectedIsland = checkIsland;
         }
         return selectedIsland;
     }
 
-    public static Island getAnIsland(String groupName){
+    public static Island getAnIsland(Player player,String groupName){
         Island selectedIsland = null;
         for(Map.Entry<String, Island> entry : islandData.entrySet()){
             Island checkIsland = entry.getValue();
-            if(!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName)){
+            if(!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player) &&checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName)){
                 selectedIsland = checkIsland;
             }
         }
         return selectedIsland;
     }
 
-    public static Island getIslandByName(String islandName){
+    public static Island getIslandByName(Player player,String islandName){
         Island islandSelected = null;
          if(islandData.containsKey(islandName)) {
              Island checkIsland = islandData.get(islandName);
-             if (!checkIsland.isOccupied() && checkIsland.isActive())
+             if (!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player))
                  islandSelected = checkIsland;
          }
          return islandSelected;

@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice.utility;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class Blocks {
         return block.get(random.nextInt(block.size()));
     }
 
-
+    public static boolean doPlayerHavePreferencePermission(Player player){
+        return player.hasPermission("practice.preferenceblock");
+    }
 
 }

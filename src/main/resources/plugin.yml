@@ -9,4 +9,6 @@ commands:
   practiceadmin:
     description: "The adminstrative command for Bridgepractice."
     permission: "practice.admin"
+  island:
+    description: "Command for players"
 
