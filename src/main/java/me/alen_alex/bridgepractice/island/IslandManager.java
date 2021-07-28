@@ -5,7 +5,6 @@ import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.util.HashMap;
 import java.util.Map;
 
