@@ -1,3 +1,4 @@
+##Never Change It
 version: "1.0"
 
 ########################################################################################################################
@@ -5,9 +6,18 @@ version: "1.0"
 ##                                          Bridge Practice                                                           ##
 ##                                                                                                                    ##
 ########################################################################################################################
-##
+##prefix -> Prefix for the plugin messages:
 prefix: "&8[&cBridge&bPractice&8] &7: "
+########################################################################################################################
 ##Mysql Connection Settings
+##Everything is pretty much self explainatory
+##use-mysql -> Whether to use MySQL. If False, it will redirect to SQLite and all the below parameteres will be invalid
+##host -> hostaddress of the database machine
+##port -> Port the driver request MySQL Connection
+##username -> username for the SQL Connection
+##password -> password for the SQL Connection
+##database -> Database for the plugin to use
+##usessl -> Whether to use SSL or not
 server:
   use-mysql: true
   host: "localhost"
@@ -16,5 +26,20 @@ server:
   password: ""
   database: "bridgepractice"
   usessl: true
-
+########################################################################################################################
+##Whether to enable groups or not?
+##If enabled -> Can be set each arena as a different group...Each group can enable Leaderboard and Can give economy
+##rewards if (Vault) is present.
+##If disabled -> Will cancel every activity regarding groups...If Disabled, won't even create groups.yml.
 enable-groups: true
+########################################################################################################################
+##Acts as a Void-TP. User can customize it even more.
+##level -> Level players need to be teleported to when falling to void.
+##only-when-on-island -> Do the detection only when player is playing/standing on the island or do the check
+##even for lobbys.
+##NOTE: If `only-when-on-island` is Disabled the player will be teleported to the spawn of the same world you fell off.
+void-detection:
+  level: 20
+  only-when-on-island: true
+########################################################################################################################
+

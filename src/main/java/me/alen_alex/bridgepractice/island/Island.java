@@ -1,11 +1,21 @@
 package me.alen_alex.bridgepractice.island;
+import me.Abhigya.core.util.tasks.Workload;
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.group.Group;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
+import me.alen_alex.bridgepractice.utility.Blocks;
+import me.alen_alex.bridgepractice.utility.Messages;
+import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class Island {
@@ -159,7 +169,7 @@ public class Island {
     }
 
     /*public void resetIsland(){
-        final List<Location> locs = null;
+        final LinkedList<Location> locs = new LinkedList<>();
         int taskId;
         final int smallx = Math.min(pos1.getBlockX(),pos2.getBlockX());
         final int largex  = Math.max(pos1.getBlockX(),pos2.getBlockX());
@@ -167,9 +177,6 @@ public class Island {
         final int largey = Math.max(pos1.getBlockY(),pos2.getBlockY());
         final int smallz = Math.min(pos1.getBlockZ(),pos2.getBlockZ());
         final int largez = Math.max(pos1.getBlockZ(),pos2.getBlockZ());
-        final int[] cnt = {0};
-        final int maxCnt = 5000;
-        final int completed = 0;
         for(int x = smallx;x<=largex;x++){
             for(int y = smally;y<=largey;y++){
                 for(int z = smallz;z<=largez;z++){
@@ -179,28 +186,13 @@ public class Island {
                 }
             }
         }
-
-
-          taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(BridgePractice.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                Iterator<Location> locationIterator = locs.iterator();
-                while (cnt[0] < maxCnt && locationIterator.hasNext()){
-                    Block block = locationIterator.next().getBlock();
-                    block.setType(Material.AIR);
-                    locationIterator.remove();
-                    cnt[0] +=1;
-                }
-                if(!locationIterator.hasNext()){
-
-                }
-
-
-
-            }
-        },0,2);
-
-
+        System.out.println(locs.get(0));
+        locs.forEach(location -> {
+            Workload load = () -> Blocks.setResetBlocks(location.getWorld(),location.getBlockX(),location.getBlockY(),location.getBlockZ(),0,((Integer) 0).byteValue());
+            //Workload load = () -> location.getBlock().setType(Material.AIR);
+            WorkloadScheduler.getSyncThread().add(load);
+        });
+        System.out.println("Finished!!");
 
     }*/
 

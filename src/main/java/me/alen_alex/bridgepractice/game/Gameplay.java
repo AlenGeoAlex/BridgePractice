@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.game;
 
+import me.Abhigya.core.particle.ParticleEffect;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.api.PlayerIslandJoinEvent;
 import me.alen_alex.bridgepractice.api.PlayerIslandLeaveEvent;
@@ -29,16 +30,11 @@ public class Gameplay {
         PlayerIslandJoinEvent event = new PlayerIslandJoinEvent(playerData,islandData);
         Bukkit.getPluginManager().callEvent(event);
         playerIslands.put(playerData,islandData);
+        playerData.getOnlinePlayer().setHealthScale(20.0);
         playerData.setCurrentState(PlayerState.IDLE_ISLAND);
         islandData.setCurrentPlayer(playerData);
         islandData.teleportToIslandSpawn(playerData.getOnlinePlayer());
-        ItemStack material;
-        if(Blocks.doPlayerHavePreferencePermission(playerData.getOnlinePlayer())){
-            material = new ItemStack(playerData.getPlayerMaterial());
-        }else {
-            material = new ItemStack(Material.WOOD);
-        }
-        playerData.fillPlayerBlocks(material);
+        playerData.fillPlayerBlocks();
         Messages.sendMessage(playerData.getOnlinePlayer(),"&cYou have been assigned to island &6"+islandData.getName()+".", false);
     }
 

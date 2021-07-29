@@ -5,12 +5,10 @@ import me.Abhigya.core.particle.ParticleEffect;
 import me.Abhigya.core.util.tasks.Workload;
 
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
+import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,6 +26,7 @@ public class PlayerData {
     private PlayerState currentState;
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled;
+    private ParticleEffect playerParticle;
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
         this.playerUUID = playerUUID;
@@ -149,12 +148,20 @@ public class PlayerData {
         this.buildModeEnabled = buildModeEnabled;
     }
 
-    public void fillPlayerBlocks(ItemStack item){
+    public void fillPlayerBlocks(){
         final int blockQuantity = 64*5;
         Player player = getOnlinePlayer();
+        ItemStack material;
+        if(Blocks.doPlayerHavePreferencePermission(player)){
+            material = new ItemStack(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerMaterial());
+        }else {
+            material = new ItemStack(Material.WOOD);
+        }
+        player.setHealthScale(20.00);
+        player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
             for(int i=0; i<blockQuantity; i++){
-                player.getInventory().addItem(item);
+                player.getInventory().addItem(material);
             }
 
         ItemStack leaveGame = new ItemStack(Material.BARRIER);
@@ -166,10 +173,13 @@ public class PlayerData {
 
     public void setLobbyItems(){
         Player player = getOnlinePlayer();
+        player.setHealthScale(20.00);
         player.getInventory().clear();
     }
 
     public void resetPlacedBlocks(){
+        if(placedBlocks.isEmpty())
+            return;
         ParticleBuilder particleBuilder = new ParticleBuilder(ParticleEffect.SMOKE_NORMAL,placedBlocks.get(0));
         placedBlocks.forEach((location -> {
             Workload load = () -> {

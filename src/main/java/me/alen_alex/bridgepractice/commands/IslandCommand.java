@@ -1,16 +1,21 @@
 package me.alen_alex.bridgepractice.commands;
 
-import com.google.gson.internal.bind.SqlDateTypeAdapter;
+import me.Abhigya.core.menu.ItemMenu;
+import me.Abhigya.core.menu.size.ItemMenuSize;
 import me.alen_alex.bridgepractice.commands.player.PlayerCommands;
+import me.alen_alex.bridgepractice.menu.MaterialMenu;
+import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class IslandCommand implements CommandExecutor, TabCompleter {
     @Override
@@ -21,15 +26,16 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
         }
         Player player = (Player) sender;
         if(args.length == 0){
-            Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----",false);
+            Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----",false);
             Messages.sendMessage(player,"      &d&lBridge Practice",false);
             Messages.sendMessage(player,"&cDeveloped By&8: &6Alen_Alex",false);
             Messages.sendMessage(player,"&cDeveloped For&8: &6KGO Network", false);
+            Messages.sendMessage(player, "&cDependency Provided&8: &6CoreAPI &8(Avenger AK&8)",false);
             Messages.sendMessage(player,"&e&lNOTE : &bThe complete authority & permissions ",false);
             Messages.sendMessage(player,"&bfor this plugin is with Alen_Alex & KGO Network",false);
             Messages.sendMessage(player,"",false);
             Messages.sendJSONExecuteCommand(player,"&8Click here for help","/island help", "&fClicking here will open help menu", false);
-            Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----",false);
+            Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----",false);
         }else{
             switch (args[0].toUpperCase()){
                 case "REQUEST":
@@ -40,6 +46,9 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                     break;
                 case "LEAVE":
                     PlayerCommands.leaveRequestCommand(player);
+                    break;
+                case "HI":
+                    MaterialMenu.openMaterialMenu(player);
                     break;
             }
         }

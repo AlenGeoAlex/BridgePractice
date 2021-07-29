@@ -23,6 +23,10 @@ public class PlayerBlockPlaceEvent implements Listener {
             return;
         }
 
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isBuildModeEnabled()){
+            return;
+        }
+
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == null){
             event.setCancelled(true);
         }
