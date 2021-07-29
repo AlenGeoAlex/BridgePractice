@@ -42,7 +42,7 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                 case "LEAVE":
                     PlayerCommands.leaveRequestCommand(player);
                     break;
-                case "HI":
+                case "BLOCKS":
                     MenuManager.openMaterialMenu(player);
                     break;
             }
