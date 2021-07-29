@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class MaterialMenu{
+public class MenuManager {
 
     public static void openMaterialMenu(Player player) {
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){

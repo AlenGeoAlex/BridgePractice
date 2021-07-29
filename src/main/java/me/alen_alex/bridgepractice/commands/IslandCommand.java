@@ -1,21 +1,16 @@
 package me.alen_alex.bridgepractice.commands;
 
-import me.Abhigya.core.menu.ItemMenu;
-import me.Abhigya.core.menu.size.ItemMenuSize;
 import me.alen_alex.bridgepractice.commands.player.PlayerCommands;
-import me.alen_alex.bridgepractice.menu.MaterialMenu;
-import me.alen_alex.bridgepractice.utility.Blocks;
+import me.alen_alex.bridgepractice.menu.MenuManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class IslandCommand implements CommandExecutor, TabCompleter {
     @Override
@@ -48,7 +43,7 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                     PlayerCommands.leaveRequestCommand(player);
                     break;
                 case "HI":
-                    MaterialMenu.openMaterialMenu(player);
+                    MenuManager.openMaterialMenu(player);
                     break;
             }
         }
