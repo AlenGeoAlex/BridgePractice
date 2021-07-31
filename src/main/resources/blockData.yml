@@ -1,0 +1,10 @@
+whitewool:
+  material: WOOL
+  permission: "practice.block.wool"
+  data: 0
+wood:
+  material: WOOD
+bluewool:
+  material: WOOL
+  permission: "practice.block.bluewool"
+  data: 2

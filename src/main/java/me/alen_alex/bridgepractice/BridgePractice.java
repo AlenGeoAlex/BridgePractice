@@ -6,6 +6,7 @@ import me.Abhigya.core.menu.size.ItemMenuSize;
 import me.alen_alex.bridgepractice.commands.IslandCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
+import me.alen_alex.bridgepractice.configurations.BlockConfiguration;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
@@ -15,6 +16,7 @@ import me.alen_alex.bridgepractice.listener.PlayerBlockBreakEvent;
 import me.alen_alex.bridgepractice.listener.PlayerBlockPlaceEvent;
 import me.alen_alex.bridgepractice.listener.PlayerJoinEvent;
 import me.alen_alex.bridgepractice.listener.PlayerLeaveEvent;
+import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.Validation;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
@@ -46,6 +48,8 @@ public final class BridgePractice extends JavaPlugin {
         }
         ArenaConfigurations.createArenaConfigurations();
         IslandManager.fetchIslandsFromFile();
+        //BlockConfiguration.createBlockConfigurations();
+        //Blocks.fetchMaterialData();
         registerListener();
         registerCommands();
         registerMenus();

@@ -56,13 +56,13 @@ public class Blocks {
     public static List<Material> getAvailableBlocks(Player player){
         List<Material> availableMatrix = new ArrayList<>();
         availableMatrix.add(Material.WOOD);
-                for(Map.Entry<String, Material> entry : materialName.entrySet()){
-                    if(player.hasPermission("practice.block"+entry.getKey())) {
-                        availableMatrix.add(entry.getValue());
-                    }
-                }
+        for(Map.Entry<String, Material> entry : materialName.entrySet()){
+            if(player.hasPermission("practice.block"+entry.getKey())) {
+                availableMatrix.add(entry.getValue());
+            }
+        }
 
-    return availableMatrix;
+        return availableMatrix;
     }
 
     public static void setResetBlocks(World world, int x, int y, int z, int blockId, byte data) {
