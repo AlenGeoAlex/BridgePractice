@@ -10,8 +10,6 @@ public class PlayerBlockBreakEvent implements Listener {
 
     @EventHandler
     public void onPlayerBlockBreak(BlockBreakEvent event){
-        if(!(event instanceof Player))
-            return;
         Player player = event.getPlayer();
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isBuildModeEnabled())
             return;

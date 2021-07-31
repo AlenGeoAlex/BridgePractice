@@ -14,16 +14,15 @@ import java.util.UUID;
 public class DataManager {
 
     public static void registerUser(Player player){
-        Data.getDatabaseConnection().insertData("`name`,`uuid`,`blocksplaced`,`gamesplayed`,`besttime`,`currenttime`,`material`","'"+player.getName()+"','"+player.getUniqueId().toString()+"',0,0,0,0,'WOOL'","playerdata");
+        Data.getDatabaseConnection().insertData("`name`,`uuid`,`blocksplaced`,`gamesplayed`,`besttime`,`currenttime`,`material`","'"+player.getName()+"','"+player.getUniqueId().toString()+"','0','0','"+System.currentTimeMillis()+"','0','WOOD'","playerdata");
         Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
             @Override
             public void run() {
                 for(String groupName : GroupConfiguration.getGroupConfigurations().getKeys(false)){
-                    Data.getDatabaseConnection().insertData("`name`,`besttime`","'"+player.getName()+"','0'", groupName);
+                    Data.getDatabaseConnection().insertData("`name`,`besttime`","'"+player.getName()+"','"+System.currentTimeMillis()+"'", groupName);
                 }
             }
         });
-
     }
 
     public static boolean isUserRegisetered(UUID playerUUID){
@@ -73,9 +72,11 @@ public class DataManager {
         return Data.getDatabaseConnection().getLong(GroupName,"besttime", "name", PlayerName);
     }
 
+
     public static void setBestFromGroup(String groupName, String playerName, long newDuration){
         Data.getDatabaseConnection().set(groupName,"name",playerName,"besttime",newDuration);
     }
+
 
 
 }

@@ -3,6 +3,8 @@ package me.alen_alex.bridgepractice.group;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.data.DataManager;
+import me.alen_alex.bridgepractice.utility.Messages;
+import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,6 +47,15 @@ public class GroupManager {
 
     public static Group getGroupByName(String groupName){
         return cachedGroups.get(groupName);
+    }
+
+    public static void setHighestInGroup(String groupName, String playerName, long bestTime){
+        if(!cachedGroups.containsKey(groupName)){
+            Bukkit.getLogger().info("Unknown group named group "+groupName);
+            return;
+        }
+        DataManager.setBestFromGroup(groupName,playerName, bestTime);
+
     }
 
 

@@ -22,7 +22,7 @@ public class PlayerData {
     private  UUID playerUUID;
     private  Material playerMaterial;
     private int gamesPlayed;
-    private  long currentTime, bestTime, blocksPlaced;
+    private  long currentTime, bestTime, blocksPlaced,startTime,endTime;
     private PlayerState currentState;
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled;
@@ -188,8 +188,37 @@ public class PlayerData {
             };
             WorkloadScheduler.getSyncThread().add(load);
         }));
-
+        placedBlocks.clear();
     }
+
+    public int getBlocksPlacedOnCurrentGame(){
+        return placedBlocks.size();
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    public ParticleEffect getPlayerParticle() {
+        return playerParticle;
+    }
+
+    public void setPlayerParticle(ParticleEffect playerParticle) {
+        this.playerParticle = playerParticle;
+    }
+
     //TODO -> Player Saving savePlayer();
 
 }

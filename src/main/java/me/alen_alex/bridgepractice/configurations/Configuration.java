@@ -15,7 +15,7 @@ public class Configuration {
     private static BridgePractice plugin = BridgePractice.getPlugin();
     private static Config config;
     private static String host,username,password,port,database;
-    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands;
+    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord;
     private static String prefixMain;
     private static int voidDetectionLevel;
 
@@ -54,6 +54,7 @@ public class Configuration {
         useGroups = config.getBoolean("enable-groups");
         voidDetectionLevel = config.getInt("void-detection.level");
         voidDectionOnlyOnIslands = config.getBoolean("void-detection.only-when-on-island");
+        broadcastNewRecord = config.getBoolean("broadcast-new-record");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -103,6 +104,10 @@ public class Configuration {
 
     public static int getVoidDetectionLevel() {
         return voidDetectionLevel;
+    }
+
+    public static boolean doBroadcastNewRecord() {
+        return broadcastNewRecord;
     }
 }
 
