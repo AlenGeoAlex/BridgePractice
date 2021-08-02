@@ -25,7 +25,8 @@ public class PlayerData {
     private  long currentTime, bestTime, blocksPlaced,startTime,endTime;
     private PlayerState currentState;
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
-    private boolean buildModeEnabled;
+    private boolean buildModeEnabled, spectating;
+    private boolean canOthersSpectate = true;
     private ParticleEffect playerParticle;
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
@@ -221,6 +222,25 @@ public class PlayerData {
         this.playerParticle = playerParticle;
     }
 
+    public boolean isSpectating() {
+        return spectating;
+    }
+
+    public void setSpectating(boolean spectating) {
+        this.spectating = spectating;
+    }
+
+    public boolean canSpectate(){
+        return this.getOnlinePlayer().hasPermission("practice.spectate.others");
+    }
+
+    public boolean CanOthersSpectate() {
+        return canOthersSpectate;
+    }
+
+    public void setCanOthersSpectate(boolean canOthersSpectate) {
+        this.canOthersSpectate = canOthersSpectate;
+    }
     //TODO -> Player Saving savePlayer();
 
 }

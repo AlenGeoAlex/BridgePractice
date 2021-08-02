@@ -7,8 +7,10 @@ import me.Abhigya.core.menu.item.action.ItemAction;
 import me.Abhigya.core.menu.item.action.ItemActionPriority;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
+import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Blocks;
+import me.alen_alex.bridgepractice.utility.Head;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -53,6 +55,42 @@ public class MenuManager {
         }
         menu.setContents(item);
         menu.open(player);
+    }
+
+    public static void openSpectatorMenu(Player player){
+        if(!(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).canSpectate())){
+            Messages.sendMessage(player,"&cYou can't spectate players!", true);
+            return;
+        }
+        List<Player> currentPlayers = Gameplay.getCurrentPlayes();
+        if(currentPlayers == null){
+            Messages.sendMessage(player,"&cThere are currently no players practicing the islands!!", true);
+            return;
+        }
+        ItemMenu specMenu = BridgePractice.getSpectatorMenu();
+        specMenu.clear();
+        ActionItem item[] = new ActionItem[54];
+        for(int i = 0;i<currentPlayers.size();i++){
+            if(PlayerDataManager.getCachedPlayerData().get(currentPlayers.get(i)).CanOthersSpectate()) {
+                item[i] = new ActionItem(Head.getOnlinePlayer(currentPlayers.get(i).getName()));
+                item[i].setName(currentPlayers.get(0).getName());
+                int finalI = i;
+                item[i].addAction(new ItemAction() {
+                    @Override
+                    public ItemActionPriority getPriority() {
+                        return ItemActionPriority.NORMAL;
+                    }
+
+                    @Override
+                    public void onClick(ItemClickAction itemClickAction) {
+                        System.out.println(1);
+                        specMenu.close(player);
+                    }
+                });
+            }
+        }
+        specMenu.setContents(item);
+        specMenu.open(player);
     }
 
 }

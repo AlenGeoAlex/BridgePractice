@@ -18,8 +18,7 @@ import org.bukkit.Location;
 
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class Gameplay {
 
@@ -108,5 +107,15 @@ public class Gameplay {
 
     public static HashMap<UUID, Integer> getPlayerCountdown() {
         return playerCountdown;
+    }
+
+    public static List<Player> getCurrentPlayes(){
+        if(playerIslands.size() == 0)
+            return null;
+        List<Player> currentPlayer = new ArrayList<Player>();
+        for(Map.Entry<PlayerData, Island> entry : playerIslands.entrySet()){
+            currentPlayer.add(entry.getKey().getOnlinePlayer());
+        }
+        return currentPlayer;
     }
 }

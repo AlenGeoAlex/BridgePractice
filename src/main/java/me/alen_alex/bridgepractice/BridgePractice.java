@@ -6,6 +6,7 @@ import me.Abhigya.core.menu.ItemMenu;
 import me.Abhigya.core.menu.size.ItemMenuSize;
 import me.Abhigya.core.version.CoreVersion;
 import me.alen_alex.bridgepractice.commands.IslandCommand;
+import me.alen_alex.bridgepractice.commands.PlayerListCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
@@ -23,7 +24,7 @@ public final class BridgePractice extends JavaPlugin {
 
     private static BridgePractice plugin;
     private static SQL connection;
-    private static ItemMenu materialMenu;
+    private static ItemMenu materialMenu,spectatorMenu;
     @Override
     public void onEnable() {
         if(!(CoreVersion.getCoreVersion() == CoreVersion.v1_1_2)){
@@ -73,6 +74,7 @@ public final class BridgePractice extends JavaPlugin {
         getCommand("practiceadmin").setExecutor(new PracticeAdmin());
         getCommand("island").setExecutor(new IslandCommand());
         getCommand("island").setTabCompleter(new IslandCommand());
+        getCommand("playerlist").setExecutor(new PlayerListCommand());
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
@@ -87,6 +89,8 @@ public final class BridgePractice extends JavaPlugin {
     public void registerMenus(){
         materialMenu = new ItemMenu(Messages.parseColor("&c&lMaterial Preference"), ItemMenuSize.TWO_LINE,null,null);
         materialMenu.registerListener(this);
+        spectatorMenu = new ItemMenu(Messages.parseColor("&d&lChoose Player"),ItemMenuSize.SIX_LINE,null,null);
+        spectatorMenu.registerListener(this);
     }
 
     public static BridgePractice getPlugin() {
@@ -99,5 +103,9 @@ public final class BridgePractice extends JavaPlugin {
 
     public static ItemMenu getMaterialMenu() {
         return materialMenu;
+    }
+
+    public static ItemMenu getSpectatorMenu() {
+        return spectatorMenu;
     }
 }

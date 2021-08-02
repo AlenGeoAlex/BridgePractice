@@ -11,4 +11,10 @@ commands:
     permission: "practice.admin"
   island:
     description: "Command for players"
+  playerlist:
+    aliases:
+      - p
+      - plist
+      - players
+    description: "A command for an interactice player list GUI"
 
