@@ -26,7 +26,8 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
             Messages.sendMessage(player,"      &d&lBridge Practice",false);
             Messages.sendMessage(player,"&cDeveloped By&8: &6Alen_Alex",false);
             Messages.sendMessage(player,"&cDeveloped For&8: &6KGO Network", false);
-            Messages.sendMessage(player, "&cDependency Provided&8: &6CoreAPI &8(Avenger AK&8)",false);
+            Messages.sendJSONLink(player, "&cDependency Provided&8: &6CoreAPI &8(Avenger AK&8)","https://github.com/AbhigyaKrishna/CoreAPI","&fClick to check out the API");
+            Messages.sendMessage(player,"",false);
             Messages.sendMessage(player,"&e&lNOTE : &bThe complete authority & permissions ",false);
             Messages.sendMessage(player,"&bfor this plugin is with Alen_Alex & KGO Network",false);
             Messages.sendMessage(player,"",false);

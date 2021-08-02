@@ -154,10 +154,8 @@ public class PlayerData {
         ItemStack material;
 
         if(Blocks.doPlayerHavePreferencePermission(player)){
-            System.out.println("Material has been set to playermaterial");
             material = new ItemStack(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerMaterial());
         }else {
-            System.out.println("Material has been set to random");
             material = new ItemStack(Blocks.getRandomBlock());
         }
         player.setHealthScale(20.00);

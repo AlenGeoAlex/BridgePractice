@@ -12,4 +12,8 @@ public class TimeUtility {
         return _formated;
     }
 
+    public static int getSecondsFromLongTime(long time){
+        return Integer.parseInt(String.valueOf(TimeUnit.MILLISECONDS.toSeconds(time)% 60));
+    }
+
 }

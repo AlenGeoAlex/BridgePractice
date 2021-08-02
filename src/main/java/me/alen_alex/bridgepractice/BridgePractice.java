@@ -1,8 +1,10 @@
 package me.alen_alex.bridgepractice;
 
 import me.Abhigya.core.database.sql.SQL;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.menu.ItemMenu;
 import me.Abhigya.core.menu.size.ItemMenuSize;
+import me.Abhigya.core.version.CoreVersion;
 import me.alen_alex.bridgepractice.commands.IslandCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
@@ -24,6 +26,18 @@ public final class BridgePractice extends JavaPlugin {
     private static ItemMenu materialMenu;
     @Override
     public void onEnable() {
+        if(!(CoreVersion.getCoreVersion() == CoreVersion.v1_1_2)){
+            plugin.getLogger().severe("=================================================================");
+            plugin.getLogger().info("");
+            plugin.getLogger().info("This plugin requires CoreAPI version - 1.1.2");
+            plugin.getLogger().info("Newer versions or older version won't be working for it");
+            plugin.getLogger().info("You can download one at");
+            plugin.getLogger().info("https://github.com/AbhigyaKrishna/CoreAPI/tree/1.1.2");
+            plugin.getLogger().info("");
+            plugin.getLogger().severe("Disabling plugin");
+            plugin.getLogger().severe("=================================================================");
+            plugin.getPluginLoader().disablePlugin(this);
+        }
         plugin = this;
         Configuration.createConfiguration();
         if(!Validation.validateDatabase())
