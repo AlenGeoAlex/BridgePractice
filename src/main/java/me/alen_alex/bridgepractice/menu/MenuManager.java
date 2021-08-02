@@ -25,10 +25,10 @@ public class MenuManager {
             return;
         }
         ItemMenu menu = BridgePractice.getMaterialMenu();
+        menu.clear();
         List<Material> availableBlocks = Blocks.getAvailableBlocks(player);
         ActionItem item[] = new ActionItem[availableBlocks.size()];
         for(int i = 0; i < availableBlocks.size();i++){
-            System.out.println(availableBlocks.get(i));
             ItemStack itemStack = new ItemStack(availableBlocks.get(i));
             item[i] = new ActionItem(itemStack);
             item[i].setName(Messages.parseColor("&6&lClick to select"));
@@ -51,7 +51,6 @@ public class MenuManager {
                 }
             });
         }
-        menu.registerListener(BridgePractice.getPlugin());
         menu.setContents(item);
         menu.open(player);
     }

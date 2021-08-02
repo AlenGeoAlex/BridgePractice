@@ -58,6 +58,15 @@ public class GroupManager {
 
     }
 
+    public static long getHighestOfPlayerInGroup(String groupName, String playerName){
+        if(!cachedGroups.containsKey(groupName)){
+            Bukkit.getLogger().info("Unknown group named group "+groupName);
+            return 0;
+        }
+        return DataManager.getBestFromGroup(groupName,playerName);
+
+    }
+
 
 
 }

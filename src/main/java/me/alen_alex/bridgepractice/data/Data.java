@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class Data {
     private static BridgePractice plugin;
-    private final SQLDatabase database;
+    private static SQLDatabase database;
     private static SQL sql;
 
     public Data(){
@@ -48,6 +48,24 @@ public class Data {
 
     public static void createDatabase(){
         sql.createTable("playerdata","`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`uuid` VARCHAR(50) NOT NULL","`blocksplaced` INTEGER(10) NOT NULL","`gamesplayed` INTEGER(10) NOT NULL","`besttime` BIGINT(30) NOT NULL","`currenttime` BIGINT(30) NOT NULL","`material` VARCHAR(30)");
+    }
+
+    private static SQLDatabase getDatabase() {
+        return database;
+    }
+
+    public static boolean isConnected(){
+        return database.isConnected();
+    }
+
+    public static void disconnect(){
+        if(isConnected()) {
+            try {
+                database.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

@@ -18,6 +18,7 @@ public class PlayerJoinEvent implements Listener {
         UUID playerUUID = player.getUniqueId();
         PlayerData joinedPlayer = null;
         if(!DataManager.isUserRegisetered(playerUUID)) {
+            System.out.println(2);
             DataManager.registerUser(player);
         }
         try {

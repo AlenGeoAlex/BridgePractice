@@ -152,12 +152,16 @@ public class PlayerData {
         final int blockQuantity = 64*5;
         Player player = getOnlinePlayer();
         ItemStack material;
+
         if(Blocks.doPlayerHavePreferencePermission(player)){
+            System.out.println("Material has been set to playermaterial");
             material = new ItemStack(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerMaterial());
         }else {
-            material = new ItemStack(Material.WOOD);
+            System.out.println("Material has been set to random");
+            material = new ItemStack(Blocks.getRandomBlock());
         }
         player.setHealthScale(20.00);
+        player.setFoodLevel(19);
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
             for(int i=0; i<blockQuantity; i++){

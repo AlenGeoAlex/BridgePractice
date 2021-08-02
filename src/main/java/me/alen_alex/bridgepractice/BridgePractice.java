@@ -6,17 +6,12 @@ import me.Abhigya.core.menu.size.ItemMenuSize;
 import me.alen_alex.bridgepractice.commands.IslandCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
-import me.alen_alex.bridgepractice.configurations.BlockConfiguration;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
-import me.alen_alex.bridgepractice.listener.PlayerBlockBreakEvent;
-import me.alen_alex.bridgepractice.listener.PlayerBlockPlaceEvent;
-import me.alen_alex.bridgepractice.listener.PlayerJoinEvent;
-import me.alen_alex.bridgepractice.listener.PlayerLeaveEvent;
-import me.alen_alex.bridgepractice.utility.Blocks;
+import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.Validation;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
@@ -57,6 +52,7 @@ public final class BridgePractice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Data.disconnect();
     }
 
     public void registerCommands(){
@@ -69,10 +65,14 @@ public final class BridgePractice extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLeaveEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerBlockPlaceEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerBlockBreakEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMoveEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathEvent(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageEvent(), this);
     }
 
     public void registerMenus(){
         materialMenu = new ItemMenu(Messages.parseColor("&c&lMaterial Preference"), ItemMenuSize.TWO_LINE,null,null);
+        materialMenu.registerListener(this);
     }
 
     public static BridgePractice getPlugin() {

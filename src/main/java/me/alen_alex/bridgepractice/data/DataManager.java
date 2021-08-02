@@ -14,10 +14,10 @@ import java.util.UUID;
 public class DataManager {
 
     public static void registerUser(Player player){
-        Data.getDatabaseConnection().insertData("`name`,`uuid`,`blocksplaced`,`gamesplayed`,`besttime`,`currenttime`,`material`","'"+player.getName()+"','"+player.getUniqueId().toString()+"','0','0','"+System.currentTimeMillis()+"','0','WOOD'","playerdata");
         Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
             @Override
             public void run() {
+                Data.getDatabaseConnection().insertData("`name`,`uuid`,`blocksplaced`,`gamesplayed`,`besttime`,`currenttime`,`material`","'"+player.getName()+"','"+player.getUniqueId().toString()+"','0','0','"+System.currentTimeMillis()+"','0','WOOD'","playerdata");
                 for(String groupName : GroupConfiguration.getGroupConfigurations().getKeys(false)){
                     Data.getDatabaseConnection().insertData("`name`,`besttime`","'"+player.getName()+"','"+System.currentTimeMillis()+"'", groupName);
                 }
@@ -26,7 +26,18 @@ public class DataManager {
     }
 
     public static boolean isUserRegisetered(UUID playerUUID){
-        return Data.getDatabaseConnection().exists("playerdata","uuid",playerUUID.toString());
+        boolean registered = false;
+        try {
+            ResultSet set = Data.getDatabaseConnection().executeQuery("SELECT * FROM `playerdata` WHERE `uuid` = '"+playerUUID.toString()+"';");
+            while (set.next())
+                registered = true;
+            set.getStatement().close();
+            set.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        System.out.println(registered);
+        return registered;
     }
 
     public static ResultSet fetchPlayerData(UUID playerUUID){

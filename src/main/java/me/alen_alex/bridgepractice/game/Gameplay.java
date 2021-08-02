@@ -63,21 +63,43 @@ public class Gameplay {
         //TODO --> If no do not update it
         //TODO --> Compare the playerBestTime from all groups and update it with the PlayerDataBest...
         //TODO --> ALSO FIX THE FREAKING DATABASE UPDATE STATEMENT!!
-        if(completed){
+        /*if(completed){
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
-            durationTaken = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime() - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime();
-            System.out.println("Current Duration Taken: "+durationTaken);
+            durationTaken = (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime()  - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime());
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(durationTaken);
-            if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime() > PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentTime() ){
-                long oldBesttime = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime();
-                System.out.println("Old best time"+oldBesttime);
-                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setBestTime(durationTaken);
-                Messages.sendMessage(player,"&bH&eo&6o&ar&6a&dy&c!&4!&f...&eYou have broke you previous record of &6"+ TimeUtility.getDurationFromLongTime(oldBesttime)+"&e with new record of &b&l"+TimeUtility.getDurationFromLongTime(durationTaken), true);
+            if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime() < PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentTime()){
+                long oldBestTime = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime();
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setBestTime(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentTime());
+                Messages.sendMessage(player,"&bH&eo&6o&ar&6a&dy&c!&4!&f...&eYou have broke you previous record of &6"+ TimeUtility.getDurationFromLongTime(oldBestTime)+"&e with new record of &b&l"+TimeUtility.getDurationFromLongTime(durationTaken), true);
                 if(islandData.hasGroup()){
                     GroupManager.setHighestInGroup(islandData.getIslandGroup().getGroupName(),player.getName(),durationTaken);
+                    if(Configuration.doBroadcastNewRecord())
+                        Messages.sendBroadcastMessage("&6&l"+player.getName()+" &6has broke his previous record of &e"+TimeUtility.getDurationFromLongTime(oldBestTime)+" &bwith a new one of &c&l"+TimeUtility.getDurationFromLongTime(durationTaken)+" &ewith &d&l"+PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame()+ " blocks &eplaced.", false);
+
                 }
-                if(Configuration.doBroadcastNewRecord())
-                    Messages.sendBroadcastMessage("&6&l"+player.getName()+" &6has broke his previous record of &e"+TimeUtility.getDurationFromLongTime(oldBesttime)+" &bwith a new one of &c&l"+TimeUtility.getDurationFromLongTime(durationTaken)+" &ewith &d&l"+PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame()+ " blocks &eplaced.", false);
+            }
+        }*/
+        if(completed){
+            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
+            durationTaken = (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime()  - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime());
+            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(durationTaken);
+            if(Configuration.doUseGroups()){
+                if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
+                    long currentBestTime = GroupManager.getHighestOfPlayerInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName());
+                    if (durationTaken < currentBestTime) {
+                        Messages.sendMessage(player, "&bH&eo&6o&ar&6a&dy&c!&4!&f...&eYou have broke you previous record of &6" + TimeUtility.getDurationFromLongTime(currentBestTime) + "&e with new record of &b&l" + TimeUtility.getDurationFromLongTime(durationTaken), true);
+                        GroupManager.setHighestInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName(), durationTaken);
+                        if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime() > durationTaken) {
+                            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setBestTime(durationTaken);
+                            Messages.sendMessage(player, "&c6&lYou also broke your all time best time!!", true);
+                        }
+                    }
+                }
+            }else{
+                if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime() > durationTaken){
+                    PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setBestTime(durationTaken);
+                    Messages.sendMessage(player, "&c6&lYou also broke your all time best time!!", true);
+                }
             }
         }
         DataManager.savePlayerData(playerData);
