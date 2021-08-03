@@ -14,6 +14,7 @@ import me.alen_alex.bridgepractice.utility.Countdown;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.TimeUtility;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ public class Gameplay {
 
     private static HashMap<PlayerData,Island> playerIslands = new HashMap<PlayerData,Island>();
     private static HashMap<UUID, Integer> playerCountdown = new HashMap<UUID, Integer>();
+    private static HashMap<Player,Player> spectators = new HashMap<>();
 
     public static void handleGameJoin(PlayerData playerData, Island islandData){
         PlayerIslandJoinEvent event = new PlayerIslandJoinEvent(playerData,islandData);
@@ -86,6 +88,32 @@ public class Gameplay {
         playerData.resetPlacedBlocks();
     }
 
+    //TODO
+    //TODO REMOVE ALL PLAYERS WHEN HE LEAVE THE SERVER
+    public static void handleJoinSpectating(Player player, Player toPlayer){
+        if(!toPlayer.isOnline()){
+            Messages.sendMessage(player,"&cThe selected player went offline!",true);
+            return;
+        }
+
+        PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSpectating(true);
+        spectators.put(player,toPlayer);
+        player.teleport(toPlayer.getLocation());
+        player.getInventory().clear();
+        player.setGameMode(GameMode.ADVENTURE);
+        getCurrentlySpectatingPlayers(player).forEach(specingPlayer -> {
+            player.hidePlayer(specingPlayer);
+        });
+    }
+
+    public static void handleLeaveSpectating(Player player, Player fromPlayer){
+        spectators.remove(player);
+        //TODO Player teleport to lobby world
+        player.getInventory().clear();
+        player.setGameMode(GameMode.CREATIVE);
+        PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSpectating(true);
+    }
+
     public static void onFirstBlockPlace(Player player, Location placedLocation){
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentState(PlayerState.PLAYING);
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(System.currentTimeMillis());
@@ -118,4 +146,21 @@ public class Gameplay {
         }
         return currentPlayer;
     }
+
+    public static HashMap<Player, Player> getSpectators() {
+        return spectators;
+    }
+
+    public static List<Player> getCurrentlySpectatingPlayers(Player player){
+        List<Player> specingList = new ArrayList<>();
+        if(!spectators.containsValue(player))
+            return null;
+
+        for(Map.Entry<Player,Player> playerEntry : spectators.entrySet()){
+            if(playerEntry.getValue() == player)
+                specingList.add(playerEntry.getKey());
+        }
+        return specingList;
+    }
+
 }

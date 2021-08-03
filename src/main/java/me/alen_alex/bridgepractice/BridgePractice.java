@@ -15,6 +15,7 @@ import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.listener.*;
+import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.Validation;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
@@ -27,17 +28,17 @@ public final class BridgePractice extends JavaPlugin {
     private static ItemMenu materialMenu,spectatorMenu;
     @Override
     public void onEnable() {
-        if(!(CoreVersion.getCoreVersion() == CoreVersion.v1_1_2)){
-            plugin.getLogger().severe("=================================================================");
-            plugin.getLogger().info("");
-            plugin.getLogger().info("This plugin requires CoreAPI version - 1.1.2");
-            plugin.getLogger().info("Newer versions or older version won't be working for it");
-            plugin.getLogger().info("You can download one at");
-            plugin.getLogger().info("https://github.com/AbhigyaKrishna/CoreAPI/tree/1.1.2");
-            plugin.getLogger().info("");
-            plugin.getLogger().severe("Disabling plugin");
-            plugin.getLogger().severe("=================================================================");
-            plugin.getPluginLoader().disablePlugin(this);
+        if(!Validation.ValidateCoreAPI()){
+            this.getLogger().severe("=================================================================");
+            this.getLogger().info("");
+            this.getLogger().info("This plugin requires CoreAPI version - 1.1.2");
+            this.getLogger().info("Newer versions or older version won't be working for it");
+            this.getLogger().info("You can download one at");
+            this.getLogger().info("https://github.com/AbhigyaKrishna/CoreAPI/tree/1.1.2");
+            this.getLogger().info("");
+            this.getLogger().severe("Disabling plugin");
+            this.getLogger().severe("=================================================================");
+            this.getPluginLoader().disablePlugin(this);
         }
         plugin = this;
         Configuration.createConfiguration();
@@ -60,6 +61,7 @@ public final class BridgePractice extends JavaPlugin {
         IslandManager.fetchIslandsFromFile();
         //BlockConfiguration.createBlockConfigurations();
         //Blocks.fetchMaterialData();
+        new PlaceholderAPI(this).register();
         registerListener();
         registerCommands();
         registerMenus();

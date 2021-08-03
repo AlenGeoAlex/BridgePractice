@@ -6,6 +6,7 @@ import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,10 +31,22 @@ public class PlayerLeaveEvent implements Listener {
             Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setCurrentPlayer(null);
             Gameplay.getPlayerIslands().remove(PlayerDataManager.getCachedPlayerData().get(playerUUID));
         }
+
         boolean saveSuccess = DataManager.savePlayerData(leftPlayerData);
         if(!saveSuccess)
             Bukkit.getServer().getLogger().severe("Failed to save player data of "+player.getName()+" ["+playerUUID+"] to the database. Contact Author if you see the message frequently");
+        PlayerDataManager.getCachedPlayerData().get(playerUUID).resetPlacedBlocks();
         PlayerDataManager.getCachedPlayerData().remove(playerUUID);
+
+        if(Gameplay.getSpectators().containsKey(player))
+            Gameplay.getSpectators().remove(player);
+
+        if(Gameplay.getSpectators().containsValue(player)){
+            Gameplay.getCurrentlySpectatingPlayers(player).forEach(player1 -> {
+                Gameplay.handleLeaveSpectating(player1,player);
+                Messages.sendMessage(player1,"&cYou have been teleported back to lobby since the player has left the server",false);
+            });
+        }
     }
 
 }

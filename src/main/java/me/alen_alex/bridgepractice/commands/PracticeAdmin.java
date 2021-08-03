@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice.commands;
 
 import me.alen_alex.bridgepractice.commands.admin.CreationCommand;
+import me.alen_alex.bridgepractice.commands.admin.EditCommand;
 import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
@@ -81,13 +82,10 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                     case "GROUP":
                         if(Configuration.doUseGroups()) {
                             if (args.length <= 2) {
-                                System.out.println(args.length);
                                 Messages.sendIncorrectUsage(player);
                                 return true;
                             }
-                            System.out.println(args.length+"-"+args[1]+"-"+args[2]);
                             if (args[1].equalsIgnoreCase("create")) {
-                                System.out.println(args.length + "-" + args[1] + "-" + args[2]);
                                 GroupCommand.createGroup(player, args[2]);
                             }
                             if (args[1].equalsIgnoreCase("delete"))
@@ -97,11 +95,38 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                         }
                         break;
                     case "EDIT":
-
+                        if(args.length == 2){
+                            if(args[1].equalsIgnoreCase("setspawn")) {
+                                EditCommand.setSpawnPoint(player);
+                                return true;
+                            }
+                            if(args[1].equalsIgnoreCase("setend")) {
+                                EditCommand.setEndPoint(player);
+                                return true;
+                            }
+                            if(args[1].equalsIgnoreCase("setlobby")) {
+                                EditCommand.setLobbyPoint(player);
+                                return true;
+                            }
+                            if(args[1].equalsIgnoreCase("setpos1")) {
+                                EditCommand.setPos1(player);
+                                return true;
+                            }
+                            if(args[1].equalsIgnoreCase("setpos2")) {
+                                EditCommand.setPos2(player);
+                                return true;
+                            }
+                        }else if(args.length == 3){
+                            if(args[1].equalsIgnoreCase("island")) {
+                                CreationCommand.createAnIsland(player, args[2]);
+                                return true;
+                            }
+                        }
                         break;
                     case "SAVE":
                         CreationCommand.saveIslandDetails(player);
                         GroupCommand.saveGroupDetails(player);
+                        EditCommand.saveEditIslands(player);
                         break;
 
                     case "BUILD":
