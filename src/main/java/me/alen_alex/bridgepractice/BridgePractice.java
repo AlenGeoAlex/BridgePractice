@@ -61,7 +61,8 @@ public final class BridgePractice extends JavaPlugin {
         IslandManager.fetchIslandsFromFile();
         //BlockConfiguration.createBlockConfigurations();
         //Blocks.fetchMaterialData();
-        new PlaceholderAPI(this).register();
+        if(Validation.ValidatePlaceholderAPI())
+            new PlaceholderAPI(this).register();
         registerListener();
         registerCommands();
         registerMenus();

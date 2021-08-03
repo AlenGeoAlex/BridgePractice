@@ -132,8 +132,6 @@ public class PlayerData {
         this.currentState = currentState;
     }
 
-
-
     @Deprecated
     public Player getPlayer(){
         if(Bukkit.getPlayer(playerUUID).isOnline()){
@@ -242,6 +240,8 @@ public class PlayerData {
     public void setCanOthersSpectate(boolean canOthersSpectate) {
         this.canOthersSpectate = canOthersSpectate;
     }
+
+
 
 
 
