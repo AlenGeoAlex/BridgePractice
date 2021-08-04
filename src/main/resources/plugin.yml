@@ -19,4 +19,6 @@ commands:
       - plist
       - players
     description: "A command for an interactice player list GUI"
+  timer:
+    description: "Player timer related commands!"
 

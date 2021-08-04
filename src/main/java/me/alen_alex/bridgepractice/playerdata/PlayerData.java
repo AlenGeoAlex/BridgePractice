@@ -23,6 +23,7 @@ public class PlayerData {
     private  UUID playerUUID;
     private  Material playerMaterial;
     private int gamesPlayed;
+    private int playerTimer = -1;
     private  long currentTime, bestTime, blocksPlaced,startTime,endTime;
     private PlayerState currentState;
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
@@ -241,9 +242,13 @@ public class PlayerData {
         this.canOthersSpectate = canOthersSpectate;
     }
 
+    public int getPlayerTimer() {
+        return playerTimer;
+    }
 
-
-
+    public void setPlayerTimer(int playerTimer) {
+        this.playerTimer = playerTimer;
+    }
 
     //TODO -> Player Saving savePlayer();
 

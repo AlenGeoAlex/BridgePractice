@@ -94,4 +94,14 @@ public class MenuManager {
         specMenu.open(player);
     }
 
+    /*public static void openTimerMenu(Player player){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
+            Messages.sendMessage(player,"&cYou can't use this command while timer is on!", false);
+            return;
+        }
+        ItemMenu timerMenu = BridgePractice.getTimerMenu();
+        timerMenu.clear();
+        ActionItem[]
+    }*/
+
 }

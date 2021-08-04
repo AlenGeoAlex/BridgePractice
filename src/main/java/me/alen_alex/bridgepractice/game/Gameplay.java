@@ -119,7 +119,7 @@ public class Gameplay {
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(System.currentTimeMillis());
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlayerPlacedBlock();
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlacedBlocks(placedLocation);
-        playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new Countdown(player), 0, 20));
+        playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new Countdown(player,PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer()), 0, 20));
         Messages.sendMessage(player,"&b&lBridge has begun!", false);
     }
 

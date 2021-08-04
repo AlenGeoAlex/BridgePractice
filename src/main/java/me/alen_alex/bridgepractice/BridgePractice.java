@@ -6,14 +6,13 @@ import me.Abhigya.core.menu.size.ItemMenuSize;
 import me.alen_alex.bridgepractice.commands.IslandCommand;
 import me.alen_alex.bridgepractice.commands.PlayerListCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
+import me.alen_alex.bridgepractice.commands.Timer;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
-import me.alen_alex.bridgepractice.holograms.Holograms;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
-import me.alen_alex.bridgepractice.island.Island;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
@@ -28,7 +27,7 @@ public final class BridgePractice extends JavaPlugin {
 
     private static BridgePractice plugin;
     private static SQL connection;
-    private static ItemMenu materialMenu,spectatorMenu;
+    private static ItemMenu materialMenu,spectatorMenu,timerMenu;
     private static boolean isHologramsEnabled = false;
     @Override
     public void onEnable() {
@@ -89,6 +88,7 @@ public final class BridgePractice extends JavaPlugin {
         getCommand("island").setExecutor(new IslandCommand());
         getCommand("island").setTabCompleter(new IslandCommand());
         getCommand("playerlist").setExecutor(new PlayerListCommand());
+        getCommand("timer").setExecutor(new Timer());
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
@@ -105,6 +105,8 @@ public final class BridgePractice extends JavaPlugin {
         materialMenu.registerListener(this);
         spectatorMenu = new ItemMenu(Messages.parseColor("&d&lChoose Player"),ItemMenuSize.SIX_LINE,null,null);
         spectatorMenu.registerListener(this);
+        timerMenu = new ItemMenu(Messages.parseColor("&b&lChoose timer"),ItemMenuSize.THREE_LINE,null,null);
+        timerMenu.registerListener(this);
     }
 
     public static BridgePractice getPlugin() {
@@ -121,5 +123,9 @@ public final class BridgePractice extends JavaPlugin {
 
     public static ItemMenu getSpectatorMenu() {
         return spectatorMenu;
+    }
+
+    public static ItemMenu getTimerMenu() {
+        return timerMenu;
     }
 }
