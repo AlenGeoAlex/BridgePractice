@@ -85,7 +85,6 @@ public class Messages {
 
         TextComponent tc = new TextComponent();
         tc.setText(parseColor(Message));
-        tc.setText(Configuration.getPrefixMain() + parseColor(Message));
         tc.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, redirectTo));
         tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder(parseColor(HoverText)).create())));
         player.spigot().sendMessage(((BaseComponent) tc));

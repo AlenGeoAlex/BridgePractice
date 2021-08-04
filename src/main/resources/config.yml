@@ -43,4 +43,15 @@ void-detection:
   only-when-on-island: true
 ########################################################################################################################
 broadcast-new-record: true
+########################################################################################################################
+holograms:
+  enabled: true
+  hologramoffset-Y: 2
+  startingLocation:
+    - "[ITEM];WOOL"
+    - "&fPlace a block anywhere on the"
+    - "&6Island &ato start practicing!"
+  endingLocation:
+    - "&fStand on the block below to"
+    - "complete your session"
 

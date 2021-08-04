@@ -1,10 +1,8 @@
 package me.alen_alex.bridgepractice;
 
 import me.Abhigya.core.database.sql.SQL;
-import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.menu.ItemMenu;
 import me.Abhigya.core.menu.size.ItemMenuSize;
-import me.Abhigya.core.version.CoreVersion;
 import me.alen_alex.bridgepractice.commands.IslandCommand;
 import me.alen_alex.bridgepractice.commands.PlayerListCommand;
 import me.alen_alex.bridgepractice.commands.PracticeAdmin;
@@ -13,6 +11,9 @@ import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
+import me.alen_alex.bridgepractice.holograms.Holograms;
+import me.alen_alex.bridgepractice.holograms.HolographicManager;
+import me.alen_alex.bridgepractice.island.Island;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
@@ -21,11 +22,14 @@ import me.alen_alex.bridgepractice.utility.Validation;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Map;
+
 public final class BridgePractice extends JavaPlugin {
 
     private static BridgePractice plugin;
     private static SQL connection;
     private static ItemMenu materialMenu,spectatorMenu;
+    private static boolean isHologramsEnabled = false;
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -59,10 +63,17 @@ public final class BridgePractice extends JavaPlugin {
         }
         ArenaConfigurations.createArenaConfigurations();
         IslandManager.fetchIslandsFromFile();
-        //BlockConfiguration.createBlockConfigurations();
-        //Blocks.fetchMaterialData();
-        if(Validation.ValidatePlaceholderAPI())
+        if(Validation.ValidatePlaceholderAPI()) {
+            getLogger().info("Hooked with PlaceholderAPI");
             new PlaceholderAPI(this).register();
+        }
+        if(Configuration.isUseHolograms()) {
+            if (Validation.validateHolograms()) {
+                getLogger().info("Hooked with HolographicDisplays-API");
+                isHologramsEnabled = true;
+                HolographicManager.fetchHologramsFromIslands();
+            }
+        }
         registerListener();
         registerCommands();
         registerMenus();

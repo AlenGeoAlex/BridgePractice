@@ -27,4 +27,14 @@ public class Validation {
             return false;
     }
 
+    public static boolean validateHolograms(){
+        if(Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays"))
+            return true;
+        else {
+            Bukkit.getLogger().severe("Found holograms.enabled to true without having the plugin, Disabling Holographic support!!");
+            Configuration.getConfig().set("holograms.enabled",false);
+            return false;
+        }
+    }
+
 }

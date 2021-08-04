@@ -58,6 +58,7 @@ public class MenuManager {
     }
 
     public static void openSpectatorMenu(Player player){
+        //TODO DON"T SPECTATE IF PLAYERSTATE IS NOT NULL
         if(!(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).canSpectate())){
             Messages.sendMessage(player,"&cYou can't spectate players!", true);
             return;
@@ -71,7 +72,7 @@ public class MenuManager {
         specMenu.clear();
         ActionItem item[] = new ActionItem[54];
         for(int i = 0;i<currentPlayers.size();i++){
-            if(PlayerDataManager.getCachedPlayerData().get(currentPlayers.get(i)).CanOthersSpectate()) {
+            if(PlayerDataManager.getCachedPlayerData().get(currentPlayers.get(i).getUniqueId()).CanOthersSpectate()) {
                 item[i] = new ActionItem(Head.getOnlinePlayer(currentPlayers.get(i).getName()));
                 item[i].setName(currentPlayers.get(0).getName());
                 int finalI = i;

@@ -5,6 +5,9 @@ import me.alen_alex.bridgepractice.commands.admin.EditCommand;
 import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
+import me.alen_alex.bridgepractice.holograms.Holograms;
+import me.alen_alex.bridgepractice.holograms.HolographicManager;
+import me.alen_alex.bridgepractice.island.Island;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Messages;
@@ -16,6 +19,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Map;
 
 public class PracticeAdmin implements CommandExecutor, TabCompleter {
     @Override
@@ -144,11 +148,36 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                         break;
                     case "DISABLE":
                         if(args.length == 2) {
+                            if(!IslandManager.getIslandData().containsKey(args[1])){
+                                Messages.sendMessage(player,"&cIsland doesnot exist or not loaded", true);
+                                return true;
+                            }
                             IslandManager.getIslandData().get(args[1]).disableIsland();
                             Messages.sendMessage(player,"&cDisabled the arena "+args[1], true);
                         }else
                             Messages.sendIncorrectUsage(player);
                         break;
+                    case "HOLO":
+                        if(args.length == 2) {
+                            if (args[1].equalsIgnoreCase("reload")) {
+                                for (Map.Entry<String, Holograms> hologramsEntry : HolographicManager.getHoloData().entrySet()) {
+                                    hologramsEntry.getValue().deleteHolo();
+                                    hologramsEntry.getValue().createHolograms();
+                                }
+                                Messages.sendMessage(sender,"&aSuccesfully reloaded all holograms", true);
+                                return true;
+                            }
+                        }else if(args.length == 3){
+                            if (args[1].equalsIgnoreCase("reload")) {
+                                if(HolographicManager.getHoloData().containsKey(args[2])){
+                                    HolographicManager.getHoloData().get(args[2]).deleteHolo();
+                                    HolographicManager.getHoloData().get(args[2]).createHolograms();
+                                }else{
+                                    Messages.sendMessage(player,"&cIsland with this name does not exist", true);
+                                }
+                                return true;
+                            }
+                        }
                     default:
 
                 }

@@ -9,15 +9,17 @@ import me.alen_alex.bridgepractice.BridgePractice;
 import net.md_5.bungee.api.ChatColor;
 
 import java.io.File;
+import java.util.List;
 
 public class Configuration {
 
     private static BridgePractice plugin = BridgePractice.getPlugin();
     private static Config config;
     private static String host,username,password,port,database;
-    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord;
+    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms;
     private static String prefixMain;
-    private static int voidDetectionLevel;
+    private static int voidDetectionLevel,hologramsOffsetY;
+    private static List<String> hologramsStartingLines,hologramsEndingLines;
 
     public static void createConfiguration(){
             File configFile = new File(plugin.getDataFolder(),"config.yml");
@@ -55,6 +57,10 @@ public class Configuration {
         voidDetectionLevel = config.getInt("void-detection.level");
         voidDectionOnlyOnIslands = config.getBoolean("void-detection.only-when-on-island");
         broadcastNewRecord = config.getBoolean("broadcast-new-record");
+        useHolograms = config.getBoolean("holograms.enabled");
+        hologramsOffsetY = config.getInt("holograms.hologramoffset-Y");
+        hologramsStartingLines = config.getStringList("holograms.startingLocation");
+        hologramsEndingLines = config.getStringList("holograms.endingLocation");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -108,6 +114,22 @@ public class Configuration {
 
     public static boolean doBroadcastNewRecord() {
         return broadcastNewRecord;
+    }
+
+    public static boolean isUseHolograms() {
+        return useHolograms;
+    }
+
+    public static int getHologramsOffsetY() {
+        return hologramsOffsetY;
+    }
+
+    public static List<String> getHologramsStartingLines() {
+        return hologramsStartingLines;
+    }
+
+    public static List<String> getHologramsEndingLines() {
+        return hologramsEndingLines;
     }
 }
 
