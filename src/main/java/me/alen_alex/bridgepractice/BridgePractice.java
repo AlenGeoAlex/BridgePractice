@@ -105,7 +105,7 @@ public final class BridgePractice extends JavaPlugin {
         materialMenu.registerListener(this);
         spectatorMenu = new ItemMenu(Messages.parseColor("&d&lChoose Player"),ItemMenuSize.SIX_LINE,null,null);
         spectatorMenu.registerListener(this);
-        timerMenu = new ItemMenu(Messages.parseColor("&b&lChoose timer"),ItemMenuSize.THREE_LINE,null,null);
+        timerMenu = new ItemMenu(Messages.parseColor("&b&lChoose timer"),ItemMenuSize.ONE_LINE,null,null);
         timerMenu.registerListener(this);
     }
 

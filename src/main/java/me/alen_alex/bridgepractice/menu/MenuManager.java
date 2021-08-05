@@ -17,9 +17,30 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class MenuManager {
+
+    private static final ItemStack BARRIER = new ItemStack(Material.BARRIER);
+    private static final ItemStack CLAYBALL = new ItemStack(Material.CLAY_BALL);
+    private static final ItemStack CHEST = new ItemStack(Material.CHEST);
+    private static final ArrayList<String> CLAYBALLLORE = new ArrayList<String>(){{
+        add("");
+        add(Messages.parseColor("&aEnabling setbacks &7will allow players"));
+        add(Messages.parseColor("&7to teleport back when the timer runs up!"));
+        add(Messages.parseColor("&7This will help in hardcore practice sessions"));
+        add("");
+        add(Messages.parseColor("&cDisabling setbacks &7will allow players"));
+        add(Messages.parseColor("&fto continue bridging even if the timer runs up!"));
+    }};
+
+    private static final ArrayList<String> CHESTLORE = new ArrayList<String>(){{
+        add("");
+        add(Messages.parseColor("&eClear currently set timer"));
+    }};
+
 
     public static void openMaterialMenu(Player player) {
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
@@ -94,14 +115,159 @@ public class MenuManager {
         specMenu.open(player);
     }
 
-    /*public static void openTimerMenu(Player player){
+    public static void openTimerMenu(Player player){
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
             Messages.sendMessage(player,"&cYou can't use this command while timer is on!", false);
             return;
         }
         ItemMenu timerMenu = BridgePractice.getTimerMenu();
         timerMenu.clear();
-        ActionItem[]
-    }*/
+        ActionItem[] items = new ActionItem[9];
+        items[0] = new ActionItem(Blocks.getColoredWools(0));
+        items[0].setName(Messages.parseColor("&eSet timer to &c&l25 secs"));
+        items[0].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return  ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(25);
+                Messages.sendMessage(player,"&aYour player timer has been set to 25", false);
+                timerMenu.close(player);
+            }
+        });
+
+        items[1] = new ActionItem(Blocks.getColoredWools(4));
+        items[1].setName(Messages.parseColor("&eSet timer to &c&l30 secs"));
+        items[1].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return  ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(30);
+                Messages.sendMessage(player,"&aYour player timer has been set to 30", false);
+                timerMenu.close(player);
+            }
+        });
+
+        items[2] = new ActionItem(Blocks.getColoredWools(1));
+        items[2].setName(Messages.parseColor("&eSet timer to &c&l35 secs"));
+        items[2].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return  ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(35);
+                Messages.sendMessage(player,"&aYour player timer has been set to 35", false);
+                timerMenu.close(player);
+            }
+        });
+
+        items[3] = new ActionItem(Blocks.getColoredWools(6));
+        items[3].setName(Messages.parseColor("&eSet timer to &c&l40 secs"));
+        items[3].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return  ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(40);
+                Messages.sendMessage(player,"&aYour player timer has been set to 40", false);
+                timerMenu.close(player);
+            }
+        });
+
+        items[4] = new ActionItem(Blocks.getColoredWools(5));
+        items[4].setName(Messages.parseColor("&eSet timer to &c&l45 secs"));
+        items[4].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return  ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(45);
+                Messages.sendMessage(player,"&aYour player timer has been set to 45", false);
+                timerMenu.close(player);
+            }
+        });
+
+        items[5] = new ActionItem(Blocks.getColoredWools(14));
+        items[5].setName(Messages.parseColor("&eSet timer to &c&l50 secs"));
+        items[5].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return  ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(50);
+                Messages.sendMessage(player,"&aYour player timer has been set to 50", false);
+                timerMenu.close(player);
+            }
+        });
+
+        items[6] = new ActionItem(BARRIER);
+        items[6].setName("");
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer() > 1) {
+            items[7] = new ActionItem(CHEST);
+            items[7].setName(Messages.parseColor("&cClear timer"));
+            items[7].setLore(CHESTLORE);
+            items[7].addAction(new ItemAction() {
+                @Override
+                public ItemActionPriority getPriority() {
+                    return ItemActionPriority.HIGH;
+                }
+
+                @Override
+                public void onClick(ItemClickAction itemClickAction) {
+                    PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(-1);
+                    Messages.sendMessage(player,"&cYour timer has been cleared",false);
+                    timerMenu.close(player);
+                }
+            });
+        }else{
+            items[7] = new ActionItem(BARRIER);
+            items[7].setName("");
+        }
+        items[8] = new ActionItem(CLAYBALL);
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isSetbackEnabled())
+            items[8].setName(Messages.parseColor("&cDisable Setback"));
+        else
+            items[8].setName(Messages.parseColor("&aEnable Setback"));
+        items[8].setLore(CLAYBALLLORE);
+        items[8].addAction(new ItemAction() {
+            @Override
+            public ItemActionPriority getPriority() {
+                return ItemActionPriority.NORMAL;
+            }
+
+            @Override
+            public void onClick(ItemClickAction itemClickAction) {
+                if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isSetbackEnabled()) {
+                    PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSetbackEnabled(false);
+                    Messages.sendMessage(player, "&eYour setback has been disabled", false);
+                }else{
+                    PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSetbackEnabled(true);
+                    Messages.sendMessage(player, "&aYour setback has been enabled", false);
+                }
+                timerMenu.close(player);
+            }
+        });
+        timerMenu.setContents(items);
+        timerMenu.open(player);
+    }
 
 }

@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice.commands;
 
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
+import me.alen_alex.bridgepractice.menu.MenuManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.command.Command;
@@ -25,7 +26,7 @@ public class Timer implements CommandExecutor, TabCompleter {
                 return true;
             }
             if(strings.length == 0){
-                //TODO SEND HELP MESSAGE
+                MenuManager.openTimerMenu(player);
             }else{
                 switch (strings[0].toUpperCase()){
                     case "SET":

@@ -1,15 +1,11 @@
 package me.alen_alex.bridgepractice.utility;
 
-import me.alen_alex.bridgepractice.BridgePractice;
-import net.minecraft.server.v1_8_R3.Block;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.IBlockData;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -72,6 +68,14 @@ public class Blocks {
         BlockPosition bp = new BlockPosition(x, y, z);
         IBlockData ibd = net.minecraft.server.v1_8_R3.Block.getByCombinedId(blockId + (data << 12));
         nmsChunk.a(bp, ibd);
+    }
+
+    public static void getColoredGlassPane(int data){
+    }
+
+    public static ItemStack getColoredWools(int data){
+        ItemStack wool = new ItemStack(Material.WOOL,1, (short) 0,(byte) data);
+        return wool;
     }
 
 }

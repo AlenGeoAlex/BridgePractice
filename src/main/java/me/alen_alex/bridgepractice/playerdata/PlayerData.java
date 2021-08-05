@@ -29,6 +29,7 @@ public class PlayerData {
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled, spectating;
     private boolean canOthersSpectate = true;
+    private boolean setbackEnabled = false;
     private ParticleEffect playerParticle;
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
@@ -248,6 +249,14 @@ public class PlayerData {
 
     public void setPlayerTimer(int playerTimer) {
         this.playerTimer = playerTimer;
+    }
+
+    public boolean isSetbackEnabled() {
+        return setbackEnabled;
+    }
+
+    public void setSetbackEnabled(boolean setbackEnabled) {
+        this.setbackEnabled = setbackEnabled;
     }
 
     //TODO -> Player Saving savePlayer();

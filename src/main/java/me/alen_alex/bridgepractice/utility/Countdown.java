@@ -69,6 +69,8 @@ public class Countdown extends BukkitRunnable {
                     }
                 }else if (remaining == 0) {
                     this.bossBar.hide();
+                    if(PlayerDataManager.getCachedPlayerData().get(playerUUID).isSetbackEnabled())
+                        Gameplay.handleGameEnd(player,false);
                 }
             }
         }else
