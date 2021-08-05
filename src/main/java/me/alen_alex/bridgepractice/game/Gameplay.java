@@ -119,7 +119,7 @@ public class Gameplay {
 
     public static void handleLeaveSpectating(Player player, Player fromPlayer){
         spectators.remove(player);
-        //TODO Player teleport to lobby world
+        player.teleport(me.alen_alex.bridgepractice.utility.Location.getLocation(Configuration.getLobbyLocation()));
         player.getInventory().clear();
         player.setGameMode(GameMode.CREATIVE);
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSpectating(true);

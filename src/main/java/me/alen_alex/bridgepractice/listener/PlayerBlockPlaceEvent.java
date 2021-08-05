@@ -41,10 +41,6 @@ public class PlayerBlockPlaceEvent implements Listener {
             event.setCancelled(true);
         }
 
-        //TODO
-        /*if(event.getBlockAgainst() == Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation()){
-            System.out.println(3);
-        }*/
 
 
     }

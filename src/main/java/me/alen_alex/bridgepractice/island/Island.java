@@ -1,12 +1,17 @@
 package me.alen_alex.bridgepractice.island;
+import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.group.Group;
 import me.alen_alex.bridgepractice.holograms.Holograms;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
+import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 
 public class Island {
@@ -156,7 +161,15 @@ public class Island {
 
     public void disableIsland(){
         this.setActive(false);
-        //TODO Kick Player from the island
+        if(Gameplay.getPlayerIslands().containsValue(this)){
+            for(Map.Entry<PlayerData,Island> islandEntry : Gameplay.getPlayerIslands().entrySet()){
+                if(islandEntry.getValue() == this){
+                    this.teleportToQuitlobby(islandEntry.getKey().getOnlinePlayer());
+                    Messages.sendMessage(islandEntry.getKey().getOnlinePlayer(), "&cThis island has been disabled by an admin, redirecting fallback location",false);
+                    Gameplay.handleGameLeave(islandEntry.getKey());
+                }
+            }
+        }
     }
 
     /*public void resetIsland(){

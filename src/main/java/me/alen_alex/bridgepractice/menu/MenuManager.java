@@ -131,7 +131,11 @@ public class MenuManager {
     }
 
     public static void openSpectatorMenu(Player player){
-        //TODO DON"T SPECTATE IF PLAYERSTATE IS NOT NULL
+        if(!(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null)){
+            Messages.sendMessage(player,"&cYou can't spectate while on active session",false);
+            return;
+        }
+
         if(!(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).canSpectate())){
             Messages.sendMessage(player,"&cYou can't spectate players!", true);
             return;
