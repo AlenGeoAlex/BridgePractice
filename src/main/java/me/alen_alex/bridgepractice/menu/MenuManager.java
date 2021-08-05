@@ -5,6 +5,7 @@ import me.Abhigya.core.menu.action.ItemClickAction;
 import me.Abhigya.core.menu.item.action.ActionItem;
 import me.Abhigya.core.menu.item.action.ItemAction;
 import me.Abhigya.core.menu.item.action.ItemActionPriority;
+import me.Abhigya.core.particle.ParticleEffect;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;
@@ -12,20 +13,24 @@ import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Head;
 import me.alen_alex.bridgepractice.utility.Messages;
+import me.alen_alex.bridgepractice.utility.PlayerParticles;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class MenuManager {
 
     private static final ItemStack BARRIER = new ItemStack(Material.BARRIER);
     private static final ItemStack CLAYBALL = new ItemStack(Material.CLAY_BALL);
     private static final ItemStack CHEST = new ItemStack(Material.CHEST);
+    private static final ItemStack BOOK = new ItemStack(Material.BOOK);
+    private static final ItemStack NAMETAG = new ItemStack(Material.NAME_TAG);
     private static final ArrayList<String> CLAYBALLLORE = new ArrayList<String>(){{
         add("");
         add(Messages.parseColor("&aEnabling setbacks &7will allow players"));
@@ -49,33 +54,80 @@ public class MenuManager {
         }
         ItemMenu menu = BridgePractice.getMaterialMenu();
         menu.clear();
-        List<Material> availableBlocks = Blocks.getAvailableBlocks(player);
-        ActionItem item[] = new ActionItem[availableBlocks.size()];
-        for(int i = 0; i < availableBlocks.size();i++){
-            ItemStack itemStack = new ItemStack(availableBlocks.get(i));
-            item[i] = new ActionItem(itemStack);
-            item[i].setName(Messages.parseColor("&6&lClick to select"));
-            int finalI = i;
-            item[i].addAction(new ItemAction() {
-                @Override
-                public ItemActionPriority getPriority() {
-                    return ItemActionPriority.HIGH;
-                }
+        Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                List<Material> availableBlocks = Blocks.getAvailableBlocks(player);
+                ActionItem item[] = new ActionItem[availableBlocks.size()];
+                for(int i = 0; i < availableBlocks.size();i++){
+                    ItemStack itemStack = new ItemStack(availableBlocks.get(i));
+                    item[i] = new ActionItem(itemStack);
+                    item[i].setName(Messages.parseColor("&6&lClick to select"));
+                    int finalI = i;
+                    item[i].addAction(new ItemAction() {
+                        @Override
+                        public ItemActionPriority getPriority() {
+                            return ItemActionPriority.HIGH;
+                        }
 
-                @Override
-                public void onClick(ItemClickAction itemClickAction) {
-                    PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerMaterial(availableBlocks.get(finalI));
-                    Messages.sendMessage(player,"&b&lYour material choice has been set", true);
-                    if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.IDLE_ISLAND) {
-                        PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).fillPlayerBlocks();
-                    }
-                    menu.close(player);
-                    return;
+                        @Override
+                        public void onClick(ItemClickAction itemClickAction) {
+                            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerMaterial(availableBlocks.get(finalI));
+                            Messages.sendMessage(player,"&b&lYour material choice has been set", true);
+                            if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.IDLE_ISLAND) {
+                                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).fillPlayerBlocks();
+                            }
+                            menu.close(player);
+                            return;
+                        }
+                    });
                 }
-            });
+                menu.setContents(item);
+                menu.open(player);
+            }
+        });
+    }
+
+    public static void openParticleMenu(Player player){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
+            Messages.sendMessage(player,"&cYou cannot set this with the timer on!", true);
+            return;
         }
-        menu.setContents(item);
-        menu.open(player);
+        ItemMenu menu = BridgePractice.getParticleMenu();
+        menu.clear();
+        Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                List<ParticleEffect> playerParticle = PlayerParticles.getPlayersParticle(player);
+                ActionItem[] items = new ActionItem[playerParticle.size()];
+                ParticleEffect currentEffect = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerParticle();
+                for(int i = 0; i<playerParticle.size();i++){
+                    ParticleEffect currentParticle = playerParticle.get(i);
+                    if(currentEffect == currentParticle){
+                        items[i] = new ActionItem(NAMETAG);
+                        items[i].setName(Messages.parseColor("&a&l"+currentParticle.name()));
+                    }else{
+                        items[i] = new ActionItem(BOOK);
+                        items[i].setName(Messages.parseColor("&e"+currentParticle.name()));
+                        items[i].addAction(new ItemAction() {
+                            @Override
+                            public ItemActionPriority getPriority() {
+                                return ItemActionPriority.NORMAL;
+                            }
+
+                            @Override
+                            public void onClick(ItemClickAction itemClickAction) {
+                                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerParticle(currentParticle);
+                                Messages.sendMessage(player,"&aYour particle has been set to &b&l"+currentParticle.name(),false);
+                                menu.close(player);
+                            }
+                        });
+                    }
+                }
+                menu.setContents(items);
+                menu.open(player);
+            }
+        });
     }
 
     public static void openSpectatorMenu(Player player){
@@ -114,6 +166,8 @@ public class MenuManager {
         specMenu.setContents(item);
         specMenu.open(player);
     }
+
+
 
     public static void openTimerMenu(Player player){
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
@@ -269,5 +323,7 @@ public class MenuManager {
         timerMenu.setContents(items);
         timerMenu.open(player);
     }
+
+
 
 }

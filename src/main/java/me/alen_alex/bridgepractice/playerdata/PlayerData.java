@@ -23,15 +23,15 @@ public class PlayerData {
     private  UUID playerUUID;
     private  Material playerMaterial;
     private int gamesPlayed;
-    private int playerTimer = -1;
+    private int playerTimer;
     private  long currentTime, bestTime, blocksPlaced,startTime,endTime;
     private PlayerState currentState;
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled, spectating;
-    private boolean canOthersSpectate = true;
-    private boolean setbackEnabled = false;
+    private boolean canOthersSpectate;
+    private boolean setbackEnabled;
     private ParticleEffect playerParticle;
-    public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
+    public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, ParticleEffect playerParticle, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
         this.playerUUID = playerUUID;
         this.playerMaterial = playerMaterial;
@@ -40,6 +40,10 @@ public class PlayerData {
         this.bestTime = bestTime;
         this.blocksPlaced = blocksPlaced;
         this.buildModeEnabled = false;
+        this.playerParticle = playerParticle;
+        this.playerTimer = -1;
+        this.canOthersSpectate = true;
+        this.setbackEnabled = false;
     }
 
     public String getPlayerName() {
@@ -111,7 +115,7 @@ public class PlayerData {
     }
 
     public String getStringMaterial(){
-        return playerMaterial.toString();
+        return playerMaterial.name();
     }
 
     public boolean isPlayerOnline(){
@@ -184,7 +188,7 @@ public class PlayerData {
     public void resetPlacedBlocks(){
         if(placedBlocks.isEmpty())
             return;
-        ParticleBuilder particleBuilder = new ParticleBuilder(ParticleEffect.SMOKE_NORMAL,placedBlocks.get(0));
+        ParticleBuilder particleBuilder = new ParticleBuilder(this.playerParticle,placedBlocks.get(0));
         placedBlocks.forEach((location -> {
             Workload load = () -> {
                 location.getBlock().setType(Material.AIR);
@@ -221,6 +225,10 @@ public class PlayerData {
 
     public void setPlayerParticle(ParticleEffect playerParticle) {
         this.playerParticle = playerParticle;
+    }
+
+    public String getStringParticleName(){
+        return playerParticle.name();
     }
 
     public boolean isSpectating() {

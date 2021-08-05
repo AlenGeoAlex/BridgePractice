@@ -27,6 +27,7 @@ public class PlayerBlockPlaceEvent implements Listener {
         }
 
         if(event.getBlockAgainst().getType() == Material.BARRIER || event.getBlockPlaced().getRelative(BlockFace.DOWN).getType() == Material.BARRIER|| event.getBlockPlaced().getRelative(BlockFace.UP).getType() == Material.BARRIER|| event.getBlockPlaced().getRelative(BlockFace.EAST).getType() == Material.BARRIER ||event.getBlockPlaced().getRelative(BlockFace.WEST).getType() == Material.BARRIER){
+
             if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING)
                 Messages.sendMessage(player,"&eTrying the easy way!!", false);
             Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).teleportToIslandSpawn(player);

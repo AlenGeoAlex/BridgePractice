@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.playerdata;
 
+import me.Abhigya.core.particle.ParticleEffect;
 import me.alen_alex.bridgepractice.data.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +18,7 @@ public class PlayerDataManager {
     public static void loadPlayerData(UUID uuid) throws SQLException {
         ResultSet set = DataManager.fetchPlayerData(uuid);
         while(set.next()){
-            cachedPlayerData.put(uuid,new PlayerData(set.getString("name"),uuid, Material.getMaterial(set.getString("material")),set.getInt("gamesplayed"),set.getLong("currenttime"),set.getLong("bestTime"),set.getInt("blocksPlaced")));
+            cachedPlayerData.put(uuid,new PlayerData(set.getString("name"),uuid, Material.getMaterial(set.getString("material")), ParticleEffect.valueOf(set.getString("particle")),set.getInt("gamesplayed"),set.getLong("currenttime"),set.getLong("bestTime"),set.getInt("blocksPlaced")));
         }
         set.close();
     }

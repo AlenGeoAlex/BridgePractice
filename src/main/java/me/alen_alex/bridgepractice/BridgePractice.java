@@ -3,10 +3,8 @@ package me.alen_alex.bridgepractice;
 import me.Abhigya.core.database.sql.SQL;
 import me.Abhigya.core.menu.ItemMenu;
 import me.Abhigya.core.menu.size.ItemMenuSize;
-import me.alen_alex.bridgepractice.commands.IslandCommand;
-import me.alen_alex.bridgepractice.commands.PlayerListCommand;
-import me.alen_alex.bridgepractice.commands.PracticeAdmin;
-import me.alen_alex.bridgepractice.commands.Timer;
+import me.Abhigya.core.particle.ParticleEffect;
+import me.alen_alex.bridgepractice.commands.*;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
@@ -16,9 +14,8 @@ import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
-import me.alen_alex.bridgepractice.utility.Messages;
-import me.alen_alex.bridgepractice.utility.Validation;
-import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
+import me.alen_alex.bridgepractice.utility.*;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
@@ -27,7 +24,7 @@ public final class BridgePractice extends JavaPlugin {
 
     private static BridgePractice plugin;
     private static SQL connection;
-    private static ItemMenu materialMenu,spectatorMenu,timerMenu;
+    private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu;
     private static boolean isHologramsEnabled = false;
     @Override
     public void onEnable() {
@@ -45,6 +42,7 @@ public final class BridgePractice extends JavaPlugin {
         }
         plugin = this;
         Configuration.createConfiguration();
+        Validation.checkLobbyLocation();
         if(!Validation.validateDatabase())
             {
                 plugin.getLogger().severe("Database creditionals is invalid");
@@ -73,6 +71,7 @@ public final class BridgePractice extends JavaPlugin {
                 HolographicManager.fetchHologramsFromIslands();
             }
         }
+        PlayerParticles.loadAllAvailableEffectToCache();
         registerListener();
         registerCommands();
         registerMenus();
@@ -89,6 +88,7 @@ public final class BridgePractice extends JavaPlugin {
         getCommand("island").setTabCompleter(new IslandCommand());
         getCommand("playerlist").setExecutor(new PlayerListCommand());
         getCommand("timer").setExecutor(new Timer());
+        getCommand("effect").setExecutor(new Particle());
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
@@ -107,6 +107,8 @@ public final class BridgePractice extends JavaPlugin {
         spectatorMenu.registerListener(this);
         timerMenu = new ItemMenu(Messages.parseColor("&b&lChoose timer"),ItemMenuSize.ONE_LINE,null,null);
         timerMenu.registerListener(this);
+        particleMenu = new ItemMenu(Messages.parseColor("&e&lChoose your particle?"),ItemMenuSize.FIVE_LINE,null,null);
+        particleMenu.registerListener(this);
     }
 
     public static BridgePractice getPlugin() {
@@ -127,5 +129,9 @@ public final class BridgePractice extends JavaPlugin {
 
     public static ItemMenu getTimerMenu() {
         return timerMenu;
+    }
+
+    public static ItemMenu getParticleMenu() {
+        return particleMenu;
     }
 }

@@ -17,7 +17,7 @@ public class Configuration {
     private static Config config;
     private static String host,username,password,port,database;
     private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms;
-    private static String prefixMain;
+    private static String prefixMain,lobbyLocation;
     private static int voidDetectionLevel,hologramsOffsetY;
     private static List<String> hologramsStartingLines,hologramsEndingLines;
 
@@ -61,6 +61,7 @@ public class Configuration {
         hologramsOffsetY = config.getInt("holograms.hologramoffset-Y");
         hologramsStartingLines = config.getStringList("holograms.startingLocation");
         hologramsEndingLines = config.getStringList("holograms.endingLocation");
+        lobbyLocation = config.getString("settings.lobby-location");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -131,6 +132,12 @@ public class Configuration {
     public static List<String> getHologramsEndingLines() {
         return hologramsEndingLines;
     }
+
+    public static String getLobbyLocation() {
+        return lobbyLocation;
+    }
+
+
 }
 
 

@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice.game;
 
 import me.alen_alex.bridgepractice.BridgePractice;
+import me.alen_alex.bridgepractice.api.PlayerGameEndEvent;
 import me.alen_alex.bridgepractice.api.PlayerIslandJoinEvent;
 import me.alen_alex.bridgepractice.api.PlayerIslandLeaveEvent;
 import me.alen_alex.bridgepractice.configurations.Configuration;
@@ -31,6 +32,10 @@ public class Gameplay {
         PlayerIslandJoinEvent event = new PlayerIslandJoinEvent(playerData,islandData);
         Bukkit.getPluginManager().callEvent(event);
         playerIslands.put(playerData,islandData);
+        if(playerData.isSpectating()){
+            Messages.sendMessage(playerData.getOnlinePlayer(),"&cYou can't join games during spectator mode",true);
+            return;
+        }
         playerData.getOnlinePlayer().setHealthScale(20.0);
         playerData.setCurrentState(PlayerState.IDLE_ISLAND);
         islandData.setCurrentPlayer(playerData);
@@ -58,6 +63,8 @@ public class Gameplay {
         PlayerData playerData = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId());
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentState(PlayerState.IDLE_ISLAND);
         Island islandData = Gameplay.getPlayerIslands().get(playerData);
+        PlayerGameEndEvent event = new PlayerGameEndEvent(playerData,islandData,completed);
+        Bukkit.getPluginManager().callEvent(event);
         if(completed){
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
             durationTaken = (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime()  - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime());
@@ -91,6 +98,10 @@ public class Gameplay {
     //TODO
     //TODO REMOVE ALL PLAYERS WHEN HE LEAVE THE SERVER
     public static void handleJoinSpectating(Player player, Player toPlayer){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null){
+            Messages.sendMessage(player,"&cYou can't spectate while playing", true);
+            return;
+        }
         if(!toPlayer.isOnline()){
             Messages.sendMessage(player,"&cThe selected player went offline!",true);
             return;

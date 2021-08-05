@@ -21,4 +21,12 @@ commands:
     description: "A command for an interactice player list GUI"
   timer:
     description: "Player timer related commands!"
+  effect:
+    description: "Player effect related commands"
+
+permissions:
+  practice.gui.particle:
+    default: true
+  practice.timer:
+    default: true
 

@@ -47,7 +47,6 @@ public class Holograms {
         }
         endingHolo = HologramsAPI.createHologram(BridgePractice.getPlugin(),endLocation);
         if(!Configuration.getHologramsEndingLines().isEmpty()){
-            startingHolo.appendItemLine(new ItemStack(Material.BARRIER));
             Configuration.getHologramsEndingLines().forEach(s -> {
                 if(s.startsWith("[ITEM]")){
                     String dataReq[] = s.split(";");

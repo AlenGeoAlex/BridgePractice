@@ -10,6 +10,7 @@ import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.Island;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -153,9 +154,35 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                                 return true;
                             }
                             IslandManager.getIslandData().get(args[1]).disableIsland();
+                            ArenaConfigurations.getArenaConfiguration().set(args[1]+".enabled",false);
+                            ArenaConfigurations.saveArenaConfiguration();
                             Messages.sendMessage(player,"&cDisabled the arena "+args[1], true);
                         }else
                             Messages.sendIncorrectUsage(player);
+                        break;
+                    case "ENABLE":
+                        if(args.length == 1) {
+                            for(String name : ArenaConfigurations.getArenaConfiguration().getKeys(false)){
+                                if(!ArenaConfigurations.getArenaConfiguration().getBoolean(name+".enabled")){
+                                    ArenaConfigurations.getArenaConfiguration().set(name+".enabled",true);
+                                    Messages.sendMessage(player,"&aEnabled the arena &6"+name, true);
+                                }
+                            }
+                            ArenaConfigurations.saveArenaConfiguration();
+                        }else if(args.length ==2){
+                            if(!IslandManager.getIslandData().containsKey(args[1])){
+                                Messages.sendMessage(player,"&cIsland doesnot exist or not loaded", true);
+                                return true;
+
+                            }
+
+                            ArenaConfigurations.getArenaConfiguration().set(args[1]+".enabled",true);
+                            Messages.sendMessage(player,"&aEnabled the arena &6"+args[1], true);
+                            ArenaConfigurations.saveArenaConfiguration();
+
+                        }else{
+                            Messages.sendIncorrectUsage(player);
+                        }
                         break;
                     case "HOLO":
                         if(args.length == 2) {
@@ -178,8 +205,12 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                                 return true;
                             }
                         }
+                    case "SETLOBBY":
+                        Configuration.getConfig().set("settings.lobby-location",Location.parseLocation(player.getLocation()));
+                        Messages.sendMessage(player,"Lobby point has been set!",false);
+                        break;
                     default:
-
+                        Messages.sendMessage(player,"&cUnknown subcommand!", true);
                 }
             }
         }

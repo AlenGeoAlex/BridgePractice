@@ -26,7 +26,15 @@ public class Timer implements CommandExecutor, TabCompleter {
                 return true;
             }
             if(strings.length == 0){
-                MenuManager.openTimerMenu(player);
+                if(player.hasPermission("practice.gui.timer")) {
+                    MenuManager.openTimerMenu(player);
+                }else{
+                    Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----",false);
+                    Messages.sendJSONSuggestMessage(player,"&bSet yourself a timer","/timer set ","&eClick here to set a timer",false);
+                    Messages.sendJSONExecuteCommand(player,"&bClear your current timer","/timer clear","&eClick here to clear your timer",false);
+                    Messages.sendJSONExecuteCommand(player,"&bChoose setbacks enabled or not","/timer setbacks","&eClick here to set setbacks",false);
+                    Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----",false);
+                }
             }else{
                 switch (strings[0].toUpperCase()){
                     case "SET":
@@ -44,6 +52,22 @@ public class Timer implements CommandExecutor, TabCompleter {
                             Messages.sendMessage(commandSender,"&e/timer set [sec]",false);
                         }
                         break;
+                    case "CLEAR":
+                        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer() > -1){
+                            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setPlayerTimer(-1);
+                            Messages.sendMessage(player,"&aYour timer has been cleared", false);
+                        }else{
+                            Messages.sendMessage(player,"&aYou currently do not have a player timer set", false);
+                        }
+                        break;
+                    case "SETBACK":
+                        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isSetbackEnabled()){
+                            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSetbackEnabled(false);
+                            Messages.sendMessage(player,"&cTimer Setback has been disabled",false);
+                        }else{
+                            PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSetbackEnabled(true);
+                            Messages.sendMessage(player,"&aimer Setback has been enabled",false);
+                        }
                     default:
                 }
             }

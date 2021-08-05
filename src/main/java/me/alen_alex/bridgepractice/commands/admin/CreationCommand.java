@@ -17,7 +17,7 @@ public class CreationCommand {
             Messages.sendJSONExecuteCommand(player,"&cThere is already an island creation in progress.","/practiceadmin save","&fClick here to save the current island progress", false);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
+        if(arenaStorage.contains(islandName)){
             Messages.sendMessage(player,"&cIsland with this name already exist", true);
             return;
         }
@@ -34,10 +34,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         arenaStorage.set(creatingIsland+".group",groupName);
         Messages.sendMessage(player,"&aGroup was set for island "+creatingIsland+" as "+groupName,true);
 
@@ -49,10 +46,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(creatingIsland+".spawn.position",location);
         Messages.sendMessage(player,"&aSpawn point has been set to &6"+location+" &afor the arena "+creatingIsland, true);
@@ -64,10 +58,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(creatingIsland+".end.position",location);
         Messages.sendMessage(player,"&aEnd point has been set to &6"+location+" &afor the arena "+creatingIsland, true);
@@ -79,10 +70,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(creatingIsland+".lobby.position",location);
         Messages.sendMessage(player,"&aLobby point has been set to &6"+location+" &afor the arena "+creatingIsland, true);
@@ -94,10 +82,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(creatingIsland+".position.pos1",location);
         Messages.sendMessage(player,"&aPosition 1 has been set to &6"+location+" &afor the arena "+creatingIsland, true);
@@ -109,10 +94,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(creatingIsland+".position.pos2",location);
         Messages.sendMessage(player,"&aPosition 2 has been set to &6"+location+" &afor the arena "+creatingIsland, true);
@@ -124,10 +106,7 @@ public class CreationCommand {
             Messages.sendJSONSuggestMessage(player,"&b&lClick here to create a new island","/practiceadmin create island ","&fClick this message", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         arenaStorage.set(creatingIsland+".permission",permissionNode);
         Messages.sendMessage(player,"&aPermission was set for island "+creatingIsland+" as "+permissionNode,true);
     }
@@ -136,10 +115,7 @@ public class CreationCommand {
             Messages.sendMessage(player, "&cArena with the name does not exist", true);
             return;
         }
-        if(arenaStorage.contains(creatingIsland)){
-            Messages.sendMessage(player,"&cIsland with this name already exist", true);
-            return;
-        }
+
         arenaStorage.set(islandName,null);
         ArenaConfigurations.saveArenaConfiguration();
         if(IslandManager.getIslandData().containsKey(islandName)){
@@ -149,6 +125,7 @@ public class CreationCommand {
         Messages.sendMessage(player,"&aDeleted Island "+islandName, true);
 
     }
+
 
 
     public static void saveIslandDetails(Player player){

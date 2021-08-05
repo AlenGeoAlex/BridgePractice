@@ -47,7 +47,7 @@ public class Data {
     }
 
     public static void createDatabase(){
-        sql.createTable("playerdata","`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`uuid` VARCHAR(50) NOT NULL","`blocksplaced` INTEGER(10) NOT NULL","`gamesplayed` INTEGER(10) NOT NULL","`besttime` BIGINT(30) NOT NULL","`currenttime` BIGINT(30) NOT NULL","`material` VARCHAR(30)");
+        sql.createTable("playerdata","`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`uuid` VARCHAR(50) NOT NULL","`blocksplaced` INTEGER(10) NOT NULL","`gamesplayed` INTEGER(10) NOT NULL","`besttime` BIGINT(30) NOT NULL","`currenttime` BIGINT(30) NOT NULL","`material` VARCHAR(30)","`particle` VARCHAR(30)");
     }
 
     private static SQLDatabase getDatabase() {

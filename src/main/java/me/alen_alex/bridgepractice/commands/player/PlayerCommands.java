@@ -21,6 +21,11 @@ public class PlayerCommands {
             Messages.sendMessage(player,"&cYou are already on an island.",true);
             return;
         }
+
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isSpectating()){
+            Messages.sendMessage(player,"&cYou can't join session while specing",true);
+        }
+
         Messages.sendMessage(player,"&bSearching for an island", true);
         Island playerIsland = IslandManager.getAnIsland(player);
         if(playerIsland == null) {
@@ -31,7 +36,7 @@ public class PlayerCommands {
 
     }
 
-    public static void islandRequestCommand(Player player, String islandName){
+    public static void islandRequestCommand(Player player, String groupName){
 
 
     }

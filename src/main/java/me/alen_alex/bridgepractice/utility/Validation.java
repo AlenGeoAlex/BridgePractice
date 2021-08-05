@@ -37,4 +37,14 @@ public class Validation {
         }
     }
 
+    public static void checkLobbyLocation(){
+        if(Configuration.getLobbyLocation() == null || Configuration.getLobbyLocation().equalsIgnoreCase("")){
+            Configuration.getConfig().set("settings.lobby-location", Location.parseLocation(Bukkit.getWorlds().get(0).getSpawnLocation()));
+            Bukkit.getLogger().severe("=================================================================");
+            Bukkit.getLogger().severe("settings.lobby-location not found, setting default location of the world "+Bukkit.getServer().getWorlds().get(0).getName());
+            Bukkit.getLogger().severe("use /practiceadmin setlobby");
+            Bukkit.getLogger().severe("=================================================================");
+        }
+    }
+
 }
