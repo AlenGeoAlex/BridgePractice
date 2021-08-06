@@ -12,6 +12,7 @@ import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
+import me.alen_alex.bridgepractice.leaderboards.LeaderboardManager;
 import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
 import me.alen_alex.bridgepractice.utility.*;
@@ -24,7 +25,7 @@ public final class BridgePractice extends JavaPlugin {
 
     private static BridgePractice plugin;
     private static SQL connection;
-    private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu;
+    private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu,fireworkMenu;
     private static boolean isHologramsEnabled = false;
     @Override
     public void onEnable() {
@@ -63,6 +64,8 @@ public final class BridgePractice extends JavaPlugin {
         if(Validation.ValidatePlaceholderAPI()) {
             getLogger().info("Hooked with PlaceholderAPI");
             new PlaceholderAPI(this).register();
+            LeaderboardManager.runRefresh();
+            LeaderboardManager.checkLeaderboard();
         }
         if(Configuration.isUseHolograms()) {
             if (Validation.validateHolograms()) {
@@ -89,6 +92,7 @@ public final class BridgePractice extends JavaPlugin {
         getCommand("playerlist").setExecutor(new PlayerListCommand());
         getCommand("timer").setExecutor(new Timer());
         getCommand("effect").setExecutor(new Particle());
+        getCommand("firework").setExecutor(new Firework());
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
@@ -98,6 +102,8 @@ public final class BridgePractice extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMoveEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathEvent(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteractEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInventoryClickEvent(), this);
     }
 
     public void registerMenus(){
@@ -109,6 +115,8 @@ public final class BridgePractice extends JavaPlugin {
         timerMenu.registerListener(this);
         particleMenu = new ItemMenu(Messages.parseColor("&e&lChoose your particle?"),ItemMenuSize.FIVE_LINE,null,null);
         particleMenu.registerListener(this);
+        fireworkMenu = new ItemMenu(Messages.parseColor("&e&lChoose your firework"),ItemMenuSize.ONE_LINE,null,null);
+        fireworkMenu.registerListener(this);
     }
 
     public static BridgePractice getPlugin() {
@@ -133,5 +141,9 @@ public final class BridgePractice extends JavaPlugin {
 
     public static ItemMenu getParticleMenu() {
         return particleMenu;
+    }
+
+    public static ItemMenu getFireworkMenu() {
+        return fireworkMenu;
     }
 }

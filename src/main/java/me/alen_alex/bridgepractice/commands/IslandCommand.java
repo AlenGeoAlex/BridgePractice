@@ -38,8 +38,8 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                 case "REQUEST":
                     if(args.length == 2)
                     PlayerCommands.islandRequestCommand(player,args[1]);
-                    else
-                    PlayerCommands.islandRequestCommand(player);
+                    else if(args.length == 3)
+                    PlayerCommands.islandRequestCommand(player, args[2]);
                     break;
                 case "LEAVE":
                     PlayerCommands.leaveRequestCommand(player);

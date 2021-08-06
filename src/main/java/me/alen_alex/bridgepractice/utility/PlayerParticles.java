@@ -15,9 +15,7 @@ public class PlayerParticles {
     private static HashMap<String,ParticleEffect> playerEffect = new HashMap<String, ParticleEffect>();
 
     public static void loadAllAvailableEffectToCache(){
-        ParticleEffect.getAvailableEffects().forEach((particleEffect -> {
-            playerEffect.put(particleEffect.name(),particleEffect);
-        }));
+        ParticleEffect.getAvailableEffects().stream().filter(particleEffect -> particleEffect != ParticleEffect.MOB_APPEARANCE).forEach(particleEffect -> playerEffect.put(particleEffect.name(), particleEffect));
     }
 
     public static List<ParticleEffect> getPlayersParticle(Player player){

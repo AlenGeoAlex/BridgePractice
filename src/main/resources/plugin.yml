@@ -23,6 +23,8 @@ commands:
     description: "Player timer related commands!"
   effect:
     description: "Player effect related commands"
+  firework:
+    description: "Player Firework related commands"
 
 permissions:
   practice.gui.particle:

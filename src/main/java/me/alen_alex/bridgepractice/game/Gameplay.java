@@ -93,6 +93,7 @@ public class Gameplay {
         playerIslands.put(playerData,islandData);
         handleGameJoin(playerData,islandData);
         playerData.resetPlacedBlocks();
+        playerData.spawnFirework();
     }
 
     //TODO

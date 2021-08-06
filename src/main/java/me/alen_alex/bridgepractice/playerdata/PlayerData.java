@@ -6,15 +6,21 @@ import me.Abhigya.core.util.tasks.Workload;
 
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.utility.Blocks;
+import me.alen_alex.bridgepractice.utility.FireworkUtilities;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
 import org.bukkit.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.FireworkEffect.Type;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class PlayerData {
@@ -31,6 +37,8 @@ public class PlayerData {
     private boolean canOthersSpectate;
     private boolean setbackEnabled;
     private ParticleEffect playerParticle;
+    private FireworkEffect.Type fireworkType;
+    private Random r = new Random();
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, ParticleEffect playerParticle, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
         this.playerUUID = playerUUID;
@@ -44,6 +52,7 @@ public class PlayerData {
         this.playerTimer = -1;
         this.canOthersSpectate = true;
         this.setbackEnabled = false;
+        this.fireworkType = Type.BALL;
     }
 
     public String getPlayerName() {
@@ -265,6 +274,27 @@ public class PlayerData {
 
     public void setSetbackEnabled(boolean setbackEnabled) {
         this.setbackEnabled = setbackEnabled;
+    }
+
+    public Type getFireworkType() {
+        return fireworkType;
+    }
+
+    public void setFireworkType(Type fireworkType) {
+        this.fireworkType = fireworkType;
+    }
+
+    public void spawnFirework(){
+        r.setSeed(System.currentTimeMillis());
+        Firework fw = (Firework) getOnlinePlayer().getWorld().spawnEntity(getOnlinePlayer().getLocation(), EntityType.FIREWORK);
+        FireworkMeta fwm = fw.getFireworkMeta();
+        Color c1 = FireworkUtilities.getRandomColor();
+        Color c2 = FireworkUtilities.getRandomColor();
+        FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(fireworkType).trail(r.nextBoolean()).build();
+        fwm.addEffect(effect);
+        int rp = r.nextInt(2) + 1;
+        fwm.setPower(rp);
+        fw.setFireworkMeta(fwm);
     }
 
     //TODO -> Player Saving savePlayer();

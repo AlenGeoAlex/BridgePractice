@@ -16,4 +16,13 @@ public class TimeUtility {
         return Integer.parseInt(String.valueOf(TimeUnit.MILLISECONDS.toSeconds(time)% 60));
     }
 
+    public static String getProperTimeFromSec(int sec){
+        int numberOfMinutes = ((sec % 86400 ) % 3600 ) / 60;
+        int  numberOfSeconds = ((sec % 86400 ) % 3600 ) % 60  ;
+        if(numberOfSeconds > 0)
+            return (Messages.parseColor("&f"+(String.valueOf(numberOfMinutes)+" &bMins &f: &f"+String.valueOf(numberOfSeconds)+" &bSecs")));
+        else
+            return "&b&lUpdating Now";
+    }
+
 }

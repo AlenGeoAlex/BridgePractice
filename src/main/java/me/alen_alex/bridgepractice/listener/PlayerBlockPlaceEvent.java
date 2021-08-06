@@ -16,6 +16,13 @@ public class PlayerBlockPlaceEvent implements Listener {
     @EventHandler
     public void onPlayerBlockPlace(BlockPlaceEvent event){
         Player player = event.getPlayer();
+        if(event.getBlockPlaced().getType() == Material.BARRIER){
+            if(!PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isBuildModeEnabled()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.IDLE_ISLAND){
             Gameplay.onFirstBlockPlace(player,event.getBlockPlaced().getLocation());
             return;
@@ -40,8 +47,6 @@ public class PlayerBlockPlaceEvent implements Listener {
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == null){
             event.setCancelled(true);
         }
-
-
 
     }
 

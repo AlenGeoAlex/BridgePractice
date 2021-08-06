@@ -10,11 +10,9 @@ import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
-import me.alen_alex.bridgepractice.utility.Blocks;
-import me.alen_alex.bridgepractice.utility.Head;
-import me.alen_alex.bridgepractice.utility.Messages;
-import me.alen_alex.bridgepractice.utility.PlayerParticles;
+import me.alen_alex.bridgepractice.utility.*;
 import org.bukkit.Bukkit;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -31,6 +29,7 @@ public class MenuManager {
     private static final ItemStack CHEST = new ItemStack(Material.CHEST);
     private static final ItemStack BOOK = new ItemStack(Material.BOOK);
     private static final ItemStack NAMETAG = new ItemStack(Material.NAME_TAG);
+    private static final ItemStack FIREWORK = new ItemStack(Material.FIREWORK);
     private static final ArrayList<String> CLAYBALLLORE = new ArrayList<String>(){{
         add("");
         add(Messages.parseColor("&aEnabling setbacks &7will allow players"));
@@ -130,8 +129,53 @@ public class MenuManager {
         });
     }
 
+    public static void openFireworkMenu(Player player){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
+            Messages.sendMessage(player,"&cYou cannot set this with the timer on!", true);
+            return;
+        }
+
+        ItemMenu menu = BridgePractice.getFireworkMenu();
+        menu.clear();
+
+        Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                List<FireworkEffect.Type> availableWorks = FireworkUtilities.getPlayerAvailableFirework(player);
+                ActionItem[] items = new ActionItem[availableWorks.size()];
+                FireworkEffect.Type currentType = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getFireworkType();
+                for(int i =0;i<availableWorks.size();i++){
+                    FireworkEffect.Type onLoopEffect = availableWorks.get(i);
+                    if(onLoopEffect == currentType){
+                        items[i] = new ActionItem(NAMETAG);
+                        items[i].setName(Messages.parseColor("&b&l"+currentType.name()));
+                    }else{
+                        items[i] = new ActionItem(FIREWORK);
+                        items[i].setName(Messages.parseColor("&b"+onLoopEffect.name()));
+                        items[i].addAction(new ItemAction() {
+                            @Override
+                            public ItemActionPriority getPriority() {
+                                return ItemActionPriority.NORMAL;
+                            }
+
+                            @Override
+                            public void onClick(ItemClickAction itemClickAction) {
+                                PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setFireworkType(onLoopEffect);
+                                Messages.sendMessage(player,"&aYour firework has been set to &b&l"+onLoopEffect.name(),false);
+                                menu.close(player);
+                            }
+                        });
+                    }
+                }
+                menu.setContents(items);
+                menu.open(player);
+            }
+        });
+
+    }
+
     public static void openSpectatorMenu(Player player){
-        if(!(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null)){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == null){
             Messages.sendMessage(player,"&cYou can't spectate while on active session",false);
             return;
         }
@@ -147,7 +191,7 @@ public class MenuManager {
         }
         ItemMenu specMenu = BridgePractice.getSpectatorMenu();
         specMenu.clear();
-        ActionItem item[] = new ActionItem[54];
+        ActionItem[] item = new ActionItem[54];
         for(int i = 0;i<currentPlayers.size();i++){
             if(PlayerDataManager.getCachedPlayerData().get(currentPlayers.get(i).getUniqueId()).CanOthersSpectate()) {
                 item[i] = new ActionItem(Head.getOnlinePlayer(currentPlayers.get(i).getName()));
@@ -278,7 +322,7 @@ public class MenuManager {
         });
 
         items[6] = new ActionItem(BARRIER);
-        items[6].setName("");
+        items[6].setName("&r");
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer() > 1) {
             items[7] = new ActionItem(CHEST);
             items[7].setName(Messages.parseColor("&cClear timer"));
@@ -298,7 +342,7 @@ public class MenuManager {
             });
         }else{
             items[7] = new ActionItem(BARRIER);
-            items[7].setName("");
+            items[7].setName("&r");
         }
         items[8] = new ActionItem(CLAYBALL);
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isSetbackEnabled())

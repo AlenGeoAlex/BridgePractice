@@ -80,7 +80,7 @@ public class Countdown extends BukkitRunnable {
     public void cancelTimer(UUID uuid){
         if(Gameplay.getPlayerCountdown().containsKey(uuid)){
             Bukkit.getScheduler().cancelTask(Gameplay.getPlayerCountdown().get(uuid));
-            if(bossBar != null)
+            if(bossBar != null && bossBar.getPlayer().isOnline())
             this.bossBar.hide();
             Gameplay.getPlayerCountdown().remove(uuid);
         }

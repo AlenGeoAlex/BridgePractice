@@ -79,6 +79,9 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         if(identifier.equalsIgnoreCase("runningtimer"))
             return PlaceholderDataManager.getRunningTimer(player);
 
+        if(identifier.equalsIgnoreCase("leaderboardrefresh"))
+            return PlaceholderDataManager.getLeaderboardRefreshIn();
+
         if(identifier.startsWith("group")){
             String[] args = identifier.split("_");
             if(args.length <= 2)
@@ -92,6 +95,24 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             if(args.length <= 2)
                 return PlaceholderDataManager.getIslandPlayer(args[1]);
             else
+                return ERROR;
+        }
+
+        if(identifier.startsWith("bestplayer")){
+            //bestplayer_groupname_position
+            String[] args = identifier.split("_");
+            if(args.length <=3){
+                return PlaceholderDataManager.getLeaderboardName(args[1],Integer.parseInt(args[2]));
+            }else
+                return ERROR;
+        }
+
+        if(identifier.startsWith("besttime")){
+            //besttime_groupname_position
+            String[] args = identifier.split("_");
+            if(args.length <=3){
+                return PlaceholderDataManager.getLeaderboardDuration(args[1],Integer.parseInt(args[2]));
+            }else
                 return ERROR;
         }
 

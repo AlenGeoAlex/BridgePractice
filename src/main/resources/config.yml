@@ -64,6 +64,9 @@ holograms:
 ########################################################################################################################
 ##settings:
 ##Some common settings
-##Set the location of server main-lobby, its PREFERRED to set using /practiceadmin setlobby
+##lobby-location -> Set the location of server main-lobby, its PREFERRED to set using /practiceadmin setlobby
+##leaderboard-refresh-mins -> How frequent do leaderboards need to refreshed in mins!
+##DON'T SET IT TO LESS THAN 1
 settings:
   lobby-location:
+  leaderboard-refresh-mins: 5

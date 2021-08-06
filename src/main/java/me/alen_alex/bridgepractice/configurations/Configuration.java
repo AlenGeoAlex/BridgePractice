@@ -18,7 +18,7 @@ public class Configuration {
     private static String host,username,password,port,database;
     private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms;
     private static String prefixMain,lobbyLocation;
-    private static int voidDetectionLevel,hologramsOffsetY;
+    private static int voidDetectionLevel,hologramsOffsetY,leaderboardRefreshTimeout;
     private static List<String> hologramsStartingLines,hologramsEndingLines;
 
     public static void createConfiguration(){
@@ -62,6 +62,7 @@ public class Configuration {
         hologramsStartingLines = config.getStringList("holograms.startingLocation");
         hologramsEndingLines = config.getStringList("holograms.endingLocation");
         lobbyLocation = config.getString("settings.lobby-location");
+        leaderboardRefreshTimeout = config.getInt("settings.leaderboard-refresh-mins");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -137,7 +138,9 @@ public class Configuration {
         return lobbyLocation;
     }
 
-
+    public static int getLeaderboardRefreshTimeout() {
+        return leaderboardRefreshTimeout;
+    }
 }
 
 
