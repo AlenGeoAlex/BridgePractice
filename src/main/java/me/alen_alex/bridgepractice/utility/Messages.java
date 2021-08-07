@@ -13,6 +13,8 @@ public class Messages {
     }
 
     public static void sendMessage(Player player, String message, boolean showPrefix) {
+        if(message == null)
+            return;
         if (showPrefix)
             player.sendMessage(Configuration.getPrefixMain() + parseColor(message));
         else
@@ -20,6 +22,8 @@ public class Messages {
     }
 
     public static void sendMessage(CommandSender sender, String message, boolean showPrefix) {
+        if(message == null)
+            return;
         if (showPrefix)
             sender.sendMessage(Configuration.getPrefixMain() + parseColor(message));
         else
@@ -27,23 +31,33 @@ public class Messages {
     }
 
     public static void sendMessageNoPrefix(Player player, String message) {
+        if(message == null)
+            return;
         player.sendMessage(parseColor(message));
     }
 
     public static void sendMessageNoPrefix(CommandSender sender, String message) {
+        if(message == null)
+            return;
         sender.sendMessage(message);
     }
 
     public static void broadcastMessageNoPrefix(String message) {
+        if(message == null)
+            return;
         Bukkit.getServer().broadcastMessage(parseColor(message));
     }
 
 
     public static void broadcastMessage(String message) {
+        if(message == null)
+            return;
         Bukkit.getServer().broadcastMessage(Configuration.getPrefixMain() + parseColor(message));
     }
 
     public static void sendJSONSuggestMessage(Player player, String Message, String SuggestionCommand, String HoverText, boolean ShowPrefix) {
+        if(Message == null)
+            return;
         TextComponent tc = new TextComponent();
         if (ShowPrefix)
             tc.setText(Configuration.getPrefixMain() + parseColor(Message));
@@ -55,6 +69,8 @@ public class Messages {
     }
 
     public static void sendJSONSuggestMessage(CommandSender sender, String Message, String SuggestionCommand, String HoverText, boolean ShowPrefix) {
+        if(Message == null)
+            return;
         if(!(sender instanceof Player))
             return;
         Player player = (Player)sender;
@@ -69,7 +85,8 @@ public class Messages {
     }
 
     public static void sendJSONExecuteCommand(Player player, String Message, String RunCommand, String HoverText, boolean ShowPrefix) {
-
+        if(Message == null)
+            return;
         TextComponent tc = new TextComponent();
         if (ShowPrefix)
             tc.setText(Configuration.getPrefixMain() + parseColor(Message));
@@ -82,7 +99,8 @@ public class Messages {
     }
 
     public static void sendJSONLink(Player player, String Message, String redirectTo, String HoverText) {
-
+        if(Message == null)
+            return;
         TextComponent tc = new TextComponent();
         tc.setText(parseColor(Message));
         tc.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, redirectTo));
@@ -91,6 +109,8 @@ public class Messages {
     }
 
     public static void sendJSONExecuteCommand(CommandSender sender, String Message, String RunCommand, String HoverText, boolean ShowPrefix) {
+        if(Message == null)
+            return;
         if(!(sender instanceof Player))
             return;
         Player player = (Player)sender;
@@ -106,6 +126,8 @@ public class Messages {
     }
 
     public static void sendJSONHoverMessage(Player player, String Message, String HoverText, boolean ShowPrefix) {
+        if(Message == null)
+            return;
         TextComponent tc = new TextComponent();
         if (ShowPrefix)
             tc.setText(Configuration.getPrefixMain() + parseColor(Message));
@@ -117,6 +139,8 @@ public class Messages {
     }
 
     public static void sendBroadcastMessage(String message, boolean showPrefix){
+        if(message == null)
+            return;
         if(showPrefix)
             Bukkit.getServer().broadcastMessage(Configuration.getPrefixMain()+parseColor(message));
         else

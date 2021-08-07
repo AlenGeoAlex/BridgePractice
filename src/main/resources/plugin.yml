@@ -7,6 +7,7 @@ depend:
   - CoreAPI
 softdepend:
   - PlaceholderAPI
+  - AdvancedReplay
 commands:
   practiceadmin:
     description: "The adminstrative command for Bridgepractice."

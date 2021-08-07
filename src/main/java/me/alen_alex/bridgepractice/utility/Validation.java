@@ -20,6 +20,12 @@ public class Validation {
             return true;
     }
 
+    public static boolean isAdvancedReplayEnabled(){
+        if(Bukkit.getPluginManager().isPluginEnabled("AdvancedReplay"))
+            return true;
+        else return false;
+    }
+
     public static boolean ValidatePlaceholderAPI(){
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
             return true;

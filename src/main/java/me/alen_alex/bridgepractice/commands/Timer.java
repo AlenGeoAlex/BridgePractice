@@ -66,7 +66,7 @@ public class Timer implements CommandExecutor, TabCompleter {
                             Messages.sendMessage(player,"&cTimer Setback has been disabled",false);
                         }else{
                             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSetbackEnabled(true);
-                            Messages.sendMessage(player,"&aimer Setback has been enabled",false);
+                            Messages.sendMessage(player,"&aTimer Setback has been enabled",false);
                         }
                     default:
                 }

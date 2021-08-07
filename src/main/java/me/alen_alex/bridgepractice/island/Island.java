@@ -172,6 +172,10 @@ public class Island {
         }
     }
 
+    public boolean isIslandOccupied(){
+        return currentPlayer != null;
+    }
+
     /*public void resetIsland(){
         final LinkedList<Location> locs = new LinkedList<>();
         int taskId;

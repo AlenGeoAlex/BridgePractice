@@ -14,6 +14,7 @@ import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Countdown;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.TimeUtility;
+import me.jumper251.replay.api.ReplayAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -36,6 +37,12 @@ public class Gameplay {
             Messages.sendMessage(playerData.getOnlinePlayer(),"&cYou can't join games during spectator mode",true);
             return;
         }
+
+        if(PlayerDataManager.getCachedPlayerData().get(playerData.getPlayerUUID()).isWatchingReplay()){
+            Messages.sendMessage(playerData.getOnlinePlayer(),"&cYou can't join while in you are watching replay",false);
+            return;
+        }
+
         playerData.getOnlinePlayer().setHealthScale(20.0);
         playerData.setCurrentState(PlayerState.IDLE_ISLAND);
         islandData.setCurrentPlayer(playerData);
@@ -52,6 +59,12 @@ public class Gameplay {
         Bukkit.getPluginManager().callEvent(event);
         playerData.setLobbyItems();
         playerData.resetPlacedBlocks();
+        if(Gameplay.getSpectators().containsValue(playerData.getOnlinePlayer())){
+            Gameplay.getCurrentlySpectatingPlayers(playerData.getOnlinePlayer()).forEach(player1 -> {
+                Gameplay.handleLeaveSpectating(player1,playerData.getOnlinePlayer());
+                Messages.sendMessage(player1,"&cYou have been teleported back to lobby since the player has left the server",false);
+            });
+        }
         playerIsland.teleportToQuitlobby(playerData.getOnlinePlayer());
         Messages.sendMessage(playerData.getOnlinePlayer(),"&cYou left the island!",false);
         playerData.setCurrentState(null);
@@ -65,6 +78,7 @@ public class Gameplay {
         Island islandData = Gameplay.getPlayerIslands().get(playerData);
         PlayerGameEndEvent event = new PlayerGameEndEvent(playerData,islandData,completed);
         Bukkit.getPluginManager().callEvent(event);
+        ReplayAPI.getInstance().stopReplay(player.getName()+"-"+Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName()+"-"+(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size()+1),true);
         if(completed){
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
             durationTaken = (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime()  - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime());
@@ -133,6 +147,7 @@ public class Gameplay {
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlacedBlocks(placedLocation);
         playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new Countdown(player,PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer()), 0, 20));
         Messages.sendMessage(player,"&b&lBridge has begun!", false);
+        ReplayAPI.getInstance().recordReplay(player.getName()+"-"+Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName()+"-"+(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size()+1),Bukkit.getConsoleSender(),player);
     }
 
     public static void onBlockPlace(Player player, Location placedLocation){

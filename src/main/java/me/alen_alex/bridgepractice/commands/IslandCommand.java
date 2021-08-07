@@ -36,10 +36,10 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
         }else{
             switch (args[0].toUpperCase()){
                 case "REQUEST":
-                    if(args.length == 2)
-                    PlayerCommands.islandRequestCommand(player,args[1]);
-                    else if(args.length == 3)
-                    PlayerCommands.islandRequestCommand(player, args[2]);
+                    if(args.length == 1)
+                    PlayerCommands.islandRequestCommand(player);
+                    else if(args.length == 2)
+                    PlayerCommands.islandRequestCommand(player, args[1]);
                     break;
                 case "LEAVE":
                     PlayerCommands.leaveRequestCommand(player);
@@ -49,6 +49,9 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                     break;
                 case "TEST":
                     Gameplay.handleGameEnd(player, true);
+                    break;
+                case "REPLAY":
+                    MenuManager.openReplayMenu(player);
                     break;
                 default:
 

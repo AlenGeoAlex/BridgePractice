@@ -9,6 +9,7 @@ import me.Abhigya.core.particle.ParticleEffect;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.*;
 import org.bukkit.Bukkit;
@@ -174,8 +175,59 @@ public class MenuManager {
 
     }
 
+    public static void openReplayMenu(Player player){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null){
+            Messages.sendMessage(player,"&cYou can't spectate while on active session",false);
+            return;
+        }
+
+        List<String> replayList = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays();
+        if(replayList.isEmpty()){
+            Messages.sendMessage(player,"&cYou don't have any replays currently",false);
+            return;
+        }
+
+        if(replayList.size() > 53){
+            Messages.sendMessage(player,"&cYou have too many replays to load. &eCancelled", false);
+            return;
+        }
+
+        ItemMenu replayMenu = BridgePractice.getReplayMenu();
+        replayMenu.clear();
+        Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                ActionItem[] items = new ActionItem[replayList.size()];
+                for(int i = 0; i< replayList.size();i++){
+                    String onLoopReplay = replayList.get(i);
+                    items[i] = new ActionItem(BOOK);
+                    items[i].setName(Messages.parseColor("&d"+onLoopReplay));
+                    items[i].addAction(new ItemAction() {
+                        @Override
+                        public ItemActionPriority getPriority() {
+                            return ItemActionPriority.NORMAL;
+                        }
+
+                        @Override
+                        public void onClick(ItemClickAction itemClickAction) {
+                            String[] dataCond = onLoopReplay.split("-");
+                            if(IslandManager.getIslandData().get(dataCond[1]).isIslandOccupied()){
+                                replayMenu.close(player);
+                                Messages.sendMessage(player,"&cThis island is currently on an active session! Try again later.",false);
+                            }else{
+                                ReplayUtility.playReplay(player,onLoopReplay);
+                            }
+                        }
+                    });
+                }
+                replayMenu.setContents(items);
+                replayMenu.open(player);
+            }
+        });
+    }
+
     public static void openSpectatorMenu(Player player){
-        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == null){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null){
             Messages.sendMessage(player,"&cYou can't spectate while on active session",false);
             return;
         }

@@ -53,8 +53,7 @@ public class Blocks {
         List<Material> availableMatrix = new ArrayList<>();
         availableMatrix.add(Material.WOOD);
         for(Map.Entry<String, Material> entry : materialName.entrySet()){
-            if(player.hasPermission("practice.block"+entry.getKey())) {
-                System.out.println("added "+entry.getKey());
+            if(player.hasPermission("practice.block."+entry.getKey())) {
                 availableMatrix.add(entry.getValue());
             }
         }

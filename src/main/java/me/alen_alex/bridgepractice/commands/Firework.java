@@ -14,7 +14,7 @@ public class Firework implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("practice.timer")) {
+            if (!player.hasPermission("practice.gui.firework")) {
                 Messages.sendMessage(player, "&cYou don't have permission to use this command!", true);
                 return true;
             }

@@ -8,6 +8,7 @@ import me.alen_alex.bridgepractice.commands.*;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
@@ -16,17 +17,23 @@ import me.alen_alex.bridgepractice.leaderboards.LeaderboardManager;
 import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
 import me.alen_alex.bridgepractice.utility.*;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public final class BridgePractice extends JavaPlugin {
 
     private static BridgePractice plugin;
     private static SQL connection;
-    private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu,fireworkMenu;
-    private static boolean isHologramsEnabled = false;
+    private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu,fireworkMenu,replayMenu;
+    private static boolean hologramsEnabled = false, advanceReplayEnabled = false;
+    /*private static ReplayAPI replayAPIInstance;
+    private static IReplayHook replayHook;*/
+    private static Random randomInstance = new Random();
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -43,6 +50,7 @@ public final class BridgePractice extends JavaPlugin {
         }
         plugin = this;
         Configuration.createConfiguration();
+        MessageConfiguration.createLangaugeFile();
         Validation.checkLobbyLocation();
         if(!Validation.validateDatabase())
             {
@@ -54,6 +62,11 @@ public final class BridgePractice extends JavaPlugin {
         Data dataConnection = new Data();
         WorkloadScheduler.intializeThread();
         connection = dataConnection.getDatabaseConnection();
+        if(connection == null)
+        {
+            getLogger().severe("Error while connecting to database. DISABLING PLUGIN");
+            getServer().getPluginManager().disablePlugin(this);
+        }
         Data.createDatabase();
         if(Configuration.doUseGroups()){
             GroupConfiguration.createGroupConfigurations();
@@ -70,9 +83,14 @@ public final class BridgePractice extends JavaPlugin {
         if(Configuration.isUseHolograms()) {
             if (Validation.validateHolograms()) {
                 getLogger().info("Hooked with HolographicDisplays-API");
-                isHologramsEnabled = true;
+                hologramsEnabled = true;
                 HolographicManager.fetchHologramsFromIslands();
             }
+        }
+        if(Validation.isAdvancedReplayEnabled()){
+            advanceReplayEnabled = true;
+            getLogger().info("Hooked with AdvancedReply-API");
+            getServer().getPluginManager().registerEvents(new PlayerReplaySessionFinishEvent(), this);
         }
         PlayerParticles.loadAllAvailableEffectToCache();
         registerListener();
@@ -117,6 +135,8 @@ public final class BridgePractice extends JavaPlugin {
         particleMenu.registerListener(this);
         fireworkMenu = new ItemMenu(Messages.parseColor("&e&lChoose your firework"),ItemMenuSize.ONE_LINE,null,null);
         fireworkMenu.registerListener(this);
+        replayMenu = new ItemMenu(Messages.parseColor("&e&lChoose your reply"), ItemMenuSize.SIX_LINE, null, null);
+        replayMenu.registerListener(this);
     }
 
     public static BridgePractice getPlugin() {
@@ -145,5 +165,13 @@ public final class BridgePractice extends JavaPlugin {
 
     public static ItemMenu getFireworkMenu() {
         return fireworkMenu;
+    }
+
+    public static ItemMenu getReplayMenu() {
+        return replayMenu;
+    }
+
+    public static Random getRandomInstance() {
+        return randomInstance;
     }
 }

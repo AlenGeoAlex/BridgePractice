@@ -4,11 +4,17 @@ import me.Abhigya.core.particle.ParticleBuilder;
 import me.Abhigya.core.particle.ParticleEffect;
 import me.Abhigya.core.util.tasks.Workload;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.FireworkUtilities;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.WorkloadScheduler;
+import me.jumper251.replay.api.ReplayAPI;
+import me.jumper251.replay.filesystem.saving.IReplaySaver;
+import me.jumper251.replay.filesystem.saving.ReplaySaver;
+import me.jumper251.replay.replaysystem.Replay;
+import me.jumper251.replay.utils.fetcher.Consumer;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -18,10 +24,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.FireworkEffect.Type;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerData {
 
@@ -35,10 +38,10 @@ public class PlayerData {
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled, spectating;
     private boolean canOthersSpectate;
-    private boolean setbackEnabled;
+    private boolean setbackEnabled,watchingReplay;
     private ParticleEffect playerParticle;
     private FireworkEffect.Type fireworkType;
-    private Random r = new Random();
+    private Random r = BridgePractice.getRandomInstance();
     public PlayerData(String playerName, UUID playerUUID, Material playerMaterial, ParticleEffect playerParticle, int gamesPlayed, long currentTime, long bestTime, long blocksPlaced) {
         this.playerName = playerName;
         this.playerUUID = playerUUID;
@@ -53,6 +56,7 @@ public class PlayerData {
         this.canOthersSpectate = true;
         this.setbackEnabled = false;
         this.fireworkType = Type.BALL;
+        this.watchingReplay = false;
     }
 
     public String getPlayerName() {
@@ -145,6 +149,14 @@ public class PlayerData {
 
     public void setCurrentState(PlayerState currentState) {
         this.currentState = currentState;
+    }
+
+    public boolean isWatchingReplay() {
+        return watchingReplay;
+    }
+
+    public void setWatchingReplay(boolean watchingReplay) {
+        this.watchingReplay = watchingReplay;
     }
 
     @Deprecated
@@ -295,6 +307,16 @@ public class PlayerData {
         int rp = r.nextInt(2) + 1;
         fwm.setPower(rp);
         fw.setFireworkMeta(fwm);
+    }
+
+    public List<String> getPlayerReplays(){
+        List<String> replayList = new ArrayList<>();
+        ReplaySaver.getReplays().forEach((replays) -> {
+            if(replays.startsWith(playerName)){
+                replayList.add(replays);
+            }
+        });
+        return replayList;
     }
 
     //TODO -> Player Saving savePlayer();
