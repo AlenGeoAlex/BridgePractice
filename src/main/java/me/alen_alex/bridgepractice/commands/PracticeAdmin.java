@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.commands;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.commands.admin.CreationCommand;
 import me.alen_alex.bridgepractice.commands.admin.EditCommand;
 import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
@@ -123,7 +124,7 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                             }
                         }else if(args.length == 3){
                             if(args[1].equalsIgnoreCase("island")) {
-                                CreationCommand.createAnIsland(player, args[2]);
+                                EditCommand.setEditIslands(player, args[2]);
                                 return true;
                             }
                         }
@@ -170,41 +171,46 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                             }
                             ArenaConfigurations.saveArenaConfiguration();
                         }else if(args.length ==2){
-                            if(!IslandManager.getIslandData().containsKey(args[1])){
-                                Messages.sendMessage(player,"&cIsland doesnot exist or not loaded", true);
+                            if(!IslandManager.getIslandData().containsKey(args[1])) {
+                                Messages.sendMessage(player, "&cIsland doesnot exist or not loaded", true);
                                 return true;
-
                             }
-
-                            ArenaConfigurations.getArenaConfiguration().set(args[1]+".enabled",true);
-                            Messages.sendMessage(player,"&aEnabled the arena &6"+args[1], true);
-                            ArenaConfigurations.saveArenaConfiguration();
-
+                            }else if(args.length == 3) {
+                                if(args[2].equalsIgnoreCase("--force")) {
+                                    ArenaConfigurations.getArenaConfiguration().set(args[1] + ".enabled", true);
+                                    Messages.sendMessage(player, "&aEnabled the arena &6" + args[1], true);
+                                    ArenaConfigurations.saveArenaConfiguration();
+                                }
                         }else{
                             Messages.sendIncorrectUsage(player);
                         }
                         break;
                     case "HOLO":
-                        if(args.length == 2) {
-                            if (args[1].equalsIgnoreCase("reload")) {
-                                for (Map.Entry<String, Holograms> hologramsEntry : HolographicManager.getHoloData().entrySet()) {
-                                    hologramsEntry.getValue().deleteHolo();
-                                    hologramsEntry.getValue().createHolograms();
+                        if(BridgePractice.isHologramsEnabled()) {
+                            if (args.length == 2) {
+                                if (args[1].equalsIgnoreCase("reload")) {
+                                    for (Map.Entry<String, Holograms> hologramsEntry : HolographicManager.getHoloData().entrySet()) {
+                                        hologramsEntry.getValue().deleteHolo();
+                                        hologramsEntry.getValue().createHolograms();
+                                    }
+                                    Messages.sendMessage(sender, "&aSuccesfully reloaded all holograms", true);
+                                    return true;
                                 }
-                                Messages.sendMessage(sender,"&aSuccesfully reloaded all holograms", true);
-                                return true;
-                            }
-                        }else if(args.length == 3){
-                            if (args[1].equalsIgnoreCase("reload")) {
-                                if(HolographicManager.getHoloData().containsKey(args[2])){
-                                    HolographicManager.getHoloData().get(args[2]).deleteHolo();
-                                    HolographicManager.getHoloData().get(args[2]).createHolograms();
-                                }else{
-                                    Messages.sendMessage(player,"&cIsland with this name does not exist", true);
+                            } else if (args.length == 3) {
+                                if (args[1].equalsIgnoreCase("reload")) {
+                                    if (HolographicManager.getHoloData().containsKey(args[2])) {
+                                        HolographicManager.getHoloData().get(args[2]).deleteHolo();
+                                        HolographicManager.getHoloData().get(args[2]).createHolograms();
+                                    } else {
+                                        Messages.sendMessage(player, "&cIsland with this name does not exist", true);
+                                    }
+                                    return true;
                                 }
-                                return true;
                             }
+                        }else{
+                            Messages.sendMessage(player,"&cUnable to hook with Holographic Displays",false);
                         }
+                        break;
                     case "SETLOBBY":
                         Configuration.getConfig().set("settings.lobby-location",Location.parseLocation(player.getLocation()));
                         Messages.sendMessage(player,"Lobby point has been set!",false);

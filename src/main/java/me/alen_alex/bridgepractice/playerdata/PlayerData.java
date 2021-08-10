@@ -5,6 +5,7 @@ import me.Abhigya.core.particle.ParticleEffect;
 import me.Abhigya.core.util.tasks.Workload;
 
 import me.alen_alex.bridgepractice.BridgePractice;
+import me.alen_alex.bridgepractice.data.DataManager;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.FireworkUtilities;
@@ -38,7 +39,7 @@ public class PlayerData {
     private LinkedList<Location> placedBlocks = new LinkedList<Location>();
     private boolean buildModeEnabled, spectating;
     private boolean canOthersSpectate;
-    private boolean setbackEnabled,watchingReplay;
+    private boolean setbackEnabled,watchingReplay,recordingEnabled;
     private ParticleEffect playerParticle;
     private FireworkEffect.Type fireworkType;
     private Random r = BridgePractice.getRandomInstance();
@@ -57,6 +58,7 @@ public class PlayerData {
         this.setbackEnabled = false;
         this.fireworkType = Type.BALL;
         this.watchingReplay = false;
+        this.recordingEnabled = true;
     }
 
     public String getPlayerName() {
@@ -105,6 +107,10 @@ public class PlayerData {
 
     public void setGamesPlayed(int gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public void addGamesPlayed(){
+        this.gamesPlayed += 1;
     }
 
     public LinkedList<Location> getPlacedBlocks() {
@@ -296,6 +302,14 @@ public class PlayerData {
         this.fireworkType = fireworkType;
     }
 
+    public boolean isRecordingEnabled() {
+        return recordingEnabled;
+    }
+
+    public void setRecordingEnabled(boolean recordingEnabled) {
+        this.recordingEnabled = recordingEnabled;
+    }
+
     public void spawnFirework(){
         r.setSeed(System.currentTimeMillis());
         Firework fw = (Firework) getOnlinePlayer().getWorld().spawnEntity(getOnlinePlayer().getLocation(), EntityType.FIREWORK);
@@ -319,6 +333,8 @@ public class PlayerData {
         return replayList;
     }
 
-    //TODO -> Player Saving savePlayer();
+    public boolean savePlayerData(){
+        return DataManager.savePlayerData(this);
+    }
 
 }

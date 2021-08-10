@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.placeholderapi;
 
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.group.GroupManager;
@@ -15,7 +16,7 @@ public class PlaceholderDataManager {
     private static final String NOTAVAILABLE = Messages.parseColor("&c&lN/A");
     private static final String NOTANISLAND = Messages.parseColor("&c&lUnknown Island");
     private static final String NOTAGROUP = Messages.parseColor("&c&lUnknown Group");
-
+    private static final String DISABLED = Messages.parseColor("&e&lDisabled");
     public static String getPlayerIslandName(Player player){
         if(Gameplay.getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())))
             return Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName();
@@ -136,6 +137,21 @@ public class PlaceholderDataManager {
         }else{
             return NOTAGROUP;
         }
+    }
+
+    public static String getIsPlayerRecording(Player player){
+        return String.valueOf(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled());
+    }
+
+    public static String getRecordingStatus(Player player){
+        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
+            if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled()){
+                return MessageConfiguration.getPlaceholderCurrentlyRecording();
+            }else{
+                return DISABLED;
+            }
+        }else
+            return NOTAVAILABLE;
     }
 
 }

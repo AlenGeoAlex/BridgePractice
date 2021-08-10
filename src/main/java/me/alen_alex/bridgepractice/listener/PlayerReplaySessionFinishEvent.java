@@ -1,7 +1,9 @@
 package me.alen_alex.bridgepractice.listener;
 
+import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderDataManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import me.alen_alex.bridgepractice.utility.Location;
 import me.jumper251.replay.api.ReplaySessionFinishEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,6 +18,8 @@ public class PlayerReplaySessionFinishEvent implements Listener {
         if(PlayerDataManager.getCachedPlayerData().containsKey(player.getUniqueId())){
             if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isWatchingReplay()){
                 PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setWatchingReplay(false);
+                if(Configuration.isTpBacktoLobbyAfterReplay())
+                    player.teleport(Location.getLocation(Configuration.getLobbyLocation()));
             }else{
                 Bukkit.getLogger().info("Failed to set false flag for "+player.getName()+" on watching replay");
             }

@@ -27,7 +27,7 @@ public class PlayerJoinEvent implements Listener {
             throwables.printStackTrace();
             player.kickPlayer("Seems like its unable to load the player data");
         }
-        PlayerDataManager.getCachedPlayerData().get(playerUUID).setLobbyItems();
+        //PlayerDataManager.getCachedPlayerData().get(playerUUID).setLobbyItems();
     }
 
     @EventHandler

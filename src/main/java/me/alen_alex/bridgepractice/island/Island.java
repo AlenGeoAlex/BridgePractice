@@ -1,16 +1,21 @@
 package me.alen_alex.bridgepractice.island;
+import me.Abhigya.core.util.tps.TpsUtils;
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.group.Group;
 import me.alen_alex.bridgepractice.holograms.Holograms;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -176,9 +181,29 @@ public class Island {
         return currentPlayer != null;
     }
 
-    /*public void resetIsland(){
-        final LinkedList<Location> locs = new LinkedList<>();
-        int taskId;
+    public void resetIsland(){
+        if(TpsUtils.getTicksPerSecond() < 10){
+            Bukkit.getLogger().severe("========================================================");
+            Bukkit.getLogger().severe("Aborting task!, Server is running low on ticks");
+            Bukkit.getLogger().severe("========================================================");
+            return;
+        }
+
+        if(TpsUtils.getTicksPerSecond() < 15.0)
+            Bukkit.getLogger().warning("The server is running low on TPS, its not advisible to run this now!");
+        if(Gameplay.getPlayerIslands().containsValue(this)){
+            for(Map.Entry<PlayerData,Island> islandEntry : Gameplay.getPlayerIslands().entrySet()){
+                if(islandEntry.getValue() == this){
+                    this.teleportToQuitlobby(islandEntry.getKey().getOnlinePlayer());
+                    Messages.sendMessage(islandEntry.getKey().getOnlinePlayer(), "&cThis island has been called for reset, redirecting fallback location",false);
+                    Gameplay.handleGameLeave(islandEntry.getKey());
+                }
+            }
+        }
+        this.setRessetting(true);
+        this.setActive(false);
+        System.out.println("Starting Island Reset");
+        final LinkedList<Block> locs = new LinkedList<>();
         final int smallx = Math.min(pos1.getBlockX(),pos2.getBlockX());
         final int largex  = Math.max(pos1.getBlockX(),pos2.getBlockX());
         final int smally = Math.min(pos1.getBlockY(),pos2.getBlockY());
@@ -190,18 +215,20 @@ public class Island {
                 for(int z = smallz;z<=largez;z++){
                     Location loc = new Location(getIslandWorld(),x,y,z);
                     if(Blocks.getBlock().contains(loc.getBlock().getType()))
-                        locs.add(loc);
+                        locs.add(loc.getBlock());
                 }
             }
         }
-        System.out.println(locs.get(0));
-        locs.forEach(location -> {
-            Workload load = () -> Blocks.setResetBlocks(location.getWorld(),location.getBlockX(),location.getBlockY(),location.getBlockZ(),0,((Integer) 0).byteValue());
-            //Workload load = () -> location.getBlock().setType(Material.AIR);
-            WorkloadScheduler.getSyncThread().add(load);
+        locs.forEach((blockLocations)->{
+            BridgePractice.getPlugin().getWorldHandler().setBlockToAir(blockLocations.getWorld(),blockLocations.getX(),blockLocations.getY(),blockLocations.getZ(),0,(byte) 0);
         });
-        System.out.println("Finished!!");
+        Bukkit.getServer().getOnlinePlayers().forEach((player -> {
+            BridgePractice.getPlugin().getWorldHandler().refreshPlayerChunk(player);
+        }));
 
-    }*/
+        System.out.println("Island has been succesfully resetted!");
+        this.setRessetting(false);
+        this.setActive(true);
+    }
 
 }

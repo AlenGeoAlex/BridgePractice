@@ -1,7 +1,9 @@
 package me.alen_alex.bridgepractice.commands;
 
 import me.alen_alex.bridgepractice.commands.player.PlayerCommands;
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.menu.MenuManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.command.Command;
@@ -47,14 +49,11 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                 case "BLOCKS":
                     MenuManager.openMaterialMenu(player);
                     break;
-                case "TEST":
-                    Gameplay.handleGameEnd(player, true);
-                    break;
                 case "REPLAY":
                     MenuManager.openReplayMenu(player);
                     break;
                 default:
-
+                    Messages.sendMessage(player, MessageConfiguration.getUnknownCommand(),false);
             }
         }
         return false;

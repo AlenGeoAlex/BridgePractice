@@ -2,7 +2,7 @@ name: BridgePractice
 version: 1.0
 main: me.alen_alex.bridgepractice.BridgePractice
 authors: [ Alen_Alex ]
-description: A plugin for practicing bridging
+description: A plugin for practicing Bedwars Bridging!
 depend:
   - CoreAPI
 softdepend:
@@ -14,6 +14,8 @@ commands:
     permission: "practice.admin"
   island:
     description: "Command for players"
+    aliases:
+      - "is"
   playerlist:
     aliases:
       - p
@@ -24,12 +26,27 @@ commands:
     description: "Player timer related commands!"
   effect:
     description: "Player effect related commands"
+    aliases:
+      - "particleeffect"
+      - "pe"
   firework:
     description: "Player Firework related commands"
+  resetisland:
+    description: "Command for resetting islands"
+    permission: "practice.admin.reset"
+  sessionreplay:
+    aliases:
+      - sr
+      - sreplay
+      - practicereplay
+      - preplay
+    description: "Command for opening replay menu"
 
 permissions:
   practice.gui.particle:
     default: true
   practice.timer:
+    default: true
+  practice.gui.replay:
     default: true
 

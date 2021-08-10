@@ -1,3 +1,4 @@
+version:
 messages:
   errors:
     unknown-command: "&eUnknown command!"
@@ -9,24 +10,38 @@ messages:
     unknown-player-data-rejoin-message: "&cWe are unable to fetch your playerdata from database. &ePlease rejoin"
     already-have-an-island: "&eSeems like you already have an &bisland&e to start with!"
     cannot-interact-while-specing: "&7[&c!&7] &eYou are currently spectating a player. Leave the current spectate session to &ccontinue"
+    cannot-while-watching-replay: "&7[&c!&7] &eYou are currently watching a replay. Leave the current replay session to &ccontinue"
     no-free-islands: "&cSorry! &eBut there are no free islands currently left!"
     cannot-interact-while-in-practice: "&7[&c!&7] &eYou are currently in a practicing session. Check this after the &ctimer ends!"
-    player-island-found: "&a✔ &6You got assigned to island {island-name}"
+    player-island-found: "&a✔ &6You got assigned to island %island-name%"
     player-left-island: "&c⬅ You have left the island"
     practice-timer-started: "&b⬤ &fTimer is &aRunning!"
+    player-broke-previous-record: "&a❥ &cH&aO&9O&dR&eR&3A&6Y&7Y&d!&b!&a!&9! &dYou have broke your previous record of &b&l%current_besttime% &dwith a new striking one of &6&l%new_besttime%"
+    player-broke-alltime-best: "&6★ &b&lYou have also broke your current all time highest!"
   timer:
     cannot-set-timer-less-than: "&cSorry! &eBut you cannot set timer &cless than 20 secs"
-    timer-has-been-set: "&a✔ &fYour timer has been successfully set to {time}"
+    timer-has-been-set: "&a✔ &fYour timer has been successfully set to %time%"
     timer-setback-enabled: "&a✔ &fTimer set back has been &aenabled"
     timer-setback-disabled: "&c✘ &fTimer set-back has been &cdisabled"
     cleared-timer: "&a✔ &fYour timer has been cleared successfully"
     no-active-timer: "&c✘ &fYou don't have an active timer to clear"
+  replay:
+    replay-toggle-enable: "&a✔ &fReplay has been toggled to &aon"
+    replay-toggle-disable: "&c✘ &fReplay has been toggled to &coff!"
+    replay-not-exist: "&7[&c!&7] &eThe specified replay does not exist!"
+    replay-cleared: "&a✔ &fYour replay has been &ecleared!"
   spectators:
     spectating-player-left: "&b⬅ &cYou have been redirected back since the player left!"
     selected-player-is-offline: "&c✘ &fThis player is offline!"
+  bossbar:
+    timer-onCountdown-20: "&a&lTime Remaining&7 : &f&l%remaining% secs"
+    timer-onCountdown-10: "&e&lTime Remaining&7 : &f&l%remaining% secs"
+    timer-onCountdown-5: "&c&lTime Remaining&7 : &f&l%remaining% secs"
+    timer-onTimeup: "&4&lTime Up!"
   placeholders:
     refreshing: "&b&lUpdating Now"
     not-available: "&c&lN/A"
     unknown-island: "&c&lUnknown Island"
     unknown-group: "&c&lUnknown Group"
+    currently-recording: "&c⬤ &fREC"
 

@@ -46,11 +46,13 @@ void-detection:
 broadcast-new-record: true
 ########################################################################################################################
 ##Holographic Configurations
-##enabled --> Whether to enable holograms support. REQUIRES HOLOHRAPHIC DISPLAY AND HOLOGRAPHIC EXTENSION FOR PLACEHOLDER API SUPPORT
+##enabled --> Whether to enable holograms support. REQUIRES HOLOHRAPHIC DISPLAY AND HOLOGRAPHIC EXTENSION
+##FOR PLACEHOLDER-API SUPPORT
 ##NOTE --> This will automatically disabled here once server detects HOLOGRAPHIC DISPLAYS is missing!
 ##hologramoffset-Y -> Changes the location of Y
 ##startingLocation --> Text to be displayed where the starting holo location
 ##endingLocation --> Text to be displayed where ending location
+##To display an Item use -> [ITEM];<Material_Name>
 holograms:
   enabled: true
   hologramoffset-Y: 2
@@ -67,6 +69,8 @@ holograms:
 ##lobby-location -> Set the location of server main-lobby, its PREFERRED to set using /practiceadmin setlobby
 ##leaderboard-refresh-mins -> How frequent do leaderboards need to refreshed in mins!
 ##DON'T SET IT TO LESS THAN 1
+##teleport-to-lobby-after-replay-ends --> Whether or not to teleport back to lobby when a replay ends!
 settings:
   lobby-location:
   leaderboard-refresh-mins: 5
+  teleport-to-lobby-after-replay-ends: true

@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.commands;
 
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.menu.MenuManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
@@ -15,11 +16,11 @@ public class Firework implements CommandExecutor {
         if(commandSender instanceof Player) {
             Player player = (Player) commandSender;
             if (!player.hasPermission("practice.gui.firework")) {
-                Messages.sendMessage(player, "&cYou don't have permission to use this command!", true);
+                Messages.sendMessage(player, MessageConfiguration.getNoPermission(), false);
                 return true;
             }
             if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING) {
-                Messages.sendMessage(player, "&cYou can't set timer while in session!", false);
+                Messages.sendMessage(player, MessageConfiguration.getInSession(), false);
                 return true;
             }
             MenuManager.openFireworkMenu(player);

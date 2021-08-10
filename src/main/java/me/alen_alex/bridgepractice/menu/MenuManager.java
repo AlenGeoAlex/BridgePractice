@@ -15,9 +15,9 @@ import me.alen_alex.bridgepractice.utility.*;
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -31,7 +31,8 @@ public class MenuManager {
     private static final ItemStack BOOK = new ItemStack(Material.BOOK);
     private static final ItemStack NAMETAG = new ItemStack(Material.NAME_TAG);
     private static final ItemStack FIREWORK = new ItemStack(Material.FIREWORK);
-    private static final ArrayList<String> CLAYBALLLORE = new ArrayList<String>(){{
+    private static final ItemStack BEACON = new ItemStack(Material.BEACON);
+    private static final ArrayList<String> SETBACKLORE = new ArrayList<String>(){{
         add("");
         add(Messages.parseColor("&aEnabling setbacks &7will allow players"));
         add(Messages.parseColor("&7to teleport back when the timer runs up!"));
@@ -39,6 +40,12 @@ public class MenuManager {
         add("");
         add(Messages.parseColor("&cDisabling setbacks &7will allow players"));
         add(Messages.parseColor("&fto continue bridging even if the timer runs up!"));
+    }};
+
+    private static final ArrayList<String> REPLAYLORE = new ArrayList<String>(){{
+        add("");
+        add(Messages.parseColor("&eLeft click &7➜ &fView replay"));
+        add(Messages.parseColor("&eRight click &7➜ &cDelete replay"));
     }};
 
     private static final ArrayList<String> CHESTLORE = new ArrayList<String>(){{
@@ -200,7 +207,8 @@ public class MenuManager {
                 ActionItem[] items = new ActionItem[replayList.size()];
                 for(int i = 0; i< replayList.size();i++){
                     String onLoopReplay = replayList.get(i);
-                    items[i] = new ActionItem(BOOK);
+                    items[i] = new ActionItem(BEACON);
+                    items[i].setLore(REPLAYLORE);
                     items[i].setName(Messages.parseColor("&d"+onLoopReplay));
                     items[i].addAction(new ItemAction() {
                         @Override
@@ -210,15 +218,22 @@ public class MenuManager {
 
                         @Override
                         public void onClick(ItemClickAction itemClickAction) {
-                            String[] dataCond = onLoopReplay.split("-");
-                            if(IslandManager.getIslandData().get(dataCond[1]).isIslandOccupied()){
+                            if (itemClickAction.getClickType() == ClickType.LEFT) {
+                                String[] dataCond = onLoopReplay.split("-");
+                                if (IslandManager.getIslandData().get(dataCond[1]).isIslandOccupied()) {
+                                    replayMenu.close(player);
+                                    Messages.sendMessage(player, "&cThis island is currently on an active session! Try again later.", false);
+                                } else {
+                                    ReplayUtility.playReplay(player, onLoopReplay);
+                                }
+                            }
+                            if(itemClickAction.getClickType() == ClickType.RIGHT){
                                 replayMenu.close(player);
-                                Messages.sendMessage(player,"&cThis island is currently on an active session! Try again later.",false);
-                            }else{
-                                ReplayUtility.playReplay(player,onLoopReplay);
+                                ReplayUtility.deleteReplay(player,onLoopReplay);
                             }
                         }
                     });
+
                 }
                 replayMenu.setContents(items);
                 replayMenu.open(player);
@@ -401,7 +416,7 @@ public class MenuManager {
             items[8].setName(Messages.parseColor("&cDisable Setback"));
         else
             items[8].setName(Messages.parseColor("&aEnable Setback"));
-        items[8].setLore(CLAYBALLLORE);
+        items[8].setLore(SETBACKLORE);
         items[8].addAction(new ItemAction() {
             @Override
             public ItemActionPriority getPriority() {

@@ -6,13 +6,14 @@ import me.Abhigya.core.database.sql.mysql.MySQL;
 import me.Abhigya.core.database.sql.sqlite.SQLite;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.Configuration;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class Data {
-    private static BridgePractice plugin;
+    private static BridgePractice plugin = BridgePractice.getPlugin();
     private static SQLDatabase database;
     private static SQL sql;
 
@@ -29,6 +30,7 @@ public class Data {
             this.database = new SQLite(plugin, new File(plugin.getDataFolder(),"database.db"),true);
             try {
                 database.connect();
+                System.out.println(database.getConnection().getAutoCommit());
             } catch (Exception e) {
                 e.printStackTrace();
             }

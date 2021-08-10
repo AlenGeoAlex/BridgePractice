@@ -34,6 +34,7 @@ public final class BridgePractice extends JavaPlugin {
     /*private static ReplayAPI replayAPIInstance;
     private static IReplayHook replayHook;*/
     private static Random randomInstance = new Random();
+    private ResetUtility worldHandler = new ResetUtility();
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -91,6 +92,8 @@ public final class BridgePractice extends JavaPlugin {
             advanceReplayEnabled = true;
             getLogger().info("Hooked with AdvancedReply-API");
             getServer().getPluginManager().registerEvents(new PlayerReplaySessionFinishEvent(), this);
+            getCommand("sessionreplay").setExecutor(new SessionReplay());
+            getCommand("sessionreplay").setTabCompleter(new SessionReplay());
         }
         PlayerParticles.loadAllAvailableEffectToCache();
         registerListener();
@@ -108,9 +111,13 @@ public final class BridgePractice extends JavaPlugin {
         getCommand("island").setExecutor(new IslandCommand());
         getCommand("island").setTabCompleter(new IslandCommand());
         getCommand("playerlist").setExecutor(new PlayerListCommand());
+        getCommand("playerlist").setTabCompleter(new PlayerListCommand());
         getCommand("timer").setExecutor(new Timer());
         getCommand("effect").setExecutor(new Particle());
         getCommand("firework").setExecutor(new Firework());
+        getCommand("resetisland").setExecutor(new ResetIsland());
+        getCommand("resetisland").setTabCompleter(new ResetIsland());
+
     }
     public void registerListener(){
         getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
@@ -173,5 +180,13 @@ public final class BridgePractice extends JavaPlugin {
 
     public static Random getRandomInstance() {
         return randomInstance;
+    }
+
+    public ResetUtility getWorldHandler() {
+        return worldHandler;
+    }
+
+    public static boolean isHologramsEnabled() {
+        return hologramsEnabled;
     }
 }

@@ -16,7 +16,7 @@ public class Configuration {
     private static BridgePractice plugin = BridgePractice.getPlugin();
     private static Config config;
     private static String host,username,password,port,database;
-    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms;
+    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms,tpBacktoLobbyAfterReplay;
     private static String prefixMain,lobbyLocation;
     private static int voidDetectionLevel,hologramsOffsetY,leaderboardRefreshTimeout;
     private static List<String> hologramsStartingLines,hologramsEndingLines;
@@ -40,7 +40,7 @@ public class Configuration {
 
             config = new Config("config.yml","plugins/BridgePractice");
             plugin.getLogger().info("Configuration has been located");
-            config.setDefault("version","1.0");
+            config.setDefault("version",BridgePractice.getPlugin().getDescription().getVersion());
             loadConfiguration();
         }
 
@@ -63,6 +63,7 @@ public class Configuration {
         hologramsEndingLines = config.getStringList("holograms.endingLocation");
         lobbyLocation = config.getString("settings.lobby-location");
         leaderboardRefreshTimeout = config.getInt("settings.leaderboard-refresh-mins");
+        tpBacktoLobbyAfterReplay = config.getBoolean("settings.teleport-to-lobby-after-replay-ends");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -140,6 +141,10 @@ public class Configuration {
 
     public static int getLeaderboardRefreshTimeout() {
         return leaderboardRefreshTimeout;
+    }
+
+    public static boolean isTpBacktoLobbyAfterReplay() {
+        return tpBacktoLobbyAfterReplay;
     }
 }
 

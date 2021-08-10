@@ -82,6 +82,12 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         if(identifier.equalsIgnoreCase("leaderboardrefresh"))
             return PlaceholderDataManager.getLeaderboardRefreshIn();
 
+        if(identifier.equalsIgnoreCase("isrecordingenabled"))
+            return PlaceholderDataManager.getIsPlayerRecording(player);
+
+        if(identifier.equalsIgnoreCase("recordingstatus"))
+            return PlaceholderDataManager.getRecordingStatus(player);
+
         if(identifier.startsWith("group")){
             String[] args = identifier.split("_");
             if(args.length <= 2)

@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.commands;
 
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.menu.MenuManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.PlayerParticles;
@@ -14,7 +15,7 @@ public class Particle implements CommandExecutor {
         if(commandSender instanceof Player){
             Player player = (Player) commandSender;
             if(!player.hasPermission("practice.gui.particle")){
-                Messages.sendMessage(commandSender,"&cYou don't have permission",true);
+                Messages.sendMessage(commandSender, MessageConfiguration.getNoPermission(),true);
                 return true;
             }
                 MenuManager.openParticleMenu(player);

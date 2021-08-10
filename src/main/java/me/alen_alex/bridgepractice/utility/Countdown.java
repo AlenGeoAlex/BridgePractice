@@ -5,6 +5,7 @@ import me.Abhigya.core.util.bossbar.BarColor;
 import me.Abhigya.core.util.bossbar.BarFlag;
 import me.Abhigya.core.util.bossbar.BarStyle;
 import me.Abhigya.core.util.bossbar.BossBar;
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
@@ -50,21 +51,21 @@ public class Countdown extends BukkitRunnable {
                 if (remaining <= 20 && remaining > 10) {
                     if(bossBar != null) {
                         this.bossBar.show();
-                        this.bossBar.setTitle(Messages.parseColor("&a&lTime Remaining&7 : &f&l" + remaining + " secs"));
+                        this.bossBar.setTitle(Messages.parseColor(MessageConfiguration.getBbTimerRunning20().replaceAll("%remaining%",String.valueOf(remaining))));
                     }
                 } else if (remaining <= 10 && remaining > 5) {
                     if(bossBar != null) {
-                        this.bossBar.setTitle(Messages.parseColor("&e&lTime Remaining&7 : &f&l" + remaining + " secs"));
+                        this.bossBar.setTitle(Messages.parseColor(MessageConfiguration.getBbTimerRunning10().replaceAll("%remaining%",String.valueOf(remaining))));
                         this.bossBar.setProgress(0.7);
                     }
                 } else if (remaining <= 5 && remaining >= 1) {
                     if(bossBar != null) {
-                        this.bossBar.setTitle(Messages.parseColor("&c&lTime Remaining&7 : &f&l" + remaining + " secs"));
+                        this.bossBar.setTitle(Messages.parseColor(MessageConfiguration.getBbTimerRunning5().replaceAll("%remaining%",String.valueOf(remaining))));
                         this.bossBar.setProgress(0.4);
                     }
                 } else if (remaining == 1) {
                     if(bossBar != null) {
-                        this.bossBar.setTitle(Messages.parseColor("&4&lTime Up!"));
+                        this.bossBar.setTitle(Messages.parseColor(MessageConfiguration.getBbTimerup()));
                         this.bossBar.setProgress(0.0);
                     }
                 }else if (remaining == 0) {

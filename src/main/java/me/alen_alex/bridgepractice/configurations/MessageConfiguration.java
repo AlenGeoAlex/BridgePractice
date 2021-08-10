@@ -16,10 +16,12 @@ public class MessageConfiguration {
     private static final File languageFile = new File(plugin.getDataFolder()+File.separator+"Language","messages.yml");
     //-------------------------------------------------------------------------------------------------------------------------------
     private static String noPermission,unknownCommand,wrongUsageAdmin,wrongUsagePlayers,fromConsole;
-    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted;
+    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest;
     private static String lessTimerValue,timerSetPL,setbackEnabled,setBackDisabled,timerCleared,noActiveTimer;
     private static String spectatorPlayerLeft,spectatorPlayerOffline;
-    private static String placeholderRefreshing,placeholderNA,placeholderUnknownIsland,placeholderUnknownGroup;
+    private static String placeholderRefreshing,placeholderNA,placeholderUnknownIsland,placeholderUnknownGroup,placeholderCurrentlyRecording;
+    private static String replayEnable,replayDisable,replayNotExist,replayCleared;
+    private static String bbTimerRunning20,bbTimerRunning10,bbTimerRunning5,bbTimerup;
     //-------------------------------------------------------------------------------------------------------------------------------
     public static void createLangaugeFile(){
         if(!languageFolder.exists())
@@ -27,8 +29,7 @@ public class MessageConfiguration {
 
         if(!languageFile.exists()){
             plugin.getLogger().info("Seems like messages are missing, Generating one!");
-                //languageFile.createNewFile();
-                new Yaml("messages.yml","plugins/BridgePractice/Language",BridgePractice.getPlugin().getResource("messages.yml"));
+                new Yaml("messages.yml","plugins/BridgePractice/Language",BridgePractice.getPlugin().getResource("messages.yml")).setDefault("version",BridgePractice.getPlugin().getDescription().getVersion());
                 plugin.getLogger().info("Messages has been successfully generated");
 
         }
@@ -66,6 +67,18 @@ public class MessageConfiguration {
         placeholderNA = messageConfigurations.getString("messages.placeholders.not-available");
         placeholderUnknownGroup = messageConfigurations.getString("messages.placeholders.unknown-group");
         placeholderUnknownIsland = messageConfigurations.getString("messages.placeholders.unknown-island");
+        placeholderCurrentlyRecording = messageConfigurations.getString("messages.placeholders.currently-recording");
+        cannotWhileReplay = messageConfigurations.getString("messages.player-messages.cannot-while-watching-replay");
+        replayEnable = messageConfigurations.getString("messages.replay.replay-toggle-enable");
+        replayDisable = messageConfigurations.getString("messages.replay.replay-toggle-disable");
+        replayNotExist = messageConfigurations.getString("messages.replay.replay-not-exist");
+        replayCleared = messageConfigurations.getString("messages.replay.replay-cleared");
+        bbTimerRunning20 = messageConfigurations.getString("messages.bossbar.timer-onCountdown-20");
+        bbTimerRunning10 = messageConfigurations.getString("messages.bossbar.timer-onCountdown-10");
+        bbTimerRunning5 = messageConfigurations.getString("messages.bossbar.timer-onCountdown-5");
+        bbTimerup = messageConfigurations.getString("messages.bossbar.timer-onTimeup");
+        brokeRecordPL = messageConfigurations.getString("messages.player-messages.player-broke-previous-record");
+        brokeAllTimeHighest = messageConfigurations.getString("messages.player-messages.player-broke-alltime-best");
         messageConfigurations = null;
     }
 
@@ -167,5 +180,53 @@ public class MessageConfiguration {
 
     public static String getPlaceholderUnknownGroup() {
         return placeholderUnknownGroup;
+    }
+
+    public static String getPlaceholderCurrentlyRecording() {
+        return placeholderCurrentlyRecording;
+    }
+
+    public static String getCannotWhileReplay() {
+        return cannotWhileReplay;
+    }
+
+    public static String getReplayEnable() {
+        return replayEnable;
+    }
+
+    public static String getReplayDisable() {
+        return replayDisable;
+    }
+
+    public static String getReplayNotExist() {
+        return replayNotExist;
+    }
+
+    public static String getReplayCleared() {
+        return replayCleared;
+    }
+
+    public static String getBbTimerRunning20() {
+        return bbTimerRunning20;
+    }
+
+    public static String getBbTimerRunning10() {
+        return bbTimerRunning10;
+    }
+
+    public static String getBbTimerRunning5() {
+        return bbTimerRunning5;
+    }
+
+    public static String getBbTimerup() {
+        return bbTimerup;
+    }
+
+    public static String getBrokeRecordPL() {
+        return brokeRecordPL;
+    }
+
+    public static String getBrokeAllTimeHighest() {
+        return brokeAllTimeHighest;
     }
 }

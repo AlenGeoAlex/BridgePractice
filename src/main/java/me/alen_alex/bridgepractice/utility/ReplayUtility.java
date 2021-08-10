@@ -31,4 +31,14 @@ public class ReplayUtility {
 
     }
 
+    public static void deleteReplay(Player player, String replayName){
+        if(!ReplaySaver.exists(replayName)){
+            Messages.sendMessage(player,"&cError in fetching replay",false);
+            return;
+        }
+
+        ReplaySaver.delete(replayName);
+        Messages.sendMessage(player,"&cDeleted replay "+replayName,false);
+    }
+
 }
