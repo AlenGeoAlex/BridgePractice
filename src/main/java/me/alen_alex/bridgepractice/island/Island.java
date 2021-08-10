@@ -120,11 +120,13 @@ public class Island {
     public void teleportToIslandSpawn(Player player){
         player.teleport(spawnLocation);
         player.getLocation().setPitch(0.0F);
+        player.getLocation().setYaw(spawnLocation.getYaw());
     }
 
     public void teleportToQuitlobby(Player player){
         player.teleport(quitLocation);
         player.getLocation().setPitch(0.0F);
+        player.getLocation().setYaw(quitLocation.getYaw());
     }
 
 

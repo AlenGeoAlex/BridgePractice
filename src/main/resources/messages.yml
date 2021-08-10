@@ -18,6 +18,7 @@ messages:
     practice-timer-started: "&b⬤ &fTimer is &aRunning!"
     player-broke-previous-record: "&a❥ &cH&aO&9O&dR&eR&3A&6Y&7Y&d!&b!&a!&9! &dYou have broke your previous record of &b&l%current_besttime% &dwith a new striking one of &6&l%new_besttime%"
     player-broke-alltime-best: "&6★ &b&lYou have also broke your current all time highest!"
+    player-completed: "&a✔ &aYou have completed the session with &e&l%currenttime%"
   timer:
     cannot-set-timer-less-than: "&cSorry! &eBut you cannot set timer &cless than 20 secs"
     timer-has-been-set: "&a✔ &fYour timer has been successfully set to %time%"

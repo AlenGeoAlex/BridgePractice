@@ -16,7 +16,7 @@ public class MessageConfiguration {
     private static final File languageFile = new File(plugin.getDataFolder()+File.separator+"Language","messages.yml");
     //-------------------------------------------------------------------------------------------------------------------------------
     private static String noPermission,unknownCommand,wrongUsageAdmin,wrongUsagePlayers,fromConsole;
-    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest;
+    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest,playerCompletedSessionPL;
     private static String lessTimerValue,timerSetPL,setbackEnabled,setBackDisabled,timerCleared,noActiveTimer;
     private static String spectatorPlayerLeft,spectatorPlayerOffline;
     private static String placeholderRefreshing,placeholderNA,placeholderUnknownIsland,placeholderUnknownGroup,placeholderCurrentlyRecording;
@@ -79,6 +79,7 @@ public class MessageConfiguration {
         bbTimerup = messageConfigurations.getString("messages.bossbar.timer-onTimeup");
         brokeRecordPL = messageConfigurations.getString("messages.player-messages.player-broke-previous-record");
         brokeAllTimeHighest = messageConfigurations.getString("messages.player-messages.player-broke-alltime-best");
+        playerCompletedSessionPL = messageConfigurations.getString("messages.player-messages.player-completed");
         messageConfigurations = null;
     }
 
@@ -228,5 +229,9 @@ public class MessageConfiguration {
 
     public static String getBrokeAllTimeHighest() {
         return brokeAllTimeHighest;
+    }
+
+    public static String getPlayerCompletedSessionPL() {
+        return playerCompletedSessionPL;
     }
 }

@@ -29,6 +29,7 @@ public class PlayerLeaveEvent implements Listener {
         }
         if(Gameplay.getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(playerUUID))){
             Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setCurrentPlayer(null);
+            Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setOccupied(false);
             Gameplay.getPlayerIslands().remove(PlayerDataManager.getCachedPlayerData().get(playerUUID));
         }
 

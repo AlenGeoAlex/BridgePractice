@@ -48,6 +48,7 @@ public class Gameplay {
         playerData.setCurrentState(PlayerState.IDLE_ISLAND);
         islandData.setCurrentPlayer(playerData);
         islandData.teleportToIslandSpawn(playerData.getOnlinePlayer());
+        islandData.setOccupied(true);
         playerData.fillPlayerBlocks();
         playerData.setStartTime(System.currentTimeMillis());
         Messages.sendMessage(playerData.getOnlinePlayer(),MessageConfiguration.getFoundIslandPL().replaceAll("%island-name%",islandData.getName()), false);
@@ -70,6 +71,7 @@ public class Gameplay {
         Messages.sendMessage(playerData.getOnlinePlayer(),MessageConfiguration.getPlayerLeftIsland(),false);
         playerData.setCurrentState(null);
         playerIsland.setCurrentPlayer(null);
+        playerIsland.setOccupied(false);
     }
 
     public static void handleGameEnd(Player player, boolean completed){
@@ -79,13 +81,16 @@ public class Gameplay {
         Island islandData = Gameplay.getPlayerIslands().get(playerData);
         PlayerGameEndEvent event = new PlayerGameEndEvent(playerData,islandData,completed);
         Bukkit.getPluginManager().callEvent(event);
-        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
-            ReplayAPI.getInstance().stopReplay(player.getName()+"-"+Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName()+"-"+(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size()+1),true);
+        if(BridgePractice.isAdvanceReplayEnabled()) {
+            if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
+                ReplayAPI.getInstance().stopReplay(player.getName() + "-" + Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), true);
+        }
         if(completed){
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addGamesPlayed();
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
             durationTaken = (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime()  - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime());
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(durationTaken);
+            Messages.sendMessage(player,MessageConfiguration.getPlayerCompletedSessionPL().replaceAll("%currenttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);
             if(Configuration.doUseGroups()){
                 if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
                     long currentBestTime = GroupManager.getHighestOfPlayerInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName());
@@ -107,6 +112,7 @@ public class Gameplay {
             }
         }
         DataManager.savePlayerData(playerData);
+        playerIslands.get(playerData).setOccupied(false);
         Gameplay.getPlayerIslands().remove(playerData);
         playerIslands.put(playerData,islandData);
         handleGameJoin(playerData,islandData);
@@ -147,8 +153,10 @@ public class Gameplay {
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlacedBlocks(placedLocation);
         playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new Countdown(player,PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer()), 0, 20));
         Messages.sendMessage(player,MessageConfiguration.getTimerStarted(), false);
-        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
-            ReplayAPI.getInstance().recordReplay(player.getName()+"-"+Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName()+"-"+(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size()+1),Bukkit.getConsoleSender(),player);
+        if(BridgePractice.isAdvanceReplayEnabled()) {
+            if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
+                ReplayAPI.getInstance().recordReplay(player.getName() + "-" + Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), Bukkit.getConsoleSender(), player);
+        }
     }
 
     public static void onBlockPlace(Player player, Location placedLocation){

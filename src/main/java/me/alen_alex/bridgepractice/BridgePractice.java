@@ -35,6 +35,8 @@ public final class BridgePractice extends JavaPlugin {
     private static IReplayHook replayHook;*/
     private static Random randomInstance = new Random();
     private ResetUtility worldHandler = new ResetUtility();
+
+
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -189,4 +191,11 @@ public final class BridgePractice extends JavaPlugin {
     public static boolean isHologramsEnabled() {
         return hologramsEnabled;
     }
+
+    public static boolean isAdvanceReplayEnabled() {
+        return advanceReplayEnabled;
+    }
+
+
+
 }

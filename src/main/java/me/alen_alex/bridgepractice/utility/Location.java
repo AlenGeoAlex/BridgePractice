@@ -25,6 +25,8 @@ public class Location {
     public static org.bukkit.Location getLocation(@NotNull String _loc){
         String[] data = _loc.split("/");
         org.bukkit.Location location = new org.bukkit.Location(getWorldFromData(_loc),getBlockLocation(_loc,LocationType.X),getBlockLocation(_loc,LocationType.Y),getBlockLocation(_loc,LocationType.Z));
+        location.setPitch(getBlockLocation(_loc,LocationType.PITCH));
+        location.setYaw(getExtrasBlockLocation(_loc,LocationType.YAW));
         return location;
     }
 

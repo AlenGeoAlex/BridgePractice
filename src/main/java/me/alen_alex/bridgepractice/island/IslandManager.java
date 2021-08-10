@@ -44,8 +44,10 @@ public class IslandManager {
         Island selectedIsland = null;
         for(Map.Entry<String,Island> entry : islandData.entrySet()){
             Island checkIsland = entry.getValue();
-            if(!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player))
+            if(!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player)) {
                 selectedIsland = checkIsland;
+                break;
+            }
         }
         return selectedIsland;
     }
@@ -54,8 +56,9 @@ public class IslandManager {
         Island selectedIsland = null;
         for(Map.Entry<String, Island> entry : islandData.entrySet()){
             Island checkIsland = entry.getValue();
-            if(!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player) &&checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName)){
+            if(!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player) &&checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName)){
                 selectedIsland = checkIsland;
+                break;
             }
         }
         return selectedIsland;
@@ -65,8 +68,10 @@ public class IslandManager {
         Island islandSelected = null;
          if(islandData.containsKey(islandName)) {
              Island checkIsland = islandData.get(islandName);
-             if (!checkIsland.isOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player))
+             if (!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player))
                  islandSelected = checkIsland;
+
+
          }
          return islandSelected;
         }
