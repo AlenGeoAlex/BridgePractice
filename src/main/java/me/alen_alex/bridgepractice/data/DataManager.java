@@ -79,7 +79,7 @@ public class DataManager {
         if(playerData == null)
             return false;
         try {
-            PreparedStatement ps = Data.getDatabaseConnection().getConnection().prepareStatement("UPDATE playerdata SET `gamesplayed` = '"+playerData.getGamesPlayed()+"' , `besttime` = '"+playerData.getBestTime()+"', `currenttime` = '"+playerData.getCurrentTime()+"' , `material` = '"+ playerData.getStringMaterial()+"' , `particle` = '"+ playerData.getStringParticleName()+"' WHERE `uuid` =  '"+playerData.getStringUUID()+"';");
+            PreparedStatement ps = Data.getDatabaseConnection().getConnection().prepareStatement("UPDATE playerdata SET `blocksplaced` = '"+playerData.getBlocksPlaced()+"' ,`gamesplayed` = '"+playerData.getGamesPlayed()+"' , `besttime` = '"+playerData.getBestTime()+"', `currenttime` = '"+playerData.getCurrentTime()+"' , `material` = '"+ playerData.getStringMaterial()+"' , `particle` = '"+ playerData.getStringParticleName()+"' WHERE `uuid` =  '"+playerData.getStringUUID()+"';");
             ps.executeUpdate();
             ps.close();
             return true;
@@ -90,7 +90,11 @@ public class DataManager {
     }
 
     public static void createGroupDatabase(String groupName){
-        Data.getDatabaseConnection().createTable(groupName,"`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`besttime` BIGINT(30) NOT NULL");
+        try {
+            Data.getDatabaseConnection().createTable(groupName,"`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`besttime` BIGINT(30) NOT NULL");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean deleteGroupDatabase(String groupName){
@@ -106,12 +110,21 @@ public class DataManager {
     }
     
     public static long getBestFromGroup(String GroupName, String PlayerName){
-        return Data.getDatabaseConnection().getLong(GroupName,"besttime", "name", PlayerName);
+        try {
+            return Data.getDatabaseConnection().getLong(GroupName,"besttime", "name", PlayerName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 
     public static void setBestFromGroup(String groupName, String playerName, long newDuration){
-        Data.getDatabaseConnection().set(groupName,"name",playerName,"besttime",newDuration);
+        try {
+            Data.getDatabaseConnection().set(groupName,"name",playerName,"besttime",newDuration);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

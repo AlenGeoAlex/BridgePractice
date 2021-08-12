@@ -1,10 +1,12 @@
 package me.alen_alex.bridgepractice.playerdata;
 
-import me.Abhigya.core.particle.ParticleBuilder;
-import me.Abhigya.core.particle.ParticleEffect;
+
+import me.Abhigya.core.particle.particlelib.ParticleBuilder;
+import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.Abhigya.core.util.tasks.Workload;
 
 import me.alen_alex.bridgepractice.BridgePractice;
+import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.data.DataManager;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.utility.Blocks;
@@ -206,10 +208,14 @@ public class PlayerData {
         player.getInventory().setItem(8, leaveGame);
     }
 
-    public void setLobbyItems(){
+    public void setToLobbyState(){
         Player player = getOnlinePlayer();
         player.setHealthScale(20.00);
         player.getInventory().clear();
+    }
+
+    public void teleportPlayerToSpawn(){
+        this.getOnlinePlayer().teleport(me.alen_alex.bridgepractice.utility.Location.getLocation(Configuration.getLobbyLocation()));
     }
 
     public void resetPlacedBlocks(){
@@ -312,15 +318,20 @@ public class PlayerData {
 
     public void spawnFirework(){
         r.setSeed(System.currentTimeMillis());
-        Firework fw = (Firework) getOnlinePlayer().getWorld().spawnEntity(getOnlinePlayer().getLocation(), EntityType.FIREWORK);
-        FireworkMeta fwm = fw.getFireworkMeta();
-        Color c1 = FireworkUtilities.getRandomColor();
-        Color c2 = FireworkUtilities.getRandomColor();
-        FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(fireworkType).trail(r.nextBoolean()).build();
-        fwm.addEffect(effect);
-        int rp = r.nextInt(2) + 1;
-        fwm.setPower(rp);
-        fw.setFireworkMeta(fwm);
+        Bukkit.getScheduler().runTask(BridgePractice.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                Firework fw = (Firework) getOnlinePlayer().getWorld().spawnEntity(getOnlinePlayer().getLocation(), EntityType.FIREWORK);
+                FireworkMeta fwm = fw.getFireworkMeta();
+                Color c1 = FireworkUtilities.getRandomColor();
+                Color c2 = FireworkUtilities.getRandomColor();
+                FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(fireworkType).trail(r.nextBoolean()).build();
+                fwm.addEffect(effect);
+                int rp = r.nextInt(2) + 1;
+                fwm.setPower(rp);
+                fw.setFireworkMeta(fwm);
+            }
+        });
     }
 
     public List<String> getPlayerReplays(){

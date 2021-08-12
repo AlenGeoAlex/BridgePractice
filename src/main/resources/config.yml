@@ -53,6 +53,8 @@ broadcast-new-record: true
 ##startingLocation --> Text to be displayed where the starting holo location
 ##endingLocation --> Text to be displayed where ending location
 ##To display an Item use -> [ITEM];<Material_Name>
+##NOTE: Use material ID from the spigot 1.8 version
+##https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 holograms:
   enabled: true
   hologramoffset-Y: 2
@@ -64,13 +66,54 @@ holograms:
     - "&fStand on the block below to"
     - "complete your session"
 ########################################################################################################################
+##blacklist:
+##List of blacklisted items
+##Players won't be able to place blocks on the MATERIAL specified Below
+##NOTE: Use material ID from the spigot 1.8 version
+##https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+blacklist:
+  material:
+    - "BARRIER"
+    - "GLASS"
+########################################################################################################################
 ##settings:
 ##Some common settings
 ##lobby-location -> Set the location of server main-lobby, its PREFERRED to set using /practiceadmin setlobby
 ##leaderboard-refresh-mins -> How frequent do leaderboards need to refreshed in mins!
 ##DON'T SET IT TO LESS THAN 1
 ##teleport-to-lobby-after-replay-ends --> Whether or not to teleport back to lobby when a replay ends!
+##Item-drop
+##disable-item-drop: Allow players to drop items
+##While true -> Doesnot allow players to drop items
+##While false -> Allow players to drop items
+##only-check-while-playing: Enable this check while on actice session or check always
+##While true -> Only check while a player is in active session
+##While false -> It will cancel all events related to item-drop always (Sometimes useful for lobbies too)
+#item-pickup:
+##disable-item-drop: Allow players to pickup items
+##While true -> Doesnot allow players to pickup items
+##While false -> Allow players to pickup items
+##only-check-while-playing: Enable this check while on actice session or check always
+##While true -> Only check while a player is in active session
+##While false -> It will cancel all events related to item-pickup always (Sometimes useful for lobbies too)
+##clear-player-inventory-on-join: Clear a players inventory while one join to the server
+##enable -> Enable or disable clear-player-inventory-on-join
+##While true -> It will clear the player inve
+##While false -> It will not clear the player Inventory
+##delay: Delay in which the clear-player-inventory-on-join triggers
+##NOTE -> This only works if above is enabled
+##spawn-on-join: Teleport player to `settings.lobby-location` when on joined
 settings:
   lobby-location:
   leaderboard-refresh-mins: 5
   teleport-to-lobby-after-replay-ends: true
+  item-drop:
+    disable-item-drop: true
+    only-check-while-playing: false
+  item-pickup:
+    disable-item-pickup: true
+    only-check-while-playing: false
+  clear-player-inventory-on-join:
+    enable: true
+    delay: 5
+  spawn-on-join: false

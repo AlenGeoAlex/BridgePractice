@@ -19,6 +19,10 @@ messages:
     player-broke-previous-record: "&a❥ &cH&aO&9O&dR&eR&3A&6Y&7Y&d!&b!&a!&9! &dYou have broke your previous record of &b&l%current_besttime% &dwith a new striking one of &6&l%new_besttime%"
     player-broke-alltime-best: "&6★ &b&lYou have also broke your current all time highest!"
     player-completed: "&a✔ &aYou have completed the session with &e&l%currenttime%"
+    player-cheat-failed-time: "&7[&c!&7] &cYou are short of time. &eRedirecting Back!"
+    player-cheat-failed-blocks: "&7[&c!&7] &cYou are short in blocks. &eRedirecting Back!"
+    player-cheat-failed-blacklisted-blocks: "&7[&c!&7] &cYou are not allowed to place blocks on this block. &eRedirecting Back!"
+    player-void-fail: "&7[&c!&7] &eYou slipped your foot!!"
   timer:
     cannot-set-timer-less-than: "&cSorry! &eBut you cannot set timer &cless than 20 secs"
     timer-has-been-set: "&a✔ &fYour timer has been successfully set to %time%"
@@ -45,4 +49,5 @@ messages:
     unknown-island: "&c&lUnknown Island"
     unknown-group: "&c&lUnknown Group"
     currently-recording: "&c⬤ &fREC"
+
 

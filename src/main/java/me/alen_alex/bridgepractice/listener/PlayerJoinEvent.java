@@ -1,9 +1,12 @@
 package me.alen_alex.bridgepractice.listener;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.api.PlayerIslandJoinEvent;
+import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.data.DataManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +30,25 @@ public class PlayerJoinEvent implements Listener {
             throwables.printStackTrace();
             player.kickPlayer("Seems like its unable to load the player data");
         }
-        //PlayerDataManager.getCachedPlayerData().get(playerUUID).setLobbyItems();
+        if(PlayerDataManager.getCachedPlayerData().containsKey(playerUUID)) {
+            if(Configuration.isSpawnOnJoinEnabled()){
+                PlayerDataManager.getCachedPlayerData().get(playerUUID).teleportPlayerToSpawn();
+            }
+            if (Configuration.isClearPlayerOnJoinEnabled()) {
+                if (Configuration.getClearPlayerJoinDelay() <= 1) {
+                    PlayerDataManager.getCachedPlayerData().get(playerUUID).setToLobbyState();
+                } else {
+                    Bukkit.getScheduler().runTaskLater(BridgePractice.getPlugin(), new Runnable() {
+                        @Override
+                        public void run() {
+                            PlayerDataManager.getCachedPlayerData().get(playerUUID).setToLobbyState();
+                        }
+                    }, (long) Configuration.getClearPlayerJoinDelay());
+                }
+            }
+        }else{
+            player.kickPlayer("Seems like its unable to load the player data");
+        }
     }
 
     @EventHandler

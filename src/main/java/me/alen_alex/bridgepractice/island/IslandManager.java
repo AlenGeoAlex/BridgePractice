@@ -28,7 +28,7 @@ public class IslandManager {
 
                     continue;
                 }
-                Bukkit.getLogger().info("Succesfully Loaded Island " + islandName + " on the world " + islandData.get(islandName).getWorldName());
+                Bukkit.getLogger().info("[ISLAND LOADER] Succesfully Loaded Island " + islandName + " on the world " + islandData.get(islandName).getWorldName());
             }else{
                 Bukkit.getLogger().info("Island Disabled By Default "+islandName+". Skipping!!");
             }

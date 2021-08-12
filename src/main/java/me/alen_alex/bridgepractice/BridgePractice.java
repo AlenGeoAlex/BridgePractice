@@ -1,9 +1,8 @@
 package me.alen_alex.bridgepractice;
 
 import me.Abhigya.core.database.sql.SQL;
-import me.Abhigya.core.menu.ItemMenu;
-import me.Abhigya.core.menu.size.ItemMenuSize;
-import me.Abhigya.core.particle.ParticleEffect;
+import me.Abhigya.core.menu.inventory.ItemMenu;
+import me.Abhigya.core.menu.inventory.size.ItemMenuSize;
 import me.alen_alex.bridgepractice.commands.*;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
@@ -21,6 +20,7 @@ import me.alen_alex.bridgepractice.utility.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -31,20 +31,18 @@ public final class BridgePractice extends JavaPlugin {
     private static SQL connection;
     private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu,fireworkMenu,replayMenu;
     private static boolean hologramsEnabled = false, advanceReplayEnabled = false;
-    /*private static ReplayAPI replayAPIInstance;
-    private static IReplayHook replayHook;*/
     private static Random randomInstance = new Random();
     private ResetUtility worldHandler = new ResetUtility();
-
 
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
             this.getLogger().severe("=================================================================");
             this.getLogger().info("");
-            this.getLogger().info("This plugin requires CoreAPI version - 1.1.2");
+            this.getLogger().info("This plugin requires CoreAPI version - 1.2.1");
             this.getLogger().info("Newer versions or older version won't be working for it");
             this.getLogger().info("You can download one at");
+            //TODO Update Once he updates!
             this.getLogger().info("https://github.com/AbhigyaKrishna/CoreAPI/tree/1.1.2");
             this.getLogger().info("");
             this.getLogger().severe("Disabling plugin");
@@ -64,7 +62,7 @@ public final class BridgePractice extends JavaPlugin {
             }
         Data dataConnection = new Data();
         WorkloadScheduler.intializeThread();
-        connection = dataConnection.getDatabaseConnection();
+        connection = Data.getDatabaseConnection();
         if(connection == null)
         {
             getLogger().severe("Error while connecting to database. DISABLING PLUGIN");
@@ -105,7 +103,16 @@ public final class BridgePractice extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Data.disconnect();
+        try {
+            if(!connection.getConnection().isClosed()) {
+                Data.disconnect();
+                getLogger().info("Database has been disconnected!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        getLogger().info("Disabling plugin!");
+
     }
 
     public void registerCommands(){
@@ -119,6 +126,7 @@ public final class BridgePractice extends JavaPlugin {
         getCommand("firework").setExecutor(new Firework());
         getCommand("resetisland").setExecutor(new ResetIsland());
         getCommand("resetisland").setTabCompleter(new ResetIsland());
+        getCommand("block").setExecutor(new Block());
 
     }
     public void registerListener(){
@@ -131,6 +139,12 @@ public final class BridgePractice extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamageEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteractEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerInventoryClickEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCraftItemEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerRespawnEvent(), this);
+        if(Configuration.isDisableItemDrop())
+            getServer().getPluginManager().registerEvents(new PlayerItemDropEvent(), this);
+        if(Configuration.isDisableItempickup())
+            getServer().getPluginManager().registerEvents(new PlayerItemPickupEvent(), this);
     }
 
     public void registerMenus(){

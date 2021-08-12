@@ -1,11 +1,11 @@
 package me.alen_alex.bridgepractice.menu;
 
-import me.Abhigya.core.menu.ItemMenu;
-import me.Abhigya.core.menu.action.ItemClickAction;
-import me.Abhigya.core.menu.item.action.ActionItem;
-import me.Abhigya.core.menu.item.action.ItemAction;
-import me.Abhigya.core.menu.item.action.ItemActionPriority;
-import me.Abhigya.core.particle.ParticleEffect;
+import me.Abhigya.core.menu.inventory.ItemMenu;
+import me.Abhigya.core.menu.inventory.action.ItemClickAction;
+import me.Abhigya.core.menu.inventory.item.action.ActionItem;
+import me.Abhigya.core.menu.inventory.item.action.ItemAction;
+import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
+import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;

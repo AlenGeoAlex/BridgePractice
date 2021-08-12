@@ -16,7 +16,7 @@ public class MessageConfiguration {
     private static final File languageFile = new File(plugin.getDataFolder()+File.separator+"Language","messages.yml");
     //-------------------------------------------------------------------------------------------------------------------------------
     private static String noPermission,unknownCommand,wrongUsageAdmin,wrongUsagePlayers,fromConsole;
-    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest,playerCompletedSessionPL;
+    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest,playerCompletedSessionPL,cheatTimeFail,cheatBlockFail,cheatPlacedBlocksFail,playerFellVoid;
     private static String lessTimerValue,timerSetPL,setbackEnabled,setBackDisabled,timerCleared,noActiveTimer;
     private static String spectatorPlayerLeft,spectatorPlayerOffline;
     private static String placeholderRefreshing,placeholderNA,placeholderUnknownIsland,placeholderUnknownGroup,placeholderCurrentlyRecording;
@@ -80,6 +80,10 @@ public class MessageConfiguration {
         brokeRecordPL = messageConfigurations.getString("messages.player-messages.player-broke-previous-record");
         brokeAllTimeHighest = messageConfigurations.getString("messages.player-messages.player-broke-alltime-best");
         playerCompletedSessionPL = messageConfigurations.getString("messages.player-messages.player-completed");
+        cheatTimeFail = messageConfigurations.getString("messages.player-messages.player-cheat-failed-time");
+        cheatBlockFail = messageConfigurations.getString("messages.player-messages.player-cheat-failed-blocks");
+        cheatPlacedBlocksFail = messageConfigurations.getString("messages.player-messages.player-cheat-failed-blacklisted-blocks");
+        playerFellVoid = messageConfigurations.getString("messages.player-messages.player-void-fail");
         messageConfigurations = null;
     }
 
@@ -233,5 +237,21 @@ public class MessageConfiguration {
 
     public static String getPlayerCompletedSessionPL() {
         return playerCompletedSessionPL;
+    }
+
+    public static String getCheatBlockFail() {
+        return cheatBlockFail;
+    }
+
+    public static String getCheatTimeFail() {
+        return cheatTimeFail;
+    }
+
+    public static String getCheatPlacedBlocksFail() {
+        return cheatPlacedBlocksFail;
+    }
+
+    public static String getPlayerFellVoid() {
+        return playerFellVoid;
     }
 }

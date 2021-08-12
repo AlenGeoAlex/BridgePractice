@@ -30,7 +30,15 @@ public class SessionReplay implements CommandExecutor, TabCompleter {
                 MenuManager.openReplayMenu(player);
                 return true;
             }else{
-                //TODO SEND HELP MESSAGE
+                Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----",false);
+                Messages.sendMessage(player,"&r",false);
+                Messages.sendJSONSuggestMessage(player,"&6= &d➥ &e&/sessionreplay play &4[&7replay_name&4] &8➜ &fPlay up a replay","/sessionreplay play ","&dClick to suggest the message",false);
+                Messages.sendJSONSuggestMessage(player,"&6= &d➥ &e&/sessionreplay delete &4[&7replay_name&4] &8➜ &fDelete a replay","/sessionreplay delete ","&dClick to suggest the message",false);
+                Messages.sendJSONExecuteCommand(player,"&6= &d➥ &e&/sessionreplay toggle &8➜ &fEnables/Disables Recording","/sessionreplay toggle ","&dClick to execute the command",false);
+                Messages.sendJSONExecuteCommand(player,"&6= &d➥ &e&/sessionreplay clear &8➜ &fClear all your current recording","/sessionreplay clear ","&dClick to execute the command",false);
+                Messages.sendMessage(player,"&r",false);
+                Messages.sendMessage(player,"&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----&c&l-----&b&l-----",false);
+
             }
         }else if(strings.length == 1){
             switch (strings[0].toUpperCase()){

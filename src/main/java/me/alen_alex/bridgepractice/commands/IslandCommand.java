@@ -46,11 +46,8 @@ public class IslandCommand implements CommandExecutor, TabCompleter {
                 case "LEAVE":
                     PlayerCommands.leaveRequestCommand(player);
                     break;
-                case "BLOCKS":
-                    MenuManager.openMaterialMenu(player);
-                    break;
-                case "REPLAY":
-                    MenuManager.openReplayMenu(player);
+                case "HELP":
+
                     break;
                 default:
                     Messages.sendMessage(player, MessageConfiguration.getUnknownCommand(),false);

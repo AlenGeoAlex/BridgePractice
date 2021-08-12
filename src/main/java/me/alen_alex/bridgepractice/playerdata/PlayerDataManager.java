@@ -1,6 +1,6 @@
 package me.alen_alex.bridgepractice.playerdata;
 
-import me.Abhigya.core.particle.ParticleEffect;
+import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.alen_alex.bridgepractice.data.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

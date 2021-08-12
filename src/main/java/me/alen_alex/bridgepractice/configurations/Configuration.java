@@ -18,8 +18,10 @@ public class Configuration {
     private static String host,username,password,port,database;
     private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms,tpBacktoLobbyAfterReplay;
     private static String prefixMain,lobbyLocation;
-    private static int voidDetectionLevel,hologramsOffsetY,leaderboardRefreshTimeout;
+    private static int voidDetectionLevel,hologramsOffsetY,leaderboardRefreshTimeout,clearPlayerJoinDelay;
     private static List<String> hologramsStartingLines,hologramsEndingLines;
+    private static List<String> blacklistedBlocks;
+    private static boolean disableItemDrop, itemDropOnlyOnSession, disableItempickup, itemPickupOnlyOnSession, clearPlayerOnJoinEnabled,spawnOnJoinEnabled;
 
     public static void createConfiguration(){
             File configFile = new File(plugin.getDataFolder(),"config.yml");
@@ -64,6 +66,14 @@ public class Configuration {
         lobbyLocation = config.getString("settings.lobby-location");
         leaderboardRefreshTimeout = config.getInt("settings.leaderboard-refresh-mins");
         tpBacktoLobbyAfterReplay = config.getBoolean("settings.teleport-to-lobby-after-replay-ends");
+        blacklistedBlocks = config.getStringList("blacklist.material");
+        disableItemDrop = config.getBoolean("settings.item-drop.disable-item-drop");
+        itemDropOnlyOnSession = config.getBoolean("settings.item-drop.only-check-while-playing");
+        disableItempickup = config.getBoolean("settings.item-pickup.disable-item-pickup");
+        itemPickupOnlyOnSession = config.getBoolean("settings.item-pickup.only-check-while-playing");
+        clearPlayerOnJoinEnabled = config.getBoolean("settings.clear-player-inventory-on-join.enable");
+        clearPlayerJoinDelay = config.getInt("settings.clear-player-inventory-on-join.delay");
+        spawnOnJoinEnabled = config.getBoolean("settings.spawn-on-join");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -145,6 +155,38 @@ public class Configuration {
 
     public static boolean isTpBacktoLobbyAfterReplay() {
         return tpBacktoLobbyAfterReplay;
+    }
+
+    public static List<String> getBlacklistedBlocks() {
+        return blacklistedBlocks;
+    }
+
+    public static boolean isDisableItemDrop() {
+        return disableItemDrop;
+    }
+
+    public static boolean isItemDropOnlyOnSession() {
+        return itemDropOnlyOnSession;
+    }
+
+    public static boolean isDisableItempickup() {
+        return disableItempickup;
+    }
+
+    public static boolean isItemPickupOnlyOnSession() {
+        return itemPickupOnlyOnSession;
+    }
+
+    public static int getClearPlayerJoinDelay() {
+        return clearPlayerJoinDelay;
+    }
+
+    public static boolean isClearPlayerOnJoinEnabled() {
+        return clearPlayerOnJoinEnabled;
+    }
+
+    public static boolean isSpawnOnJoinEnabled() {
+        return spawnOnJoinEnabled;
     }
 }
 

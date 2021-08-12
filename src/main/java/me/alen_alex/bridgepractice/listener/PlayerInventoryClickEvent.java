@@ -13,6 +13,9 @@ public class PlayerInventoryClickEvent implements Listener {
     public void onPlayerInventoryClickEvent(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
 
+        if(event.getCurrentItem() == null)
+            return;
+
         if(event.getCurrentItem().getType() == Material.BARRIER){
             if(!PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isBuildModeEnabled()){
                 event.setCancelled(true);

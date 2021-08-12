@@ -1,6 +1,6 @@
 package me.alen_alex.bridgepractice.utility;
 
-import me.Abhigya.core.particle.ParticleEffect;
+import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.alen_alex.bridgepractice.BridgePractice;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class PlayerParticles {
 
-    private static HashMap<String,ParticleEffect> playerEffect = new HashMap<String, ParticleEffect>();
+    private static HashMap<String, ParticleEffect> playerEffect = new HashMap<String, ParticleEffect>();
 
     public static void loadAllAvailableEffectToCache(){
         ParticleEffect.getAvailableEffects().stream().filter(particleEffect -> particleEffect != ParticleEffect.MOB_APPEARANCE).forEach(particleEffect -> playerEffect.put(particleEffect.name(), particleEffect));

@@ -14,7 +14,7 @@ public class Validation {
     }
 
     public static boolean ValidateCoreAPI(){
-        if(!(CoreVersion.getCoreVersion() == CoreVersion.v1_1_2))
+        if(!(CoreVersion.getCoreVersion() == CoreVersion.v1_2_1))
             return false;
         else
             return true;

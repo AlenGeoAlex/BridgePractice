@@ -1,6 +1,6 @@
 package me.alen_alex.bridgepractice.listener;
 
-import me.Abhigya.core.particle.ParticleEffect;
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.data.DataManager;
 import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.island.IslandManager;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class PlayerLeaveEvent implements Listener {
 
     @EventHandler
-    public void PlayerLeaveEvent(PlayerQuitEvent event){
+    public void onPlayerLeaveEvent(PlayerQuitEvent event){
         Player player = event.getPlayer();
         UUID playerUUID = event.getPlayer().getUniqueId();
         PlayerData leftPlayerData = PlayerDataManager.getCachedPlayerData().get(playerUUID);
@@ -45,7 +45,7 @@ public class PlayerLeaveEvent implements Listener {
         if(Gameplay.getSpectators().containsValue(player)){
             Gameplay.getCurrentlySpectatingPlayers(player).forEach(player1 -> {
                 Gameplay.handleLeaveSpectating(player1,player);
-                Messages.sendMessage(player1,"&cYou have been teleported back to lobby since the player has left the server",false);
+                Messages.sendMessage(player1, MessageConfiguration.getSpectatorPlayerLeft(),false);
             });
         }
     }

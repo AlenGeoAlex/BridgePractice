@@ -41,6 +41,10 @@ commands:
       - practicereplay
       - preplay
     description: "Command for opening replay menu"
+  block:
+    description: "A command for player to open up the material menu"
+    aliases:
+      - blocks
 
 permissions:
   practice.gui.particle:
@@ -49,4 +53,6 @@ permissions:
     default: true
   practice.gui.replay:
     default: true
+  practice.gui.block:
+      default: true
 

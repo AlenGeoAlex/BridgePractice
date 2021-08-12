@@ -2,6 +2,7 @@ package me.alen_alex.bridgepractice.data;
 
 import me.Abhigya.core.database.sql.SQL;
 import me.Abhigya.core.database.sql.SQLDatabase;
+import me.Abhigya.core.database.sql.hikaricp.HikariClientBuilder;
 import me.Abhigya.core.database.sql.mysql.MySQL;
 import me.Abhigya.core.database.sql.sqlite.SQLite;
 import me.alen_alex.bridgepractice.BridgePractice;
@@ -19,8 +20,8 @@ public class Data {
 
     public Data(){
         if(Configuration.isUseMysql()){
-               //this.database = new HikariClientBuilder("jdbc:mysql://"+Configuration.getHost()+":"+Configuration.getPort()+"/"+Configuration.getDatabase(),Configuration.getUsername(),Configuration.getPassword(),true).setMaximumPoolSize(10).build();
-                this.database = new MySQL(Configuration.getHost(),Integer.parseInt(Configuration.getPort()),Configuration.getDatabase(),Configuration.getUsername(),Configuration.getPassword(),true,Configuration.isUseSSL());
+               this.database = new HikariClientBuilder("jdbc:mysql://"+Configuration.getHost()+":"+Configuration.getPort()+"/"+Configuration.getDatabase(),Configuration.getUsername(),Configuration.getPassword(),true).setMaximumPoolSize(10).build();
+               //this.database = new MySQL(Configuration.getHost(),Integer.parseInt(Configuration.getPort()),Configuration.getDatabase(),Configuration.getUsername(),Configuration.getPassword(),true,Configuration.isUseSSL());
             try {
                 database.connect();
             } catch (Exception e) {
@@ -49,7 +50,11 @@ public class Data {
     }
 
     public static void createDatabase(){
-        sql.createTable("playerdata","`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`uuid` VARCHAR(50) NOT NULL","`blocksplaced` INTEGER(10) NOT NULL","`gamesplayed` INTEGER(10) NOT NULL","`besttime` BIGINT(30) NOT NULL","`currenttime` BIGINT(30) NOT NULL","`material` VARCHAR(30)","`particle` VARCHAR(30)");
+        try {
+            sql.createTable("playerdata","`id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY","`name` VARCHAR(30) NOT NULL","`uuid` VARCHAR(50) NOT NULL","`blocksplaced` INTEGER(10) NOT NULL","`gamesplayed` INTEGER(10) NOT NULL","`besttime` BIGINT(30) NOT NULL","`currenttime` BIGINT(30) NOT NULL","`material` VARCHAR(30)","`particle` VARCHAR(30)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static SQLDatabase getDatabase() {

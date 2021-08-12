@@ -59,7 +59,7 @@ public class Gameplay {
         Island playerIsland = playerIslands.get(playerData);
         PlayerIslandLeaveEvent event = new PlayerIslandLeaveEvent(playerIsland,playerData);
         Bukkit.getPluginManager().callEvent(event);
-        playerData.setLobbyItems();
+        playerData.setToLobbyState();
         playerData.resetPlacedBlocks();
         if(Gameplay.getSpectators().containsValue(playerData.getOnlinePlayer())){
             Gameplay.getCurrentlySpectatingPlayers(playerData.getOnlinePlayer()).forEach(player1 -> {
@@ -81,11 +81,11 @@ public class Gameplay {
         Island islandData = Gameplay.getPlayerIslands().get(playerData);
         PlayerGameEndEvent event = new PlayerGameEndEvent(playerData,islandData,completed);
         Bukkit.getPluginManager().callEvent(event);
-        if(BridgePractice.isAdvanceReplayEnabled()) {
-            if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
-                ReplayAPI.getInstance().stopReplay(player.getName() + "-" + Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), true);
-        }
         if(completed){
+            if(BridgePractice.isAdvanceReplayEnabled()) {
+                if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
+                    ReplayAPI.getInstance().stopReplay(player.getName() + "-" + Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), true);
+            }
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addGamesPlayed();
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
             durationTaken = (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getEndTime()  - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime());
@@ -93,6 +93,7 @@ public class Gameplay {
             Messages.sendMessage(player,MessageConfiguration.getPlayerCompletedSessionPL().replaceAll("%currenttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);
             if(Configuration.doUseGroups()){
                 if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
+
                     long currentBestTime = GroupManager.getHighestOfPlayerInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName());
                     if (durationTaken < currentBestTime) {
                         Messages.sendMessage(player, MessageConfiguration.getBrokeRecordPL().replaceAll("%current_besttime%",TimeUtility.getDurationFromLongTime(currentBestTime)).replaceAll("%new_besttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);
@@ -148,7 +149,7 @@ public class Gameplay {
 
     public static void onFirstBlockPlace(Player player, Location placedLocation){
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentState(PlayerState.PLAYING);
-        PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(System.currentTimeMillis());
+        PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setStartTime(System.currentTimeMillis());
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlayerPlacedBlock();
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlacedBlocks(placedLocation);
         playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new Countdown(player,PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer()), 0, 20));
