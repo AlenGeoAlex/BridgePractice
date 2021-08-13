@@ -4,7 +4,9 @@ import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
+import me.alen_alex.bridgepractice.utility.Validation;
 import org.bukkit.Bukkit;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -59,8 +61,14 @@ public class CreationCommand {
             return;
         }
 
+        if(!(Validation.checkEndPointLocation(player.getLocation()))){
+            Messages.sendMessage(player,"&cThe provided block is not a pressure plate",false);
+            return;
+        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(creatingIsland+".end.position",location);
+        arenaStorage.set(creatingIsland+".end.material",player.getLocation().getBlock().getType().name());
         Messages.sendMessage(player,"&aEnd point has been set to &6"+location+" &afor the arena "+creatingIsland, true);
     }
 

@@ -10,6 +10,7 @@ import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,8 +27,9 @@ public class Island {
     private PlayerData currentPlayer = null;
     private Group islandGroup;
     private int minSeconds, minBlocks;
+    private Material endPointMaterial;
 
-    public Island(@NotNull String name, @NotNull String worldName, Group islandGroup, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, int minSeconds, int minBlocks, @NotNull boolean active) {
+    public Island(@NotNull String name, @NotNull String worldName, Group islandGroup, String permission, @NotNull Location spawnLocation, @NotNull Location endLocation, @NotNull Material endPointMaterial, @NotNull Location quitLocation, @NotNull Location pos1, @NotNull Location pos2, int minSeconds, int minBlocks, @NotNull boolean active) {
         this.name = name;
         this.worldName = worldName;
         this.islandGroup = islandGroup;
@@ -40,6 +42,12 @@ public class Island {
         this.active = active;
         this.minSeconds = minSeconds;
         this.minBlocks = minBlocks;
+        this.endPointMaterial = endPointMaterial;
+        if(endLocation.getBlock().getType().name() != endPointMaterial.name()) {
+            Bukkit.getLogger().warning("[ISLAND LOADER] Material for end point does not match with the current ("+endLocation.getBlock().getType().name()+").. Trying to replace one!");
+            endLocation.getBlock().setType(endPointMaterial);
+        }
+
     }
 
     public String getName() {
@@ -129,6 +137,9 @@ public class Island {
         player.getLocation().setYaw(quitLocation.getYaw());
     }
 
+    public Material getEndPointMaterial() {
+        return endPointMaterial;
+    }
 
     public World getIslandWorld(){
         return Bukkit.getWorld(worldName);
