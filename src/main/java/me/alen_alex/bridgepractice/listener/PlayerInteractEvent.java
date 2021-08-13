@@ -4,6 +4,7 @@ import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.game.Gameplay;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
+import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.TimeUtility;
 import org.bukkit.Material;
@@ -24,35 +25,35 @@ public class PlayerInteractEvent implements Listener {
                 player.performCommand("island leave");
                 return;
             }
-
-
     }
 
     @EventHandler
     public void onPressurePlateTrigger(org.bukkit.event.player.PlayerInteractEvent event){
         if(event.isCancelled())
             return;
-
         if(event.getClickedBlock().isEmpty())
             return;
 
         Player player = event.getPlayer();
-        if(! (event.getClickedBlock().getType() == Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndPointMaterial()) && event.getAction() != Action.PHYSICAL)
-            return;
 
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
-            if(event.getClickedBlock().getType() == Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndPointMaterial()){
-                if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame() < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinBlocks()) {
-                    Gameplay.handleGameEnd(player, false);
-                    Messages.sendMessage(player, MessageConfiguration.getCheatBlockFail(), false);
-                    return;
+            if(event.getAction() == Action.PHYSICAL) {
+                if (event.getClickedBlock().getType() == Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndPointMaterial()) {
+                    if (Location.compareLocations(event.getClickedBlock().getLocation(),Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation())) {
+
+                        if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame() < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinBlocks()) {
+                            Gameplay.handleGameEnd(player, false);
+                            Messages.sendMessage(player, MessageConfiguration.getCheatBlockFail(), false);
+                            return;
+                        }
+                        if (TimeUtility.getSecondsFromLongTime(System.currentTimeMillis() - (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime())) < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinSeconds()) {
+                            Gameplay.handleGameEnd(player, false);
+                            Messages.sendMessage(player, MessageConfiguration.getCheatTimeFail(), false);
+                            return;
+                        }
+                        Gameplay.handleGameEnd(player, true);
+                    }
                 }
-                if(TimeUtility.getSecondsFromLongTime(System.currentTimeMillis() - (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime())) < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinSeconds()){
-                    Gameplay.handleGameEnd(player,false);
-                    Messages.sendMessage(player,MessageConfiguration.getCheatTimeFail(), false);
-                    return;
-                }
-                Gameplay.handleGameEnd(player, true);
             }
         }
     }

@@ -43,8 +43,6 @@ public class EditCommand {
         }
         String location = Location.parseLocation(player);
         arenaStorage.set(editIslands+".spawn.position",location);
-        System.out.println(player.getLocation().getBlock().getType().name());
-        arenaStorage.set(editIslands+".end.material",player.getLocation().getBlock().getType().name());
         Messages.sendMessage(player,"&aSpawn point has been set to &6"+location+" &afor the arena "+editIslands, true);
     }
 
@@ -64,7 +62,7 @@ public class EditCommand {
 
         String location = Location.parseLocation(player);
         arenaStorage.set(editIslands+".end.position",location);
-        arenaStorage.set(editIslands+".end.material",player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().name());
+        arenaStorage.set(editIslands+".end.material",player.getLocation().getBlock().getType().name());
         Messages.sendMessage(player,"&aEnd point has been set to &6"+location+" &afor the arena "+editIslands, true);
     }
 

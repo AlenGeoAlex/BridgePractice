@@ -43,7 +43,7 @@ public class Island {
         this.minSeconds = minSeconds;
         this.minBlocks = minBlocks;
         this.endPointMaterial = endPointMaterial;
-        if(endLocation.getBlock().getType().name() != endPointMaterial.name()) {
+        if(!endLocation.getBlock().getType().name().equals(endPointMaterial.name())) {
             Bukkit.getLogger().warning("[ISLAND LOADER] Material for end point does not match with the current ("+endLocation.getBlock().getType().name()+").. Trying to replace one!");
             endLocation.getBlock().setType(endPointMaterial);
         }
