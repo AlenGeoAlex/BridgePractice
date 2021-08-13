@@ -22,23 +22,6 @@ public class PlayerMoveEvent implements Listener {
         }
 
 
-        if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
-            if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation().getBlockX() == event.getPlayer().getLocation().getBlockX() && Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation().getBlockY() == event.getPlayer().getLocation().getBlockY() && Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation().getBlockZ() == event.getPlayer().getLocation().getBlockZ() ) {
-                if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame() < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinBlocks()) {
-                    Gameplay.handleGameEnd(player, false);
-                    Messages.sendMessage(player, MessageConfiguration.getCheatBlockFail(), false);
-                    return;
-                }
-                if(TimeUtility.getSecondsFromLongTime(System.currentTimeMillis() - (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime())) < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinSeconds()){
-                    Gameplay.handleGameEnd(player,false);
-                    Messages.sendMessage(player,MessageConfiguration.getCheatTimeFail(), false);
-                    return;
-                }
-
-                Gameplay.handleGameEnd(player, true);
-            }
-        }
-
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == null){
             if(!Configuration.isVoidDectionOnlyOnIslands()){
                 if(event.getTo().getBlockY() < Configuration.getVoidDetectionLevel())

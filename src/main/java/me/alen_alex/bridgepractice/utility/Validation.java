@@ -3,6 +3,7 @@ package me.alen_alex.bridgepractice.utility;
 import me.Abhigya.core.version.CoreVersion;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 public class Validation {
 
@@ -51,6 +52,11 @@ public class Validation {
             Bukkit.getLogger().severe("use /practiceadmin setlobby");
             Bukkit.getLogger().severe("=================================================================");
         }
+    }
+
+    public static boolean checkEndPointLocation(org.bukkit.Location checkLocation){
+        boolean plate= checkLocation.getBlock().getType() == Material.GOLD_PLATE || checkLocation.getBlock().getType() == Material.STONE_PLATE || checkLocation.getBlock().getType() == Material.IRON_PLATE || checkLocation.getBlock().getType() == Material.WOOD_PLATE;
+        return plate;
     }
 
 }

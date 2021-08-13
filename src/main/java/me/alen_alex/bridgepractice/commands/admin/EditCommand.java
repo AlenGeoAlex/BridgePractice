@@ -3,6 +3,8 @@ package me.alen_alex.bridgepractice.commands.admin;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
+import me.alen_alex.bridgepractice.utility.Validation;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -12,7 +14,7 @@ public class EditCommand {
     private static YamlConfiguration arenaStorage = ArenaConfigurations.getArenaConfiguration();
 
     public static void setEditIslands(Player player, String IslandName){
-        if(editIslands != null){
+        if(editIslands == null){
             editIslands = IslandName;
             Messages.sendMessage(player,"&eIsland editor has been set to &b&l"+editIslands,true);
         }else{
@@ -53,8 +55,14 @@ public class EditCommand {
             Messages.sendMessage(player,"&cIsland with this name does not exist", true);
             return;
         }
+        if(!(Validation.checkEndPointLocation(player.getLocation()))){
+            Messages.sendMessage(player,"&cThe provided block is not a pressure plate",false);
+            return;
+        }
+
         String location = Location.parseLocation(player);
         arenaStorage.set(editIslands+".end.position",location);
+        arenaStorage.set(editIslands+".end.material",player.getLocation().getBlock().getType().name());
         Messages.sendMessage(player,"&aEnd point has been set to &6"+location+" &afor the arena "+editIslands, true);
     }
 

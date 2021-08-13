@@ -78,4 +78,11 @@ public class Location {
         return Bukkit.getWorld(rawData[0]);
     }
 
+    public static boolean compareLocations(org.bukkit.Location location1, org.bukkit.Location location2){
+        if(location1.getBlockX() == location2.getBlockX() && location1.getBlockY() == location2.getBlockY() && location1.getBlockZ() == location2.getBlockZ())
+            return true;
+        else
+            return false;
+    }
+
 }
