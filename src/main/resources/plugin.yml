@@ -8,6 +8,7 @@ depend:
 softdepend:
   - PlaceholderAPI
   - AdvancedReplay
+  - Citizens
 commands:
   practiceadmin:
     description: "The adminstrative command for Bridgepractice."

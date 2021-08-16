@@ -112,7 +112,7 @@ public class PlaceholderDataManager {
     }
 
     public static String getLeaderboardName(String groupName, int position){
-        if(position <= 0 && position > 10)
+        if(position < 0 && position >= 10)
             return NOTAVAILABLE;
         if(GroupManager.getCachedGroups().containsKey(groupName)){
             if(GroupManager.getCachedGroups().get(groupName).isLeaderboardEnabled()){
@@ -126,7 +126,7 @@ public class PlaceholderDataManager {
     }
 
     public static String getLeaderboardDuration(String groupName, int position){
-        if(position <= 0 && position > 10)
+        if(position < 0 && position >= 10)
             return NOTAVAILABLE;
         if(GroupManager.getCachedGroups().containsKey(groupName)){
             if(GroupManager.getCachedGroups().get(groupName).isLeaderboardEnabled()){

@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 public class Messages {
     public static String parseColor(String input) {
+        if(input == null)
+            return null;
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 

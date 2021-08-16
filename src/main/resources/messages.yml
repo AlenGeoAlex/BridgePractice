@@ -49,5 +49,6 @@ messages:
     unknown-island: "&c&lUnknown Island"
     unknown-group: "&c&lUnknown Group"
     currently-recording: "&c⬤ &fREC"
-
+  hologram:
+    npcUnclaimed: "&e♦ &c&lUnclaimed!"
 

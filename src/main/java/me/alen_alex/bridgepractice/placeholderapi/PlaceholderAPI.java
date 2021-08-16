@@ -107,15 +107,22 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         if(identifier.startsWith("bestplayer")){
             //bestplayer_groupname_position
             String[] args = identifier.split("_");
+            if(Integer.parseInt(args[2]) > 10 || Integer.parseInt(args[2]) < 1 ) {
+                return ERROR;
+            }
             if(args.length <=3){
                 return PlaceholderDataManager.getLeaderboardName(args[1],Integer.parseInt(args[2]));
-            }else
+            }else {
+                System.out.println(args.length);
                 return ERROR;
+            }
         }
 
         if(identifier.startsWith("besttime")){
             //besttime_groupname_position
             String[] args = identifier.split("_");
+            if(Integer.parseInt(args[2]) > 10 || Integer.parseInt(args[2]) < 1 )
+                return ERROR;
             if(args.length <=3){
                 return PlaceholderDataManager.getLeaderboardDuration(args[1],Integer.parseInt(args[2]));
             }else

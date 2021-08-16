@@ -22,6 +22,7 @@ public class MessageConfiguration {
     private static String placeholderRefreshing,placeholderNA,placeholderUnknownIsland,placeholderUnknownGroup,placeholderCurrentlyRecording;
     private static String replayEnable,replayDisable,replayNotExist,replayCleared;
     private static String bbTimerRunning20,bbTimerRunning10,bbTimerRunning5,bbTimerup;
+    private static String hologramUnclaimed;
     //-------------------------------------------------------------------------------------------------------------------------------
     public static void createLangaugeFile(){
         if(!languageFolder.exists())
@@ -84,6 +85,7 @@ public class MessageConfiguration {
         cheatBlockFail = messageConfigurations.getString("messages.player-messages.player-cheat-failed-blocks");
         cheatPlacedBlocksFail = messageConfigurations.getString("messages.player-messages.player-cheat-failed-blacklisted-blocks");
         playerFellVoid = messageConfigurations.getString("messages.player-messages.player-void-fail");
+        hologramUnclaimed = messageConfigurations.getString("messages.hologram.npcUnclaimed");
         messageConfigurations = null;
     }
 
@@ -253,5 +255,9 @@ public class MessageConfiguration {
 
     public static String getPlayerFellVoid() {
         return playerFellVoid;
+    }
+
+    public static String getHologramUnclaimed() {
+        return hologramUnclaimed;
     }
 }

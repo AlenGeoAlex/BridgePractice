@@ -15,23 +15,18 @@ public class Validation {
     }
 
     public static boolean ValidateCoreAPI(){
-        if(!(CoreVersion.getCoreVersion() == CoreVersion.v1_2_1))
+        if(!(CoreVersion.getCoreVersion().isNewerEquals(CoreVersion.v1_2_1)))
             return false;
         else
             return true;
     }
 
     public static boolean isAdvancedReplayEnabled(){
-        if(Bukkit.getPluginManager().isPluginEnabled("AdvancedReplay"))
-            return true;
-        else return false;
+        return Bukkit.getPluginManager().isPluginEnabled("AdvancedReplay");
     }
 
     public static boolean ValidatePlaceholderAPI(){
-        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
-            return true;
-        else
-            return false;
+        return Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
     }
 
     public static boolean validateHolograms(){
@@ -42,6 +37,10 @@ public class Validation {
             Configuration.getConfig().set("holograms.enabled",false);
             return false;
         }
+    }
+
+    public static boolean validateCitizens(){
+        return Bukkit.getPluginManager().isPluginEnabled("Citizens");
     }
 
     public static void checkLobbyLocation(){

@@ -1,13 +1,11 @@
 package me.alen_alex.bridgepractice.leaderboards;
 
 import me.alen_alex.bridgepractice.BridgePractice;
+import me.alen_alex.bridgepractice.citizens.CitizenNPC;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.group.Group;
 import me.alen_alex.bridgepractice.group.GroupManager;
-import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Map;
 
@@ -44,8 +42,33 @@ public class LeaderboardManager {
 
     public static void runRefresh(){
         for(Map.Entry<String, Group> groupEntry : GroupManager.getCachedGroups().entrySet()){
-            groupEntry.getValue().updateLeaderboard();
+            if(groupEntry.getValue().isLeaderboardEnabled()) {
+                groupEntry.getValue().updateLeaderboard();
+                if (BridgePractice.isCitizensLoadedNPC()) {
+                    if (!groupEntry.getValue().getNpcList().isEmpty()) {
+                        groupEntry.getValue().getNpcList().forEach((npc) -> {
+                            npc.setPlayerName(groupEntry.getValue().getLeaderboardplayerName().get(npc.getPosition()));
+                            npc.updateNPC();
+                        });
+                    }
+                }
+            }
         }
     }
+
+    public static void connectAllNPC(){
+        for(Map.Entry<String, Group> groupEntry : GroupManager.getCachedGroups().entrySet()){
+            if(groupEntry.getValue().isLeaderboardEnabled()) {
+                if (BridgePractice.isCitizensLoadedNPC()) {
+                    if (!groupEntry.getValue().getNpcList().isEmpty()) {
+                        groupEntry.getValue().getNpcList().forEach(CitizenNPC::connectNPC);
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
 }

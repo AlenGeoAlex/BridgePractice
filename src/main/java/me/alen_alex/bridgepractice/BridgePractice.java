@@ -3,6 +3,7 @@ package me.alen_alex.bridgepractice;
 import me.Abhigya.core.database.sql.SQL;
 import me.Abhigya.core.menu.inventory.ItemMenu;
 import me.Abhigya.core.menu.inventory.size.ItemMenuSize;
+import me.alen_alex.bridgepractice.citizens.listener.CitizenEnableEvent;
 import me.alen_alex.bridgepractice.commands.*;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
@@ -17,12 +18,12 @@ import me.alen_alex.bridgepractice.listener.*;
 import me.alen_alex.bridgepractice.placeholderapi.PlaceholderAPI;
 import me.alen_alex.bridgepractice.utility.*;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public final class BridgePractice extends JavaPlugin {
@@ -30,10 +31,10 @@ public final class BridgePractice extends JavaPlugin {
     private static BridgePractice plugin;
     private static SQL connection;
     private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu,fireworkMenu,replayMenu;
-    private static boolean hologramsEnabled = false, advanceReplayEnabled = false;
-    private static Random randomInstance = new Random();
-    private ResetUtility worldHandler = new ResetUtility();
-
+    private static boolean hologramsEnabled = false, advanceReplayEnabled = false,citizensEnabled = false,citizensLoadedNPC=false;
+    private static final Random randomInstance = new Random();
+    private final ResetUtility worldHandler = new ResetUtility();
+    private static NPCRegistry citizensRegistry;
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -69,6 +70,16 @@ public final class BridgePractice extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
         Data.createDatabase();
+        if(Validation.validateCitizens()){
+            citizensRegistry = CitizensAPI.getNPCRegistry();
+            if(citizensRegistry == null)
+                Bukkit.getLogger().severe("There was an issue hooking with Citizens API");
+            else {
+                getLogger().info("Hooked with CitizensAPI");
+                getServer().getPluginManager().registerEvents(new CitizenEnableEvent(), this);
+                citizensEnabled = true;
+            }
+        }
         if(Configuration.doUseGroups()){
             GroupConfiguration.createGroupConfigurations();
             GroupManager.fetchGroups();
@@ -95,6 +106,7 @@ public final class BridgePractice extends JavaPlugin {
             getCommand("sessionreplay").setExecutor(new SessionReplay());
             getCommand("sessionreplay").setTabCompleter(new SessionReplay());
         }
+
         PlayerParticles.loadAllAvailableEffectToCache();
         registerListener();
         registerCommands();
@@ -210,6 +222,19 @@ public final class BridgePractice extends JavaPlugin {
         return advanceReplayEnabled;
     }
 
+    public static boolean isCitizensEnabled() {
+        return citizensEnabled;
+    }
 
+    public static NPCRegistry getCitizensRegistry() {
+        return citizensRegistry;
+    }
 
+    public static boolean isCitizensLoadedNPC() {
+        return citizensLoadedNPC;
+    }
+
+    public static void setCitizensLoadedNPC(boolean citizensLoadedNPC) {
+        BridgePractice.citizensLoadedNPC = citizensLoadedNPC;
+    }
 }

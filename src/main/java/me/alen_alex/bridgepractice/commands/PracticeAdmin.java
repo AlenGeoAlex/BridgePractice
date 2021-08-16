@@ -6,6 +6,7 @@ import me.alen_alex.bridgepractice.commands.admin.EditCommand;
 import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
+import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.holograms.Holograms;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.Island;
@@ -13,6 +14,7 @@ import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -90,12 +92,17 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                             if (args.length <= 2) {
                                 Messages.sendIncorrectUsage(player);
                                 return true;
+                            }else if(args.length == 3) {
+                                if (args[1].equalsIgnoreCase("create")) {
+                                    GroupCommand.createGroup(player, args[2]);
+                                }
+                                if (args[1].equalsIgnoreCase("delete"))
+                                    GroupCommand.deleteGroup(player, args[2]);
+                            }else if(args.length ==4){
+                                if(args[1].equalsIgnoreCase("setnpc")){
+                                    GroupCommand.setNPC(sender,args[2],Integer.parseInt(args[3]));
+                                }
                             }
-                            if (args[1].equalsIgnoreCase("create")) {
-                                GroupCommand.createGroup(player, args[2]);
-                            }
-                            if (args[1].equalsIgnoreCase("delete"))
-                                GroupCommand.deleteGroup(player, args[2]);
                         }else{
                             Messages.sendMessage(player,"&cYou have not enabled groups", true);
                         }
@@ -196,6 +203,15 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                                     Messages.sendMessage(sender, "&aSuccesfully reloaded all holograms", true);
                                     return true;
                                 }
+
+                                if(args[1].equalsIgnoreCase("setboard")){
+
+                                    return true;
+                                }
+
+                                if(args[1].equalsIgnoreCase("setboardmenu")){
+
+                                }
                             } else if (args.length == 3) {
                                 if (args[1].equalsIgnoreCase("reload")) {
                                     if (HolographicManager.getHoloData().containsKey(args[2])) {
@@ -213,7 +229,11 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                         break;
                     case "SETLOBBY":
                         Configuration.getConfig().set("settings.lobby-location",Location.parseLocation(player.getLocation()));
-                        Messages.sendMessage(player,"Lobby point has been set!",false);
+                        Messages.sendMessage(player,"&6Lobby point has been set!",false);
+                        break;
+                    case "MESSAGES":
+                        MessageConfiguration.createLangaugeFile();
+                        Messages.sendMessage(player,"&cMessages has been succesfully reloaded",false);
                         break;
                     default:
                         Messages.sendMessage(player,"&cUnknown subcommand!", true);

@@ -3,10 +3,9 @@ package me.alen_alex.bridgepractice.group;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.data.DataManager;
-import me.alen_alex.bridgepractice.utility.Messages;
+import me.alen_alex.bridgepractice.utility.CitizensUtility;
 import org.bukkit.Bukkit;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,6 +18,7 @@ public class GroupManager {
         for(String groupName : GroupConfiguration.getGroupConfigurations().getKeys(false)){
             cachedGroups.put(groupName,new Group(groupName,GroupConfiguration.getGroupConfigurations().getBoolean(groupName+".leaderboardEnabled"),GroupConfiguration.getGroupConfigurations().getInt(groupName+".rewardMoney")));
             cachedGroups.get(groupName).buildDB();
+            cachedGroups.get(groupName).setNpcList(CitizensUtility.loadNPCFromGroup(groupName));
         }
     }
 
