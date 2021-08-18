@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.utility;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.jumper251.replay.filesystem.saving.ReplaySaver;
 import me.jumper251.replay.replaysystem.Replay;
@@ -9,6 +10,11 @@ import org.bukkit.entity.Player;
 public class ReplayUtility {
 
     public static void playReplay(Player player, String replayName){
+        if(!BridgePractice.isAdvanceReplayEnabled()){
+            Messages.sendMessage(player, "&cReplay system is currently unavailable",false);
+            return;
+        }
+
         if(!ReplaySaver.exists(replayName)){
             Messages.sendMessage(player,"&cError in fetching replay",false);
             return;
@@ -32,6 +38,12 @@ public class ReplayUtility {
     }
 
     public static void deleteReplay(Player player, String replayName){
+
+        if(!BridgePractice.isAdvanceReplayEnabled()){
+            Messages.sendMessage(player, "&cReplay system is currently unavailable",false);
+            return;
+        }
+
         if(!ReplaySaver.exists(replayName)){
             Messages.sendMessage(player,"&cError in fetching replay",false);
             return;

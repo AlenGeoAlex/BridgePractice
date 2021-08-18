@@ -35,7 +35,10 @@ public class PlaceholderDataManager {
         else if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.IDLE_ISLAND)
             currentState = "WAITING";
         else
-            currentState = "LOBBY";
+            if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isWatchingReplay())
+                currentState = "REPLAY SESSION";
+            else
+                currentState = "LOBBY";
 
         return currentState;
     }

@@ -2,6 +2,7 @@ package me.alen_alex.bridgepractice.data;
 
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
+import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -56,6 +57,20 @@ public class DataManager {
         boolean registered = false;
         try {
             ResultSet set = Data.getDatabaseConnection().executeQuery("SELECT * FROM `playerdata` WHERE `uuid` = '"+playerUUID.toString()+"';");
+            while (set.next())
+                registered = true;
+            set.getStatement().close();
+            set.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return registered;
+    }
+
+    public static boolean isUserRegisetered(String playerName){
+        boolean registered = false;
+        try {
+            ResultSet set = Data.getDatabaseConnection().executeQuery("SELECT * FROM `playerdata` WHERE `name` = '"+playerName+"';");
             while (set.next())
                 registered = true;
             set.getStatement().close();
@@ -125,6 +140,25 @@ public class DataManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean deletePlayerFromDatabase(String playerName){
+        boolean deleted = false;
+        try {
+            PreparedStatement ps = Data.getDatabaseConnection().getConnection().prepareStatement("DELETE FROM `playerdata` WHERE `name` = '"+playerName+"';");
+            ps.executeUpdate();
+            ps.close();
+            PreparedStatement groupPreparedStatement;
+            for(String groupName : GroupManager.getCachedGroups().keySet()){
+                groupPreparedStatement = Data.getDatabaseConnection().getConnection().prepareStatement("DELETE FROM `"+groupName+"` WHERE `name` = '"+playerName+"';");
+                groupPreparedStatement.executeUpdate();
+                groupPreparedStatement.close();
+            }
+            deleted = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return deleted;
     }
 
 

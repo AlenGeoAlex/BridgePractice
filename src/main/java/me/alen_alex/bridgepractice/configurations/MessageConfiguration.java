@@ -6,6 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MessageConfiguration {
 
@@ -35,7 +37,12 @@ public class MessageConfiguration {
 
         }
         messageConfigurations = YamlConfiguration.loadConfiguration(languageFile);
+        messageConfigurations.addDefault("version",BridgePractice.getPlugin().getDescription().getVersion());
         loadMessages();
+    }
+
+    private static void checkAndUpdateVersion(){
+
     }
 
     private static void loadMessages(){
@@ -260,4 +267,5 @@ public class MessageConfiguration {
     public static String getHologramUnclaimed() {
         return hologramUnclaimed;
     }
+
 }

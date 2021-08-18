@@ -187,6 +187,10 @@ public class MenuManager {
             Messages.sendMessage(player,"&cYou can't spectate while on active session",false);
             return;
         }
+        if(!BridgePractice.isAdvanceReplayEnabled()){
+            Messages.sendMessage(player, "&cReplay system is currently unavailable",false);
+            return;
+        }
 
         List<String> replayList = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays();
         if(replayList.isEmpty()){

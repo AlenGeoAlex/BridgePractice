@@ -1,5 +1,6 @@
 package me.alen_alex.bridgepractice.commands;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
 import me.alen_alex.bridgepractice.menu.MenuManager;
@@ -22,6 +23,10 @@ public class SessionReplay implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!(commandSender instanceof Player)){
             Messages.sendMessage(commandSender, MessageConfiguration.getFromConsole(),false);
+            return true;
+        }
+        if(!BridgePractice.isAdvanceReplayEnabled()){
+            Messages.sendMessage(commandSender, "&cReplay system is currently unavailable",false);
             return true;
         }
         Player player = (Player) commandSender;

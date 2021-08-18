@@ -35,9 +35,6 @@ public class CitizensUtility {
                 }
             }
         }
-        cacheNpc.forEach((npc) -> {
-            System.out.println(npc.getNpcID());
-        });
         return cacheNpc;
     }
 

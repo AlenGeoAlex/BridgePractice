@@ -54,6 +54,12 @@ public class GroupCommand {
     }
 
     public static void setNPC(CommandSender player, String groupName, int position){
+
+        if(!BridgePractice.isCitizensEnabled()){
+            Messages.sendMessage(player,"&cThis command requires &6&lCitizens to run!",false);
+            return;
+        }
+
         if (groupName == null || position < 0) {
             Messages.sendMessage(player, MessageConfiguration.getUnknownCommand(),false);
             return;

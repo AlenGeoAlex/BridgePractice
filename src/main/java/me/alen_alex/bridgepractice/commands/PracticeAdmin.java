@@ -7,6 +7,7 @@ import me.alen_alex.bridgepractice.commands.admin.GroupCommand;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
+import me.alen_alex.bridgepractice.data.DataManager;
 import me.alen_alex.bridgepractice.holograms.Holograms;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.Island;
@@ -15,6 +16,7 @@ import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
 import net.citizensnpcs.api.CitizensAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -85,6 +87,36 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                         }else {
                             Messages.sendIncorrectUsage(player);
                             return true;
+                        }
+                        break;
+                    case "PLAYER":
+                        if(args.length <= 2){
+                            Messages.sendIncorrectUsage(player);
+                            return true;
+                        }else if(args.length == 3){
+                            if(args[1].equalsIgnoreCase("clear")){
+                                if(args[2].isEmpty()) {Messages.sendMessage(player,"&cPlayer name must not be null",false);return  true;}
+                                if(Bukkit.getPlayer(args[2]).isOnline()){
+                                    Messages.sendMessage(player,"&d&lThe provided player is online, can't perform while player is online",false);
+                                    return true;
+                                }
+
+                                if(DataManager.isUserRegisetered(args[2])){
+                                    final boolean[] success = {false};
+                                     Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            success[0] = DataManager.deletePlayerFromDatabase(args[2]);
+                                        }
+                                    });
+                                    if(success[0]){
+                                        Messages.sendMessage(player,"&aSuccessfully deleted the player "+args[2]+" from database",false);
+                                    }else{
+                                        Messages.sendMessage(player,"&cFailed to delete user data of "+args[2]+". Check console for any errors",false);
+                                        return true;
+                                    }
+                                }
+                            }
                         }
                         break;
                     case "GROUP":
@@ -203,15 +235,6 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                                     Messages.sendMessage(sender, "&aSuccesfully reloaded all holograms", true);
                                     return true;
                                 }
-
-                                if(args[1].equalsIgnoreCase("setboard")){
-
-                                    return true;
-                                }
-
-                                if(args[1].equalsIgnoreCase("setboardmenu")){
-
-                                }
                             } else if (args.length == 3) {
                                 if (args[1].equalsIgnoreCase("reload")) {
                                     if (HolographicManager.getHoloData().containsKey(args[2])) {
@@ -234,6 +257,10 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                     case "MESSAGES":
                         MessageConfiguration.createLangaugeFile();
                         Messages.sendMessage(player,"&cMessages has been succesfully reloaded",false);
+                        break;
+                    case "SPAWN":
+                        player.teleport(Location.getLocation(Configuration.getLobbyLocation()));
+                        Messages.sendMessage(player,"&aYou have been teleported to spawn!",false);
                         break;
                     default:
                         Messages.sendMessage(player,"&cUnknown subcommand!", true);
