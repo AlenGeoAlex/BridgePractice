@@ -14,8 +14,19 @@ import java.util.UUID;
 
 public class DataManager {
 
+    private static boolean databaseOnline = false;
+
+    public static boolean isDatabaseOnline() {
+        return databaseOnline;
+    }
+
+    public static void setDatabaseOnline(boolean databaseOnline) {
+        DataManager.databaseOnline = databaseOnline;
+    }
+
     public static void registerUser(String name, String UUID){
         try {
+
             PreparedStatement statement = Data.getDatabaseConnection().getConnection().prepareStatement("INSERT INTO `playerdata`(`name`, `uuid`, `blocksplaced`, `gamesplayed`, `besttime`, `currenttime`, `material`, `particle`) VALUES ('"+name+"','"+UUID+"',0,0,'"+System.currentTimeMillis()+"',0,'WOOL','SMOKE_NORMAL');");
             statement.executeUpdate();
             statement.close();
@@ -53,31 +64,23 @@ public class DataManager {
         }
     }
 
-    public static boolean isUserRegisetered(UUID playerUUID){
+    public static boolean isUserRegisetered(UUID playerUUID) throws SQLException {
         boolean registered = false;
-        try {
             ResultSet set = Data.getDatabaseConnection().executeQuery("SELECT * FROM `playerdata` WHERE `uuid` = '"+playerUUID.toString()+"';");
             while (set.next())
                 registered = true;
             set.getStatement().close();
             set.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         return registered;
     }
 
-    public static boolean isUserRegisetered(String playerName){
+    public static boolean isUserRegisetered(String playerName) throws SQLException {
         boolean registered = false;
-        try {
             ResultSet set = Data.getDatabaseConnection().executeQuery("SELECT * FROM `playerdata` WHERE `name` = '"+playerName+"';");
             while (set.next())
                 registered = true;
             set.getStatement().close();
             set.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         return registered;
     }
 

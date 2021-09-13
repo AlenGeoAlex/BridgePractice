@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -101,20 +102,25 @@ public class PracticeAdmin implements CommandExecutor, TabCompleter {
                                     return true;
                                 }
 
-                                if(DataManager.isUserRegisetered(args[2])){
-                                    final boolean[] success = {false};
-                                     Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            success[0] = DataManager.deletePlayerFromDatabase(args[2]);
+                                try {
+                                    if(DataManager.isUserRegisetered(args[2])){
+                                        final boolean[] success = {false};
+                                         Bukkit.getScheduler().runTaskAsynchronously(BridgePractice.getPlugin(), new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                success[0] = DataManager.deletePlayerFromDatabase(args[2]);
+                                            }
+                                        });
+                                        if(success[0]){
+                                            Messages.sendMessage(player,"&aSuccessfully deleted the player "+args[2]+" from database",false);
+                                        }else{
+                                            Messages.sendMessage(player,"&cFailed to delete user data of "+args[2]+". Check console for any errors",false);
+                                            return true;
                                         }
-                                    });
-                                    if(success[0]){
-                                        Messages.sendMessage(player,"&aSuccessfully deleted the player "+args[2]+" from database",false);
-                                    }else{
-                                        Messages.sendMessage(player,"&cFailed to delete user data of "+args[2]+". Check console for any errors",false);
-                                        return true;
                                     }
+                                } catch (SQLException e) {
+                                    Messages.sendMessage(player,"&cUnable to delete player data, Check console for errors!",false);
+                                    e.printStackTrace();
                                 }
                             }
                         }

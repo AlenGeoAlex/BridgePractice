@@ -45,6 +45,35 @@ public class Data {
         }
     }
 
+    public void reconnect(){
+        if(Configuration.isUseMysql()){
+            this.database = new HikariClientBuilder("jdbc:mysql://"+Configuration.getHost()+":"+Configuration.getPort()+"/"+Configuration.getDatabase(),Configuration.getUsername(),Configuration.getPassword(),true).setMaximumPoolSize(10).build();
+            //this.database = new MySQL(Configuration.getHost(),Integer.parseInt(Configuration.getPort()),Configuration.getDatabase(),Configuration.getUsername(),Configuration.getPassword(),true,Configuration.isUseSSL());
+            try {
+                database.connect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            this.database = new SQLite(plugin, new File(plugin.getDataFolder(),"database.db"),true);
+            try {
+                database.connect();
+                System.out.println(database.getConnection().getAutoCommit());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            sql = new SQL(this.database.getConnection());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
+
     public static SQL getDatabaseConnection() {
         return sql;
     }

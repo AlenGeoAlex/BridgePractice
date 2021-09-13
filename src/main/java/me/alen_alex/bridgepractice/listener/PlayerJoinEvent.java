@@ -21,8 +21,13 @@ public class PlayerJoinEvent implements Listener {
     public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event){
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
-        if(!DataManager.isUserRegisetered(playerUUID)) {
-            DataManager.registerUser(player);
+        try {
+            if(!DataManager.isUserRegisetered(playerUUID)) {
+                DataManager.registerUser(player);
+            }
+        } catch (SQLException e) {
+            player.kickPlayer("&cDatabase seems to be offline. Enquire with adminstrators");
+            e.printStackTrace();
         }
         try {
             PlayerDataManager.loadPlayerData(playerUUID);
@@ -38,7 +43,7 @@ public class PlayerJoinEvent implements Listener {
                 if (Configuration.getClearPlayerJoinDelay() <= 1) {
                     PlayerDataManager.getCachedPlayerData().get(playerUUID).setToLobbyState();
                 } else {
-                    Bukkit.getScheduler().runTaskLater(BridgePractice.getPlugin(), new Runnable() {
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(BridgePractice.getPlugin(), new Runnable() {
                         @Override
                         public void run() {
                             PlayerDataManager.getCachedPlayerData().get(playerUUID).setToLobbyState();
@@ -54,8 +59,14 @@ public class PlayerJoinEvent implements Listener {
     @EventHandler
     public void onAsyncPlayerJoin(AsyncPlayerPreLoginEvent event){
         UUID playerUUID = event.getUniqueId();
-        if(!DataManager.isUserRegisetered(playerUUID)) {
-            DataManager.registerUser(event.getName(),event.getUniqueId().toString());
+        try {
+            if(!DataManager.isUserRegisetered(playerUUID)) {
+                DataManager.registerUser(event.getName(),event.getUniqueId().toString());
+            }
+        } catch (SQLException e) {
+            event.setKickMessage("&cDatabase seems to be offline. Enquire with adminstrators");
+            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+            e.printStackTrace();
         }
     }
 

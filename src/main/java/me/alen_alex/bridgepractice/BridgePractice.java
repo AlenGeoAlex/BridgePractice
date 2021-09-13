@@ -10,6 +10,7 @@ import me.alen_alex.bridgepractice.configurations.Configuration;
 import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
+import me.alen_alex.bridgepractice.data.DataManager;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
@@ -35,6 +36,7 @@ public final class BridgePractice extends JavaPlugin {
     private static final Random randomInstance = new Random();
     private final ResetUtility worldHandler = new ResetUtility();
     private static NPCRegistry citizensRegistry;
+    private static Data dataConnection;
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -61,14 +63,20 @@ public final class BridgePractice extends JavaPlugin {
                 plugin.getPluginLoader().disablePlugin(this);
                 return;
             }
-        Data dataConnection = new Data();
+        dataConnection = new Data();
         WorkloadScheduler.intializeThread();
         connection = Data.getDatabaseConnection();
-        if(connection == null)
-        {
-            getLogger().severe("Error while connecting to database. DISABLING PLUGIN");
-            getServer().getPluginManager().disablePlugin(this);
+        try {
+            if(connection == null || connection.getConnection().isClosed())
+            {
+                getLogger().severe("Error while connecting to database. DISABLING PLUGIN");
+                getServer().getPluginManager().disablePlugin(this);
+            }
+        } catch (SQLException e) {
+            DataManager.setDatabaseOnline(false);
+            e.printStackTrace();
         }
+        DataManager.setDatabaseOnline(true);
         Data.createDatabase();
         if(Validation.validateCitizens()){
             citizensRegistry = CitizensAPI.getNPCRegistry();
@@ -237,4 +245,6 @@ public final class BridgePractice extends JavaPlugin {
     public static void setCitizensLoadedNPC(boolean citizensLoadedNPC) {
         BridgePractice.citizensLoadedNPC = citizensLoadedNPC;
     }
+
+
 }
