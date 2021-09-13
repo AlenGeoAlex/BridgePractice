@@ -88,10 +88,6 @@ public class CitizenNPC {
             BridgePractice.getPlugin().getLogger().warning("Failed to load NPC with the id "+npcID+". May be you have deleted the NPC");
             return;
         }
-        npc.setProtected(false);
-        npc.setAlwaysUseNameHologram(false);
-        npc.setFlyable(false);
-        npc.setUseMinecraftAI(false);
         if(holoEnabled) {
             if(BridgePractice.isHologramsEnabled()) {
                 hologramLocation = npc.getStoredLocation();
@@ -154,14 +150,11 @@ public class CitizenNPC {
                 }
                 if (playerName == null || playerName.equalsIgnoreCase(Messages.parseColor(MessageConfiguration.getPlaceholderNA()))) {
                     npc.setBukkitEntityType(EntityType.VILLAGER);
-                    npc.setFlyable(false);
-                    npc.setUseMinecraftAI(false);
                 }else{
                     npc.setBukkitEntityType(EntityType.PLAYER);
                     SkinTrait skin = npc.getTrait(SkinTrait.class);
                     skin.setSkinName(playerName, true);
-                    npc.setFlyable(false);
-                    npc.setUseMinecraftAI(false);
+
                 }
             }
         });
