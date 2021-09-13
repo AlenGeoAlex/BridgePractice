@@ -15,7 +15,7 @@ import java.util.Map;
 public class IslandManager {
 
     private static HashMap<String, Island> islandData = new HashMap<String, Island>();
-    private static YamlConfiguration arenaConfigurations = ArenaConfigurations.getArenaConfiguration();
+    private static final YamlConfiguration arenaConfigurations = ArenaConfigurations.getArenaConfiguration();
 
     public static void fetchIslandsFromFile(){
         for(String islandName : ArenaConfigurations.getArenaConfiguration().getKeys(false)){
