@@ -76,6 +76,16 @@ blacklist:
     - "BARRIER"
     - "GLASS"
 ########################################################################################################################
+##hook: -> Control which all plugins can hook with/into BridgePractice.
+##Citizens-api -> Disabling this will stop updating NPC Leaderboards
+##holographicdisplay-api: -> Disable holograms in islands.
+##advancedreplay-api: -> Disable replay system
+hook:
+  citizens-api: true
+  holographicdisplays-api: true
+  placeholder-api: true
+  advancedreplay-api: true
+########################################################################################################################
 ##settings:
 ##Some common settings
 ##lobby-location -> Set the location of server main-lobby, its PREFERRED to set using /practiceadmin setlobby

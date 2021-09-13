@@ -78,14 +78,16 @@ public final class BridgePractice extends JavaPlugin {
         }
         DataManager.setDatabaseOnline(true);
         Data.createDatabase();
-        if(Validation.validateCitizens()){
-            citizensRegistry = CitizensAPI.getNPCRegistry();
-            if(citizensRegistry == null)
-                Bukkit.getLogger().severe("There was an issue hooking with Citizens API");
-            else {
-                getLogger().info("Hooked with CitizensAPI");
-                getServer().getPluginManager().registerEvents(new CitizenEnableEvent(), this);
-                citizensEnabled = true;
+        if(Configuration.isHookCitizensEnabled()) {
+            if (Validation.validateCitizens()) {
+                citizensRegistry = CitizensAPI.getNPCRegistry();
+                if (citizensRegistry == null)
+                    Bukkit.getLogger().severe("There was an issue hooking with Citizens API");
+                else {
+                    getLogger().info("Hooked with CitizensAPI");
+                    getServer().getPluginManager().registerEvents(new CitizenEnableEvent(), this);
+                    citizensEnabled = true;
+                }
             }
         }
         if(Configuration.doUseGroups()){
@@ -94,25 +96,30 @@ public final class BridgePractice extends JavaPlugin {
         }
         ArenaConfigurations.createArenaConfigurations();
         IslandManager.fetchIslandsFromFile();
-        if(Validation.ValidatePlaceholderAPI()) {
-            getLogger().info("Hooked with PlaceholderAPI");
-            new PlaceholderAPI(this).register();
-            LeaderboardManager.runRefresh();
-            LeaderboardManager.checkLeaderboard();
-        }
-        if(Configuration.isUseHolograms()) {
-            if (Validation.validateHolograms()) {
-                getLogger().info("Hooked with HolographicDisplays-API");
-                hologramsEnabled = true;
-                HolographicManager.fetchHologramsFromIslands();
+        if(Configuration.isHookPlaceholderAPI()) {
+            if (Validation.ValidatePlaceholderAPI()) {
+                getLogger().info("Hooked with PlaceholderAPI");
+                new PlaceholderAPI(this).register();
+                LeaderboardManager.runRefresh();
+                LeaderboardManager.checkLeaderboard();
             }
         }
-        if(Validation.isAdvancedReplayEnabled()){
-            advanceReplayEnabled = true;
-            getLogger().info("Hooked with AdvancedReply-API");
-            getServer().getPluginManager().registerEvents(new PlayerReplaySessionFinishEvent(), this);
-            getCommand("sessionreplay").setExecutor(new SessionReplay());
-            getCommand("sessionreplay").setTabCompleter(new SessionReplay());
+        if(Configuration.isHookHologramsEnabled()) {
+                if (Validation.validateHolograms()) {
+                    getLogger().info("Hooked with HolographicDisplays-API");
+                    hologramsEnabled = true;
+                    HolographicManager.fetchHologramsFromIslands();
+                }
+        }
+        if(Configuration.isHookAdvancedReplayEnabled()) {
+            if (Validation.isAdvancedReplayEnabled()) {
+                advanceReplayEnabled = true;
+                getLogger().info("Hooked with AdvancedReply-API");
+                getLogger().info("NOTE: This Hook can sometimes lag your server. Use this on hook your own concern");
+                getServer().getPluginManager().registerEvents(new PlayerReplaySessionFinishEvent(), this);
+                getCommand("sessionreplay").setExecutor(new SessionReplay());
+                getCommand("sessionreplay").setTabCompleter(new SessionReplay());
+            }
         }
 
         PlayerParticles.loadAllAvailableEffectToCache();

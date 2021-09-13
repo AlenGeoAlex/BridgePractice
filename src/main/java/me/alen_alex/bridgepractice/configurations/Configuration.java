@@ -16,12 +16,13 @@ public class Configuration {
     private static BridgePractice plugin = BridgePractice.getPlugin();
     private static Config config;
     private static String host,username,password,port,database;
-    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,useHolograms,tpBacktoLobbyAfterReplay;
+    private static boolean useMysql,useSSL, useGroups, voidDectionOnlyOnIslands, broadcastNewRecord,tpBacktoLobbyAfterReplay;
     private static String prefixMain,lobbyLocation;
     private static int voidDetectionLevel,hologramsOffsetY,leaderboardRefreshTimeout,clearPlayerJoinDelay;
     private static List<String> hologramsStartingLines,hologramsEndingLines;
     private static List<String> blacklistedBlocks;
     private static boolean disableItemDrop, itemDropOnlyOnSession, disableItempickup, itemPickupOnlyOnSession, clearPlayerOnJoinEnabled,spawnOnJoinEnabled;
+    private static boolean hookCitizensEnabled,hookHologramsEnabled,hookAdvancedReplayEnabled,hookPlaceholderAPI;
 
     public static void createConfiguration(){
             File configFile = new File(plugin.getDataFolder(),"config.yml");
@@ -59,7 +60,6 @@ public class Configuration {
         voidDetectionLevel = config.getInt("void-detection.level");
         voidDectionOnlyOnIslands = config.getBoolean("void-detection.only-when-on-island");
         broadcastNewRecord = config.getBoolean("broadcast-new-record");
-        useHolograms = config.getBoolean("holograms.enabled");
         hologramsOffsetY = config.getInt("holograms.hologramoffset-Y");
         hologramsStartingLines = config.getStringList("holograms.startingLocation");
         hologramsEndingLines = config.getStringList("holograms.endingLocation");
@@ -74,6 +74,10 @@ public class Configuration {
         clearPlayerOnJoinEnabled = config.getBoolean("settings.clear-player-inventory-on-join.enable");
         clearPlayerJoinDelay = config.getInt("settings.clear-player-inventory-on-join.delay");
         spawnOnJoinEnabled = config.getBoolean("settings.spawn-on-join");
+        hookCitizensEnabled = config.getBoolean("hook.citizens-api");
+        hookHologramsEnabled = config.getBoolean("hook.holographicdisplays-api");
+        hookPlaceholderAPI = config.getBoolean("hook.placeholder-api");
+        hookAdvancedReplayEnabled = config.getBoolean("hook.advancedreplay-api");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -127,10 +131,6 @@ public class Configuration {
 
     public static boolean doBroadcastNewRecord() {
         return broadcastNewRecord;
-    }
-
-    public static boolean isUseHolograms() {
-        return useHolograms;
     }
 
     public static int getHologramsOffsetY() {
@@ -187,6 +187,22 @@ public class Configuration {
 
     public static boolean isSpawnOnJoinEnabled() {
         return spawnOnJoinEnabled;
+    }
+
+    public static boolean isHookCitizensEnabled() {
+        return hookCitizensEnabled;
+    }
+
+    public static boolean isHookHologramsEnabled() {
+        return hookHologramsEnabled;
+    }
+
+    public static boolean isHookAdvancedReplayEnabled() {
+        return hookAdvancedReplayEnabled;
+    }
+
+    public static boolean isHookPlaceholderAPI() {
+        return hookPlaceholderAPI;
     }
 }
 
