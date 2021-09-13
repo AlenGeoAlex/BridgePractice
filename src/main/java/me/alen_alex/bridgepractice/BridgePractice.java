@@ -21,7 +21,9 @@ import me.alen_alex.bridgepractice.utility.*;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPCRegistry;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
@@ -32,11 +34,12 @@ public final class BridgePractice extends JavaPlugin {
     private static BridgePractice plugin;
     private static SQL connection;
     private static ItemMenu materialMenu,spectatorMenu,timerMenu,particleMenu,fireworkMenu,replayMenu;
-    private static boolean hologramsEnabled = false, advanceReplayEnabled = false,citizensEnabled = false,citizensLoadedNPC=false;
+    private static boolean hologramsEnabled = false, advanceReplayEnabled = false,citizensEnabled = false,citizensLoadedNPC=false,vaultEnabled = false;
     private static final Random randomInstance = new Random();
     private final ResetUtility worldHandler = new ResetUtility();
     private static NPCRegistry citizensRegistry;
     private static Data dataConnection;
+    private static Economy vaultEconomy;
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -58,7 +61,7 @@ public final class BridgePractice extends JavaPlugin {
         Validation.checkLobbyLocation();
         if(!Validation.validateDatabase())
             {
-                plugin.getLogger().severe("Database creditionals is invalid");
+                plugin.getLogger().severe("Database details is invalid");
                 plugin.getLogger().severe("Disabling plugin!");
                 plugin.getPluginLoader().disablePlugin(this);
                 return;
@@ -115,10 +118,20 @@ public final class BridgePractice extends JavaPlugin {
             if (Validation.isAdvancedReplayEnabled()) {
                 advanceReplayEnabled = true;
                 getLogger().info("Hooked with AdvancedReply-API");
-                getLogger().info("NOTE: This Hook can sometimes lag your server. Use this on hook your own concern");
+                getLogger().info("NOTE: This Hook can sometimes lag your server. Use this on hook your own risk");
                 getServer().getPluginManager().registerEvents(new PlayerReplaySessionFinishEvent(), this);
                 getCommand("sessionreplay").setExecutor(new SessionReplay());
                 getCommand("sessionreplay").setTabCompleter(new SessionReplay());
+            }
+        }
+        if(Configuration.isHookVaultAPI()){
+            if(Validation.validateVaultAPI()){
+                RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+                if(rsp != null){
+                    vaultEconomy = rsp.getProvider();
+                    vaultEnabled = true;
+                    getLogger().info("Hooked with Vault-API");
+                }
             }
         }
 
@@ -253,5 +266,11 @@ public final class BridgePractice extends JavaPlugin {
         BridgePractice.citizensLoadedNPC = citizensLoadedNPC;
     }
 
+    public static boolean isVaultEnabled() {
+        return vaultEnabled;
+    }
 
+    public static Economy getVaultEconomy() {
+        return vaultEconomy;
+    }
 }

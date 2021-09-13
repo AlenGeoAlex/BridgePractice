@@ -27,6 +27,7 @@ public class CreationCommand {
         arenaStorage.set(creatingIsland+".enabled",false);
         arenaStorage.set(creatingIsland+".minblocksRequired",0);
         arenaStorage.set(creatingIsland+".mintimeRequired",0);
+        arenaStorage.set(creatingIsland+".joincost",0);
         Messages.sendMessage(player,"&aCreated new arena with the name "+creatingIsland,false);
     }
 

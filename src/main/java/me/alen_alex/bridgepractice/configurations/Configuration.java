@@ -22,7 +22,7 @@ public class Configuration {
     private static List<String> hologramsStartingLines,hologramsEndingLines;
     private static List<String> blacklistedBlocks;
     private static boolean disableItemDrop, itemDropOnlyOnSession, disableItempickup, itemPickupOnlyOnSession, clearPlayerOnJoinEnabled,spawnOnJoinEnabled;
-    private static boolean hookCitizensEnabled,hookHologramsEnabled,hookAdvancedReplayEnabled,hookPlaceholderAPI;
+    private static boolean hookCitizensEnabled,hookHologramsEnabled,hookAdvancedReplayEnabled,hookPlaceholderAPI,hookVaultAPI;
 
     public static void createConfiguration(){
             File configFile = new File(plugin.getDataFolder(),"config.yml");
@@ -78,6 +78,7 @@ public class Configuration {
         hookHologramsEnabled = config.getBoolean("hook.holographicdisplays-api");
         hookPlaceholderAPI = config.getBoolean("hook.placeholder-api");
         hookAdvancedReplayEnabled = config.getBoolean("hook.advancedreplay-api");
+        hookVaultAPI = config.getBoolean("hook.vault-api");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -203,6 +204,10 @@ public class Configuration {
 
     public static boolean isHookPlaceholderAPI() {
         return hookPlaceholderAPI;
+    }
+
+    public static boolean isHookVaultAPI() {
+        return hookVaultAPI;
     }
 }
 

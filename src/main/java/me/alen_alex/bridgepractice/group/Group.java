@@ -16,12 +16,12 @@ import java.util.*;
 public class Group {
     private String groupName;
     private boolean leaderboardEnabled;
-    private int rewardAmount;
+    private double rewardAmount;
     private LeaderboardStatus leaderboardStatus;
     private LinkedList<String> leaderboardplayerName;
     private LinkedList<Long> leaderboardScore;
     private List<CitizenNPC> npcList;
-    public Group(String groupName, boolean leaderboardEnabled, int rewardAmount) {
+    public Group(String groupName, boolean leaderboardEnabled, double rewardAmount) {
         this.groupName = groupName;
         this.leaderboardEnabled = leaderboardEnabled;
         this.rewardAmount = rewardAmount;
@@ -39,7 +39,7 @@ public class Group {
         return leaderboardEnabled;
     }
 
-    public int getRewardAmount() {
+    public double getRewardAmount() {
         return rewardAmount;
     }
 

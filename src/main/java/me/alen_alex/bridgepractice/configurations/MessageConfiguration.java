@@ -17,8 +17,8 @@ public class MessageConfiguration {
     private static final File languageFolder = new File(plugin.getDataFolder()+File.separator+"Language");
     private static final File languageFile = new File(plugin.getDataFolder()+File.separator+"Language","messages.yml");
     //-------------------------------------------------------------------------------------------------------------------------------
-    private static String noPermission,unknownCommand,wrongUsageAdmin,wrongUsagePlayers,fromConsole;
-    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest,playerCompletedSessionPL,cheatTimeFail,cheatBlockFail,cheatPlacedBlocksFail,playerFellVoid;
+    private static String noPermission,unknownCommand,wrongUsageAdmin,wrongUsagePlayers,fromConsole,errorCannotAddMoney;
+    private static String playerDataError,alreadyHaveIsland,cannotWhileSpecing,noFreeIslands,inSession,foundIslandPL,playerLeftIsland,timerStarted,cannotWhileReplay,brokeRecordPL,brokeAllTimeHighest,playerCompletedSessionPL,cheatTimeFail,cheatBlockFail,cheatPlacedBlocksFail,playerFellVoid,playerMoneyAddedPL;
     private static String lessTimerValue,timerSetPL,setbackEnabled,setBackDisabled,timerCleared,noActiveTimer;
     private static String spectatorPlayerLeft,spectatorPlayerOffline;
     private static String placeholderRefreshing,placeholderNA,placeholderUnknownIsland,placeholderUnknownGroup,placeholderCurrentlyRecording;
@@ -93,6 +93,8 @@ public class MessageConfiguration {
         cheatPlacedBlocksFail = messageConfigurations.getString("messages.player-messages.player-cheat-failed-blacklisted-blocks");
         playerFellVoid = messageConfigurations.getString("messages.player-messages.player-void-fail");
         hologramUnclaimed = messageConfigurations.getString("messages.hologram.npcUnclaimed");
+        playerMoneyAddedPL = messageConfigurations.getString("messages.player-messages.player-reward-added");
+        errorCannotAddMoney = messageConfigurations.getString("messages.player-messages.cannot-add-money");
         messageConfigurations = null;
     }
 
@@ -268,4 +270,11 @@ public class MessageConfiguration {
         return hologramUnclaimed;
     }
 
+    public static String getPlayerMoneyAddedPL() {
+        return playerMoneyAddedPL;
+    }
+
+    public static String getErrorCannotAddMoney() {
+        return errorCannotAddMoney;
+    }
 }

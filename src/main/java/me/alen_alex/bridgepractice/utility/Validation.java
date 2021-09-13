@@ -39,6 +39,10 @@ public class Validation {
         }
     }
 
+    public static boolean validateVaultAPI(){
+        return Bukkit.getPluginManager().isPluginEnabled("Vault");
+    }
+
     public static boolean validateCitizens(){
         return Bukkit.getPluginManager().isPluginEnabled("Citizens");
     }

@@ -3,6 +3,7 @@ package me.alen_alex.bridgepractice.island;
 import me.alen_alex.bridgepractice.configurations.ArenaConfigurations;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.utility.Location;
+import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,13 +21,12 @@ public class IslandManager {
         for(String islandName : ArenaConfigurations.getArenaConfiguration().getKeys(false)){
             if(arenaConfigurations.getBoolean(islandName+".enabled")) {
                 try {
-                    islandData.put(islandName, new Island(islandName, Location.getWorldFromData(arenaConfigurations.getString(islandName + ".spawn.position")).getName(), GroupManager.getGroupByName(arenaConfigurations.getString(islandName + ".group")), arenaConfigurations.getString(islandName + ".permission"), Location.getLocation(arenaConfigurations.getString(islandName + ".spawn.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".end.position")), Material.getMaterial(arenaConfigurations.getString(islandName + ".end.material")) ,Location.getLocation(arenaConfigurations.getString(islandName + ".lobby.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos1")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos2")),arenaConfigurations.getInt(islandName+".mintimeRequired"),arenaConfigurations.getInt(islandName+".minblocksRequired"),true));
+                    islandData.put(islandName, new Island(islandName, Location.getWorldFromData(arenaConfigurations.getString(islandName + ".spawn.position")).getName(), GroupManager.getGroupByName(arenaConfigurations.getString(islandName + ".group")), arenaConfigurations.getString(islandName + ".permission"), Location.getLocation(arenaConfigurations.getString(islandName + ".spawn.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".end.position")), Material.getMaterial(arenaConfigurations.getString(islandName + ".end.material")) ,Location.getLocation(arenaConfigurations.getString(islandName + ".lobby.position")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos1")), Location.getLocation(arenaConfigurations.getString(islandName + ".position.pos2")),arenaConfigurations.getInt(islandName+".mintimeRequired"),arenaConfigurations.getInt(islandName+".minblocksRequired"),true,arenaConfigurations.getDouble(islandName+".joincost")));
                 } catch (IllegalArgumentException e){
                     arenaConfigurations.set(islandName + ".enabled", false);
                     e.printStackTrace();
                     Bukkit.getLogger().severe("Can't load island " + islandName);
                     Bukkit.getLogger().severe("Disabling Island.");
-
                     continue;
                 }
                 Bukkit.getLogger().info("[ISLAND LOADER] Succesfully Loaded Island " + islandName + " on the world " + islandData.get(islandName).getWorldName());
@@ -45,7 +45,7 @@ public class IslandManager {
         Island selectedIsland = null;
         for(Map.Entry<String,Island> entry : islandData.entrySet()){
             Island checkIsland = entry.getValue();
-            if(!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player)) {
+            if(!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player) && checkIsland.doPlayerHaveJoinCost(player)) {
                 selectedIsland = checkIsland;
                 break;
             }
@@ -57,7 +57,7 @@ public class IslandManager {
         Island selectedIsland = null;
         for(Map.Entry<String, Island> entry : islandData.entrySet()){
             Island checkIsland = entry.getValue();
-            if(!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player) &&checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName)){
+            if(!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player) &&checkIsland.getIslandGroup().getGroupName().equalsIgnoreCase(groupName) && checkIsland.doPlayerHaveJoinCost(player)){
                 selectedIsland = checkIsland;
                 break;
             }
@@ -70,9 +70,8 @@ public class IslandManager {
          if(islandData.containsKey(islandName)) {
              Island checkIsland = islandData.get(islandName);
              if (!checkIsland.isIslandOccupied() && checkIsland.isActive() && checkIsland.hasIslandPermission(player))
-                 islandSelected = checkIsland;
-
-
+                 if(checkIsland.doPlayerHaveJoinCost(player))
+                    islandSelected = checkIsland;
          }
          return islandSelected;
         }

@@ -23,6 +23,8 @@ messages:
     player-cheat-failed-blocks: "&7[&c!&7] &cYou are short in blocks. &eRedirecting Back!"
     player-cheat-failed-blacklisted-blocks: "&7[&c!&7] &cYou are not allowed to place blocks on this block. &eRedirecting Back!"
     player-void-fail: "&7[&c!&7] &eYou slipped your foot!!"
+    player-reward-added: "&6⛁ &eThe reward of %money% coins has been added to your account"
+    cannot-add-money: "&7[&c!&7] &cAn error has been occured while adding money. Please contact an administrator"
   timer:
     cannot-set-timer-less-than: "&cSorry! &eBut you cannot set timer &cless than 20 secs"
     timer-has-been-set: "&a✔ &fYour timer has been successfully set to %time%"

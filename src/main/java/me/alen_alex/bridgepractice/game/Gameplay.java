@@ -16,10 +16,12 @@ import me.alen_alex.bridgepractice.utility.Countdown;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.TimeUtility;
 import me.jumper251.replay.api.ReplayAPI;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -92,8 +94,17 @@ public class Gameplay {
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentTime(durationTaken);
             Messages.sendMessage(player,MessageConfiguration.getPlayerCompletedSessionPL().replaceAll("%currenttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);
             if(Configuration.doUseGroups()){
-                if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
 
+                if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
+                    if(BridgePractice.isVaultEnabled() && BridgePractice.getVaultEconomy() != null){
+                        if(islandData.getIslandGroup().getRewardAmount() > 0.0) {
+                            EconomyResponse transactionResult = BridgePractice.getVaultEconomy().depositPlayer((OfflinePlayer) player, islandData.getIslandGroup().getRewardAmount());
+                            if(transactionResult.transactionSuccess())
+                                Messages.sendMessage(player,MessageConfiguration.getPlayerMoneyAddedPL().replaceAll("%money%",String.valueOf(islandData.getIslandGroup().getRewardAmount())),false);
+                            else
+                                Messages.sendMessage(player,MessageConfiguration.getErrorCannotAddMoney(),false);
+                        }
+                    }
                     long currentBestTime = GroupManager.getHighestOfPlayerInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName());
                     if (durationTaken < currentBestTime) {
                         Messages.sendMessage(player, MessageConfiguration.getBrokeRecordPL().replaceAll("%current_besttime%",TimeUtility.getDurationFromLongTime(currentBestTime)).replaceAll("%new_besttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);

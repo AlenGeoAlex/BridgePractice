@@ -16,7 +16,7 @@ public class GroupManager {
 
     public static void fetchGroups(){
         for(String groupName : GroupConfiguration.getGroupConfigurations().getKeys(false)){
-            cachedGroups.put(groupName,new Group(groupName,GroupConfiguration.getGroupConfigurations().getBoolean(groupName+".leaderboardEnabled"),GroupConfiguration.getGroupConfigurations().getInt(groupName+".rewardMoney")));
+            cachedGroups.put(groupName,new Group(groupName,GroupConfiguration.getGroupConfigurations().getBoolean(groupName+".leaderboardEnabled"),GroupConfiguration.getGroupConfigurations().getDouble(groupName+".rewardMoney")));
             cachedGroups.get(groupName).buildDB();
             cachedGroups.get(groupName).setNpcList(CitizensUtility.loadNPCFromGroup(groupName));
         }
