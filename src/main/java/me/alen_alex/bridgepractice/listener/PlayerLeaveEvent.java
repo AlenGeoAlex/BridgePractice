@@ -1,9 +1,9 @@
 package me.alen_alex.bridgepractice.listener;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.data.DataManager;
-import me.alen_alex.bridgepractice.game.Gameplay;
-import me.alen_alex.bridgepractice.island.IslandManager;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Messages;
@@ -27,10 +27,10 @@ public class PlayerLeaveEvent implements Listener {
             Bukkit.getServer().getLogger().severe("Failed to save player data  "+player.getName()+" ["+playerUUID+"] due to the reason of null PlayerData while fetching. Contact Author if you see the message frequently");
             return;
         }
-        if(Gameplay.getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(playerUUID))){
-            Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setCurrentPlayer(null);
-            Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setOccupied(false);
-            Gameplay.getPlayerIslands().remove(PlayerDataManager.getCachedPlayerData().get(playerUUID));
+        if(BridgePractice.getGameplayHandler().getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(playerUUID))){
+            BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setCurrentPlayer(null);
+            BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(playerUUID)).setOccupied(false);
+            BridgePractice.getGameplayHandler().getPlayerIslands().remove(PlayerDataManager.getCachedPlayerData().get(playerUUID));
         }
 
         boolean saveSuccess = DataManager.savePlayerData(leftPlayerData);
@@ -39,12 +39,12 @@ public class PlayerLeaveEvent implements Listener {
         PlayerDataManager.getCachedPlayerData().get(playerUUID).resetPlacedBlocks();
         PlayerDataManager.getCachedPlayerData().remove(playerUUID);
 
-        if(Gameplay.getSpectators().containsKey(player))
-            Gameplay.getSpectators().remove(player);
+        if(BridgePractice.getGameplayHandler().getSpectators().containsKey(player))
+            BridgePractice.getGameplayHandler().getSpectators().remove(player);
 
-        if(Gameplay.getSpectators().containsValue(player)){
-            Gameplay.getCurrentlySpectatingPlayers(player).forEach(player1 -> {
-                Gameplay.handleLeaveSpectating(player1,player);
+        if(BridgePractice.getGameplayHandler().getSpectators().containsValue(player)){
+            BridgePractice.getGameplayHandler().getCurrentlySpectatingPlayers(player).forEach(player1 -> {
+                BridgePractice.getGameplayHandler().handleLeaveSpectating(player1,player);
                 Messages.sendMessage(player1, MessageConfiguration.getSpectatorPlayerLeft(),false);
             });
         }

@@ -26,13 +26,13 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class Gameplay {
+public class GameplayHandler {
 
     private static HashMap<PlayerData,Island> playerIslands = new HashMap<PlayerData,Island>();
     private static HashMap<UUID, Integer> playerCountdown = new HashMap<UUID, Integer>();
     private static HashMap<Player,Player> spectators = new HashMap<>();
 
-    public static void handleGameJoin(PlayerData playerData, Island islandData){
+    public void handleGameJoin(PlayerData playerData, Island islandData){
         PlayerIslandJoinEvent event = new PlayerIslandJoinEvent(playerData,islandData);
         Bukkit.getPluginManager().callEvent(event);
         playerIslands.put(playerData,islandData);
@@ -57,15 +57,15 @@ public class Gameplay {
     }
 
 
-    public static void handleGameLeave(PlayerData playerData){
+    public void handleGameLeave(PlayerData playerData){
         Island playerIsland = playerIslands.get(playerData);
         PlayerIslandLeaveEvent event = new PlayerIslandLeaveEvent(playerIsland,playerData);
         Bukkit.getPluginManager().callEvent(event);
         playerData.setToLobbyState();
         playerData.resetPlacedBlocks();
-        if(Gameplay.getSpectators().containsValue(playerData.getOnlinePlayer())){
-            Gameplay.getCurrentlySpectatingPlayers(playerData.getOnlinePlayer()).forEach(player1 -> {
-                Gameplay.handleLeaveSpectating(player1,playerData.getOnlinePlayer());
+        if(getSpectators().containsValue(playerData.getOnlinePlayer())){
+            getCurrentlySpectatingPlayers(playerData.getOnlinePlayer()).forEach(player1 -> {
+                handleLeaveSpectating(player1,playerData.getOnlinePlayer());
                 Messages.sendMessage(player1,MessageConfiguration.getSpectatorPlayerLeft(),false);
             });
         }
@@ -76,17 +76,17 @@ public class Gameplay {
         playerIsland.setOccupied(false);
     }
 
-    public static void handleGameEnd(Player player, boolean completed){
+    public void handleGameEnd(Player player, boolean completed){
         long durationTaken;
         PlayerData playerData = PlayerDataManager.getCachedPlayerData().get(player.getUniqueId());
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentState(PlayerState.IDLE_ISLAND);
-        Island islandData = Gameplay.getPlayerIslands().get(playerData);
+        Island islandData = getPlayerIslands().get(playerData);
         PlayerGameEndEvent event = new PlayerGameEndEvent(playerData,islandData,completed);
         Bukkit.getPluginManager().callEvent(event);
         if(completed){
             if(BridgePractice.isAdvanceReplayEnabled()) {
                 if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
-                    ReplayAPI.getInstance().stopReplay(player.getName() + "-" + Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), true);
+                    ReplayAPI.getInstance().stopReplay(player.getName() + "-" + getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), true);
             }
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addGamesPlayed();
             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setEndTime(System.currentTimeMillis());
@@ -95,7 +95,7 @@ public class Gameplay {
             Messages.sendMessage(player,MessageConfiguration.getPlayerCompletedSessionPL().replaceAll("%currenttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);
             if(Configuration.doUseGroups()){
 
-                if(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
+                if(getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).hasGroup()) {
                     if(BridgePractice.isVaultEnabled() && BridgePractice.getVaultEconomy() != null){
                         if(islandData.getIslandGroup().getRewardAmount() > 0.0) {
                             EconomyResponse transactionResult = BridgePractice.getVaultEconomy().depositPlayer((OfflinePlayer) player, islandData.getIslandGroup().getRewardAmount());
@@ -105,11 +105,11 @@ public class Gameplay {
                                 Messages.sendMessage(player,MessageConfiguration.getErrorCannotAddMoney(),false);
                         }
                     }
-                    long currentBestTime = GroupManager.getHighestOfPlayerInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName());
+                    long currentBestTime = GroupManager.getHighestOfPlayerInGroup(getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName());
                     if (durationTaken < currentBestTime) {
                         Messages.sendMessage(player, MessageConfiguration.getBrokeRecordPL().replaceAll("%current_besttime%",TimeUtility.getDurationFromLongTime(currentBestTime)).replaceAll("%new_besttime%",TimeUtility.getDurationFromLongTime(durationTaken)),false);
 
-                        GroupManager.setHighestInGroup(Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName(), durationTaken);
+                        GroupManager.setHighestInGroup(getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getIslandGroup().getGroupName(), PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerName(), durationTaken);
                         if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime() > durationTaken) {
                             PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setBestTime(durationTaken);
                             Messages.sendMessage(player, MessageConfiguration.getBrokeAllTimeHighest(), false);
@@ -125,14 +125,14 @@ public class Gameplay {
         }
         DataManager.savePlayerData(playerData);
         playerIslands.get(playerData).setOccupied(false);
-        Gameplay.getPlayerIslands().remove(playerData);
+        getPlayerIslands().remove(playerData);
         playerIslands.put(playerData,islandData);
         handleGameJoin(playerData,islandData);
         playerData.resetPlacedBlocks();
         playerData.spawnFirework();
     }
 
-    public static void handleJoinSpectating(Player player, Player toPlayer){
+    public void handleJoinSpectating(Player player, Player toPlayer){
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null){
             Messages.sendMessage(player,MessageConfiguration.getCannotWhileSpecing(), true);
             return;
@@ -150,7 +150,7 @@ public class Gameplay {
         getCurrentlySpectatingPlayers(player).forEach(player::hidePlayer);
     }
 
-    public static void handleLeaveSpectating(Player player, Player fromPlayer){
+    public void handleLeaveSpectating(Player player, Player fromPlayer){
         spectators.remove(player);
         player.teleport(me.alen_alex.bridgepractice.utility.Location.getLocation(Configuration.getLobbyLocation()));
         player.getInventory().clear();
@@ -158,7 +158,7 @@ public class Gameplay {
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setSpectating(true);
     }
 
-    public static void onFirstBlockPlace(Player player, Location placedLocation){
+    public void onFirstBlockPlace(Player player, Location placedLocation){
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setCurrentState(PlayerState.PLAYING);
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setStartTime(System.currentTimeMillis());
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlayerPlacedBlock();
@@ -167,25 +167,25 @@ public class Gameplay {
         Messages.sendMessage(player,MessageConfiguration.getTimerStarted(), false);
         if(BridgePractice.isAdvanceReplayEnabled()) {
             if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())
-                ReplayAPI.getInstance().recordReplay(player.getName() + "-" + Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), Bukkit.getConsoleSender(), player);
+                ReplayAPI.getInstance().recordReplay(player.getName() + "-" + getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName() + "-" + (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerReplays().size() + 1), Bukkit.getConsoleSender(), player);
         }
     }
 
-    public static void onBlockPlace(Player player, Location placedLocation){
+    public void onBlockPlace(Player player, Location placedLocation){
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlayerPlacedBlock();
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlacedBlocks(placedLocation);
     }
 
 
-    public static HashMap<PlayerData, Island> getPlayerIslands() {
+    public HashMap<PlayerData, Island> getPlayerIslands() {
         return playerIslands;
     }
 
-    public static HashMap<UUID, Integer> getPlayerCountdown() {
+    public HashMap<UUID, Integer> getPlayerCountdown() {
         return playerCountdown;
     }
 
-    public static List<Player> getCurrentPlayes(){
+    public List<Player> getCurrentPlayes(){
         if(playerIslands.size() == 0)
             return null;
         List<Player> currentPlayer = new ArrayList<Player>();
@@ -195,11 +195,11 @@ public class Gameplay {
         return currentPlayer;
     }
 
-    public static HashMap<Player, Player> getSpectators() {
+    public HashMap<Player, Player> getSpectators() {
         return spectators;
     }
 
-    public static List<Player> getCurrentlySpectatingPlayers(Player player){
+    public List<Player> getCurrentlySpectatingPlayers(Player player){
         List<Player> specingList = new ArrayList<>();
         if(!spectators.containsValue(player))
             return null;

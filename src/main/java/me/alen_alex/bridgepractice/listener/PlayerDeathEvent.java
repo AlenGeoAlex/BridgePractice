@@ -1,7 +1,8 @@
 package me.alen_alex.bridgepractice.listener;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.entity.Player;
@@ -17,8 +18,8 @@ public class PlayerDeathEvent implements Listener {
 
             if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() != null){
                 if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING)
-                    Gameplay.handleGameEnd(player, false);
-                Gameplay.handleGameLeave(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()));
+                    BridgePractice.getGameplayHandler().handleGameEnd(player, false);
+                BridgePractice.getGameplayHandler().handleGameLeave(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()));
                 Messages.sendMessage(player,"&eYou had a death. Your playerdata has been readjusted!", false);
             }
         }

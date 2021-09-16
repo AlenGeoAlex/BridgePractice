@@ -1,14 +1,11 @@
 package me.alen_alex.bridgepractice.utility;
 
 import me.Abhigya.core.util.acionbar.ActionBarUtils;
-import me.Abhigya.core.util.bossbar.BarColor;
-import me.Abhigya.core.util.bossbar.BarFlag;
-import me.Abhigya.core.util.bossbar.BarStyle;
 import me.Abhigya.core.util.bossbar.BossBar;
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
-import me.alen_alex.bridgepractice.game.Gameplay;
-import me.alen_alex.bridgepractice.playerdata.PlayerData;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -71,7 +68,7 @@ public class Countdown extends BukkitRunnable {
                 }else if (remaining == 0) {
                     this.bossBar.hide();
                     if(PlayerDataManager.getCachedPlayerData().get(playerUUID).isSetbackEnabled())
-                        Gameplay.handleGameEnd(player,false);
+                        BridgePractice.getGameplayHandler().handleGameEnd(player,false);
                 }
             }
         }else
@@ -79,11 +76,11 @@ public class Countdown extends BukkitRunnable {
     }
 
     public void cancelTimer(UUID uuid){
-        if(Gameplay.getPlayerCountdown().containsKey(uuid)){
-            Bukkit.getScheduler().cancelTask(Gameplay.getPlayerCountdown().get(uuid));
+        if(BridgePractice.getGameplayHandler().getPlayerCountdown().containsKey(uuid)){
+            Bukkit.getScheduler().cancelTask(BridgePractice.getGameplayHandler().getPlayerCountdown().get(uuid));
             if(bossBar != null && bossBar.getPlayer().isOnline())
             this.bossBar.hide();
-            Gameplay.getPlayerCountdown().remove(uuid);
+            BridgePractice.getGameplayHandler().getPlayerCountdown().remove(uuid);
         }
     }
 

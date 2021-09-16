@@ -11,6 +11,7 @@ import me.alen_alex.bridgepractice.configurations.GroupConfiguration;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.data.Data;
 import me.alen_alex.bridgepractice.data.DataManager;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.holograms.HolographicManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
@@ -40,6 +41,7 @@ public final class BridgePractice extends JavaPlugin {
     private static NPCRegistry citizensRegistry;
     private static Data dataConnection;
     private static Economy vaultEconomy;
+    private static GameplayHandler gameplayHandler;
     @Override
     public void onEnable() {
         if(!Validation.ValidateCoreAPI()){
@@ -134,7 +136,7 @@ public final class BridgePractice extends JavaPlugin {
                 }
             }
         }
-
+        gameplayHandler = new GameplayHandler();
         PlayerParticles.loadAllAvailableEffectToCache();
         registerListener();
         registerCommands();
@@ -272,5 +274,9 @@ public final class BridgePractice extends JavaPlugin {
 
     public static Economy getVaultEconomy() {
         return vaultEconomy;
+    }
+
+    public static GameplayHandler getGameplayHandler() {
+        return gameplayHandler;
     }
 }

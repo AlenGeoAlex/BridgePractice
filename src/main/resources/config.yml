@@ -72,6 +72,7 @@ holograms:
 ##NOTE: Use material ID from the spigot 1.8 version
 ##https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 blacklist:
+  only-while-playing: true
   material:
     - "BARRIER"
     - "GLASS"

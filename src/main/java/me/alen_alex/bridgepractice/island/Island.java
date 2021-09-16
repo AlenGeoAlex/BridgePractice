@@ -1,11 +1,9 @@
 package me.alen_alex.bridgepractice.island;
 import me.Abhigya.core.util.tps.TpsUtils;
 import me.alen_alex.bridgepractice.BridgePractice;
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.group.Group;
-import me.alen_alex.bridgepractice.holograms.Holograms;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
-import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Blocks;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.*;
@@ -178,12 +176,12 @@ public class Island {
 
     public void disableIsland(){
         this.setActive(false);
-        if(Gameplay.getPlayerIslands().containsValue(this)){
-            for(Map.Entry<PlayerData,Island> islandEntry : Gameplay.getPlayerIslands().entrySet()){
+        if(BridgePractice.getGameplayHandler().getPlayerIslands().containsValue(this)){
+            for(Map.Entry<PlayerData,Island> islandEntry : BridgePractice.getGameplayHandler().getPlayerIslands().entrySet()){
                 if(islandEntry.getValue() == this){
                     this.teleportToQuitlobby(islandEntry.getKey().getOnlinePlayer());
                     Messages.sendMessage(islandEntry.getKey().getOnlinePlayer(), "&cThis island has been disabled by an admin, redirecting fallback location",false);
-                    Gameplay.handleGameLeave(islandEntry.getKey());
+                    BridgePractice.getGameplayHandler().handleGameLeave(islandEntry.getKey());
                 }
             }
         }
@@ -203,12 +201,12 @@ public class Island {
 
         if(TpsUtils.getTicksPerSecond() < 15.0)
             Bukkit.getLogger().warning("The server is running low on TPS, its not advisible to run this now!");
-        if(Gameplay.getPlayerIslands().containsValue(this)){
-            for(Map.Entry<PlayerData,Island> islandEntry : Gameplay.getPlayerIslands().entrySet()){
+        if(BridgePractice.getGameplayHandler().getPlayerIslands().containsValue(this)){
+            for(Map.Entry<PlayerData,Island> islandEntry : BridgePractice.getGameplayHandler().getPlayerIslands().entrySet()){
                 if(islandEntry.getValue() == this){
                     this.teleportToQuitlobby(islandEntry.getKey().getOnlinePlayer());
                     Messages.sendMessage(islandEntry.getKey().getOnlinePlayer(), "&cThis island has been called for reset, redirecting fallback location",false);
-                    Gameplay.handleGameLeave(islandEntry.getKey());
+                    BridgePractice.getGameplayHandler().handleGameLeave(islandEntry.getKey());
                 }
             }
         }

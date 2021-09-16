@@ -2,7 +2,7 @@ package me.alen_alex.bridgepractice.commands.player;
 
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.island.Island;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
@@ -37,7 +37,7 @@ public class PlayerCommands {
                     Messages.sendMessage(player, "&cThere are no free islands left!", true);
                     return;
                 }
-                Gameplay.handleGameJoin(playerData,playerIsland);
+                BridgePractice.getGameplayHandler().handleGameJoin(playerData,playerIsland);
             }
         });
     }
@@ -59,7 +59,7 @@ public class PlayerCommands {
             return;
         }
 
-        Gameplay.handleGameLeave(playerData);
+        BridgePractice.getGameplayHandler().handleGameLeave(playerData);
     }
 
 

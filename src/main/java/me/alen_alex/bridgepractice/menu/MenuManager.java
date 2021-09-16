@@ -8,7 +8,7 @@ import me.Abhigya.core.menu.inventory.item.action.ItemActionPriority;
 import me.Abhigya.core.particle.particlelib.ParticleEffect;
 import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.*;
@@ -255,7 +255,7 @@ public class MenuManager {
             Messages.sendMessage(player,"&cYou can't spectate players!", true);
             return;
         }
-        List<Player> currentPlayers = Gameplay.getCurrentPlayes();
+        List<Player> currentPlayers = BridgePractice.getGameplayHandler().getCurrentPlayes();
         if(currentPlayers == null){
             Messages.sendMessage(player,"&cThere are currently no players practicing the islands!!", true);
             return;

@@ -2,9 +2,6 @@ package me.alen_alex.bridgepractice.commands;
 
 import me.alen_alex.bridgepractice.commands.player.PlayerCommands;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
-import me.alen_alex.bridgepractice.game.Gameplay;
-import me.alen_alex.bridgepractice.island.IslandManager;
-import me.alen_alex.bridgepractice.menu.MenuManager;
 import me.alen_alex.bridgepractice.utility.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

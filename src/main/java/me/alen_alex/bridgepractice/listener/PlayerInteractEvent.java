@@ -1,8 +1,9 @@
 package me.alen_alex.bridgepractice.listener;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
 import me.alen_alex.bridgepractice.utility.Location;
 import me.alen_alex.bridgepractice.utility.Messages;
@@ -38,20 +39,20 @@ public class PlayerInteractEvent implements Listener {
 
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
             if(event.getAction() == Action.PHYSICAL) {
-                if (event.getClickedBlock().getType() == Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndPointMaterial()) {
-                    if (Location.compareLocations(event.getClickedBlock().getLocation(),Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation())) {
+                if (event.getClickedBlock().getType() == BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndPointMaterial()) {
+                    if (Location.compareLocations(event.getClickedBlock().getLocation(), BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getEndLocation())) {
 
-                        if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame() < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinBlocks()) {
-                            Gameplay.handleGameEnd(player, false);
+                        if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame() < BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinBlocks()) {
+                            BridgePractice.getGameplayHandler().handleGameEnd(player, false);
                             Messages.sendMessage(player, MessageConfiguration.getCheatBlockFail(), false);
                             return;
                         }
-                        if (TimeUtility.getSecondsFromLongTime(System.currentTimeMillis() - (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime())) < Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinSeconds()) {
-                            Gameplay.handleGameEnd(player, false);
+                        if (TimeUtility.getSecondsFromLongTime(System.currentTimeMillis() - (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime())) < BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getMinSeconds()) {
+                            BridgePractice.getGameplayHandler().handleGameEnd(player, false);
                             Messages.sendMessage(player, MessageConfiguration.getCheatTimeFail(), false);
                             return;
                         }
-                        Gameplay.handleGameEnd(player, true);
+                        BridgePractice.getGameplayHandler().handleGameEnd(player, true);
                     }
                 }
             }

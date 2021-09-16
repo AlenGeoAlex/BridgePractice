@@ -1,8 +1,9 @@
 package me.alen_alex.bridgepractice.placeholderapi;
 
+import me.alen_alex.bridgepractice.BridgePractice;
 import me.alen_alex.bridgepractice.configurations.MessageConfiguration;
 import me.alen_alex.bridgepractice.enumerators.PlayerState;
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.island.IslandManager;
 import me.alen_alex.bridgepractice.leaderboards.LeaderboardManager;
@@ -18,8 +19,8 @@ public class PlaceholderDataManager {
     private static final String NOTAGROUP = Messages.parseColor("&c&lUnknown Group");
     private static final String DISABLED = Messages.parseColor("&e&lDisabled");
     public String getPlayerIslandName(Player player){
-        if(Gameplay.getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())))
-            return Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName();
+        if(BridgePractice.getGameplayHandler().getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())))
+            return BridgePractice.getGameplayHandler().getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName();
         else
             return NOTAVAILABLE;
     }
@@ -60,15 +61,15 @@ public class PlaceholderDataManager {
     }
 
     public String getPlayerSpectating(Player player){
-        if(Gameplay.getSpectators().containsKey(player))
-            return Gameplay.getSpectators().get(player).getName();
+        if(BridgePractice.getGameplayHandler().getSpectators().containsKey(player))
+            return BridgePractice.getGameplayHandler().getSpectators().get(player).getName();
         else
             return NOTAVAILABLE;
     }
 
     public String getSpectatingIsland(Player player){
-        if(Gameplay.getSpectators().containsKey(player))
-            return Gameplay.getPlayerIslands().get(Gameplay.getSpectators().get(player.getUniqueId())).getName();
+        if(BridgePractice.getGameplayHandler().getSpectators().containsKey(player))
+            return BridgePractice.getGameplayHandler().getPlayerIslands().get(BridgePractice.getGameplayHandler().getSpectators().get(player.getUniqueId())).getName();
         else
             return NOTAVAILABLE;
     }

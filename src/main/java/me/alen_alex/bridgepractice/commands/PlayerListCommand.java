@@ -1,6 +1,7 @@
 package me.alen_alex.bridgepractice.commands;
 
-import me.alen_alex.bridgepractice.game.Gameplay;
+import me.alen_alex.bridgepractice.BridgePractice;
+import me.alen_alex.bridgepractice.game.GameplayHandler;
 import me.alen_alex.bridgepractice.menu.MenuManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +26,7 @@ public class PlayerListCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         if(strings.length == 1){
             List<String> playerList = new ArrayList<>();
-            Gameplay.getPlayerIslands().keySet().forEach((playerData -> playerList.add(playerData.getPlayerName()) ));
+            BridgePractice.getGameplayHandler().getPlayerIslands().keySet().forEach((playerData -> playerList.add(playerData.getPlayerName()) ));
             return playerList;
         }
         return null;

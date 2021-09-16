@@ -21,6 +21,7 @@ public class Configuration {
     private static int voidDetectionLevel,hologramsOffsetY,leaderboardRefreshTimeout,clearPlayerJoinDelay;
     private static List<String> hologramsStartingLines,hologramsEndingLines;
     private static List<String> blacklistedBlocks;
+    private static boolean blacklistOnlyWhilePlaying;
     private static boolean disableItemDrop, itemDropOnlyOnSession, disableItempickup, itemPickupOnlyOnSession, clearPlayerOnJoinEnabled,spawnOnJoinEnabled;
     private static boolean hookCitizensEnabled,hookHologramsEnabled,hookAdvancedReplayEnabled,hookPlaceholderAPI,hookVaultAPI;
 
@@ -79,6 +80,7 @@ public class Configuration {
         hookPlaceholderAPI = config.getBoolean("hook.placeholder-api");
         hookAdvancedReplayEnabled = config.getBoolean("hook.advancedreplay-api");
         hookVaultAPI = config.getBoolean("hook.vault-api");
+        blacklistOnlyWhilePlaying = config.getBoolean("blacklist.only-while-playing");
         plugin.getLogger().info("Configuration has been loaded");
     }
 
@@ -208,6 +210,10 @@ public class Configuration {
 
     public static boolean isHookVaultAPI() {
         return hookVaultAPI;
+    }
+
+    public static boolean isBlacklistOnlyWhilePlaying() {
+        return blacklistOnlyWhilePlaying;
     }
 }
 
