@@ -60,10 +60,6 @@ public class PlayerCommands {
         }
 
         Gameplay.handleGameLeave(playerData);
-
-
-
-
     }
 
 

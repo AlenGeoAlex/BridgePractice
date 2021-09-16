@@ -10,6 +10,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     private BridgePractice plugin;
     private static final String ERROR = Messages.parseColor("&c&lError");
+    private PlaceholderDataManager dataManager = new PlaceholderDataManager();
     public PlaceholderAPI(BridgePractice plugin){
         this.plugin = plugin;
     }
@@ -44,54 +45,54 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     public String onPlaceholderRequest(Player player, String identifier) {
 
         if(identifier.equalsIgnoreCase("playerisland"))
-            return PlaceholderDataManager.getPlayerIslandName(player);
+            return dataManager.getPlayerIslandName(player);
 
 
         if(identifier.equalsIgnoreCase("currenttime"))
-            return PlaceholderDataManager.getPlayerCurrentTime(player);
+            return dataManager.getPlayerCurrentTime(player);
 
         if(identifier.equalsIgnoreCase("blocksplaced"))
-            return PlaceholderDataManager.getBlocksPlacedOnCurrentGame(player);
+            return dataManager.getBlocksPlacedOnCurrentGame(player);
 
         if(identifier.equalsIgnoreCase("playerstate"))
-            return PlaceholderDataManager.getPlayerCurrentState(player);
+            return dataManager.getPlayerCurrentState(player);
 
 
         if(identifier.equalsIgnoreCase("alltimebest"))
-            return PlaceholderDataManager.getAllTimeBestPlayer(player);
+            return dataManager.getAllTimeBestPlayer(player);
 
 
         if(identifier.equalsIgnoreCase("alltimeblocksplaced"))
-            return PlaceholderDataManager.getAllTimeBlocksPlaced(player);
+            return dataManager.getAllTimeBlocksPlaced(player);
 
         if(identifier.equalsIgnoreCase("gamesplayed"))
-            return PlaceholderDataManager.getGamesPlayed(player);
+            return dataManager.getGamesPlayed(player);
 
         if(identifier.equalsIgnoreCase("isspectator"))
-            return PlaceholderDataManager.isPlayerSpectating(player);
+            return dataManager.isPlayerSpectating(player);
 
         if(identifier.equalsIgnoreCase("getspectatingplayer"))
-            return PlaceholderDataManager.getPlayerSpectating(player);
+            return dataManager.getPlayerSpectating(player);
 
         if(identifier.equalsIgnoreCase("getspectatingisland"))
-            return PlaceholderDataManager.getSpectatingIsland(player);
+            return dataManager.getSpectatingIsland(player);
 
         if(identifier.equalsIgnoreCase("runningtimer"))
-            return PlaceholderDataManager.getRunningTimer(player);
+            return dataManager.getRunningTimer(player);
 
         if(identifier.equalsIgnoreCase("leaderboardrefresh"))
-            return PlaceholderDataManager.getLeaderboardRefreshIn();
+            return dataManager.getLeaderboardRefreshIn();
 
         if(identifier.equalsIgnoreCase("isrecordingenabled"))
-            return PlaceholderDataManager.getIsPlayerRecording(player);
+            return dataManager.getIsPlayerRecording(player);
 
         if(identifier.equalsIgnoreCase("recordingstatus"))
-            return PlaceholderDataManager.getRecordingStatus(player);
+            return dataManager.getRecordingStatus(player);
 
         if(identifier.startsWith("group")){
             String[] args = identifier.split("_");
             if(args.length <= 2)
-                return PlaceholderDataManager.getIslandGroup(args[1]);
+                return dataManager.getIslandGroup(args[1]);
             else
                 return ERROR;
         }
@@ -99,7 +100,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         if(identifier.startsWith("islandplayer")){
             String[] args = identifier.split("_");
             if(args.length <= 2)
-                return PlaceholderDataManager.getIslandPlayer(args[1]);
+                return dataManager.getIslandPlayer(args[1]);
             else
                 return ERROR;
         }
@@ -111,7 +112,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                 return ERROR;
             }
             if(args.length <=3){
-                return PlaceholderDataManager.getLeaderboardName(args[1],Integer.parseInt(args[2]));
+                return dataManager.getLeaderboardName(args[1],Integer.parseInt(args[2]));
             }else {
                 System.out.println(args.length);
                 return ERROR;
@@ -124,7 +125,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             if(Integer.parseInt(args[2]) > 10 || Integer.parseInt(args[2]) < 1 )
                 return ERROR;
             if(args.length <=3){
-                return PlaceholderDataManager.getLeaderboardDuration(args[1],Integer.parseInt(args[2]));
+                return dataManager.getLeaderboardDuration(args[1],Integer.parseInt(args[2]));
             }else
                 return ERROR;
         }

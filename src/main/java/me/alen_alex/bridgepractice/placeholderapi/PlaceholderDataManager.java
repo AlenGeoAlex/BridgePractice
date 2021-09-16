@@ -17,18 +17,18 @@ public class PlaceholderDataManager {
     private static final String NOTANISLAND = Messages.parseColor("&c&lUnknown Island");
     private static final String NOTAGROUP = Messages.parseColor("&c&lUnknown Group");
     private static final String DISABLED = Messages.parseColor("&e&lDisabled");
-    public static String getPlayerIslandName(Player player){
+    public String getPlayerIslandName(Player player){
         if(Gameplay.getPlayerIslands().containsKey(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())))
             return Gameplay.getPlayerIslands().get(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId())).getName();
         else
             return NOTAVAILABLE;
     }
 
-    public static String getPlayerCurrentTime(Player player){
+    public String getPlayerCurrentTime(Player player){
         return TimeUtility.getDurationFromLongTime(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentTime());
     }
 
-    public static String getPlayerCurrentState(Player player){
+    public String getPlayerCurrentState(Player player){
         String currentState = null;
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING)
             currentState = "PLAYING";
@@ -43,51 +43,51 @@ public class PlaceholderDataManager {
         return currentState;
     }
 
-    public static String getAllTimeBestPlayer(Player player){
+    public String getAllTimeBestPlayer(Player player){
         return TimeUtility.getDurationFromLongTime(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBestTime());
     }
 
-    public static String getAllTimeBlocksPlaced(Player player){
+    public String getAllTimeBlocksPlaced(Player player){
         return String.valueOf(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlaced());
     }
 
-    public static String getGamesPlayed(Player player){
+    public String getGamesPlayed(Player player){
         return String.valueOf(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getGamesPlayed());
     }
 
-    public static String isPlayerSpectating(Player player){
+    public String isPlayerSpectating(Player player){
         return String.valueOf(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isSpectating());
     }
 
-    public static String getPlayerSpectating(Player player){
+    public String getPlayerSpectating(Player player){
         if(Gameplay.getSpectators().containsKey(player))
             return Gameplay.getSpectators().get(player).getName();
         else
             return NOTAVAILABLE;
     }
 
-    public static String getSpectatingIsland(Player player){
+    public String getSpectatingIsland(Player player){
         if(Gameplay.getSpectators().containsKey(player))
             return Gameplay.getPlayerIslands().get(Gameplay.getSpectators().get(player.getUniqueId())).getName();
         else
             return NOTAVAILABLE;
     }
 
-    public static String getBlocksPlacedOnCurrentGame(Player player){
+    public String getBlocksPlacedOnCurrentGame(Player player){
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlacedBlocks().isEmpty())
             return NOTAVAILABLE;
         else
             return String.valueOf(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getBlocksPlacedOnCurrentGame());
     }
 
-    public static String getRunningTimer(Player player){
+    public String getRunningTimer(Player player){
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
             return TimeUtility.getDurationFromLongTime((System.currentTimeMillis() - PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getStartTime()));
         }else
             return NOTAVAILABLE;
     }
 
-    public static String getIslandGroup(String islandName){
+    public String getIslandGroup(String islandName){
         if(IslandManager.getIslandData().containsKey(islandName))
             if(IslandManager.getIslandData().get(islandName).hasGroup())
                 return IslandManager.getIslandData().get(islandName).getIslandGroup().getGroupName();
@@ -97,7 +97,7 @@ public class PlaceholderDataManager {
             return NOTANISLAND;
     }
 
-    public static String getIslandPlayer(String islandName){
+    public String getIslandPlayer(String islandName){
         if(IslandManager.getIslandData().containsKey(islandName))
             if(IslandManager.getIslandData().get(islandName).getCurrentPlayer() != null)
                 return IslandManager.getIslandData().get(islandName).getCurrentPlayer().getPlayerName();
@@ -107,14 +107,14 @@ public class PlaceholderDataManager {
             return NOTANISLAND;
     }
 
-    public static String getLeaderboardRefreshIn(){
+    public String getLeaderboardRefreshIn(){
         if(LeaderboardManager.isRefreshing())
             return Messages.parseColor("&b&lCurrently &e&lRefreshing");
         else
             return String.valueOf(TimeUtility.getProperTimeFromSec(LeaderboardManager.getRemainingTime()));
     }
 
-    public static String getLeaderboardName(String groupName, int position){
+    public String getLeaderboardName(String groupName, int position){
         if(position < 0 && position >= 10)
             return NOTAVAILABLE;
         if(GroupManager.getCachedGroups().containsKey(groupName)){
@@ -128,7 +128,7 @@ public class PlaceholderDataManager {
         }
     }
 
-    public static String getLeaderboardDuration(String groupName, int position){
+    public String getLeaderboardDuration(String groupName, int position){
         if(position < 0 && position >= 10)
             return NOTAVAILABLE;
         if(GroupManager.getCachedGroups().containsKey(groupName)){
@@ -142,11 +142,11 @@ public class PlaceholderDataManager {
         }
     }
 
-    public static String getIsPlayerRecording(Player player){
+    public String getIsPlayerRecording(Player player){
         return String.valueOf(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled());
     }
 
-    public static String getRecordingStatus(Player player){
+    public String getRecordingStatus(Player player){
         if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getCurrentState() == PlayerState.PLAYING){
             if(PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled()){
                 return MessageConfiguration.getPlaceholderCurrentlyRecording();
