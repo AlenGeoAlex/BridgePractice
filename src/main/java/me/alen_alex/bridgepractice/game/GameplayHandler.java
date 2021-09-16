@@ -12,7 +12,7 @@ import me.alen_alex.bridgepractice.group.GroupManager;
 import me.alen_alex.bridgepractice.island.Island;
 import me.alen_alex.bridgepractice.playerdata.PlayerData;
 import me.alen_alex.bridgepractice.playerdata.PlayerDataManager;
-import me.alen_alex.bridgepractice.utility.Countdown;
+import me.alen_alex.bridgepractice.utility.CountdownTask;
 import me.alen_alex.bridgepractice.utility.Messages;
 import me.alen_alex.bridgepractice.utility.TimeUtility;
 import me.jumper251.replay.api.ReplayAPI;
@@ -163,7 +163,7 @@ public class GameplayHandler {
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).setStartTime(System.currentTimeMillis());
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlayerPlacedBlock();
         PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).addPlacedBlocks(placedLocation);
-        playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new Countdown(player,PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer()), 0, 20));
+        playerCountdown.put(player.getUniqueId(),Bukkit.getScheduler().scheduleAsyncRepeatingTask(BridgePractice.getPlugin(), new CountdownTask(player,PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).getPlayerTimer()), 0, 20));
         Messages.sendMessage(player,MessageConfiguration.getTimerStarted(), false);
         if(BridgePractice.isAdvanceReplayEnabled()) {
             if (PlayerDataManager.getCachedPlayerData().get(player.getUniqueId()).isRecordingEnabled())

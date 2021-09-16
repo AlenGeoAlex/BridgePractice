@@ -44,6 +44,17 @@ public final class BridgePractice extends JavaPlugin {
     private static GameplayHandler gameplayHandler;
     @Override
     public void onEnable() {
+        if(ServerReloadTask.getLifePhase() == ServerReloadTask.ServerLifePhase.RUNNING){
+            this.getLogger().severe("=================================================================");
+            this.getLogger().info("");
+            this.getLogger().info("This plugin does not support server reload.");
+            this.getLogger().info("Server should be restarted for proper object initialization and other proper startup checks");
+            this.getLogger().info("");
+            this.getLogger().severe("Disabling plugin");
+            this.getLogger().severe("=================================================================");
+            this.getPluginLoader().disablePlugin(this);
+            return;
+        }
         if(!Validation.ValidateCoreAPI()){
             this.getLogger().severe("=================================================================");
             this.getLogger().info("");
@@ -56,6 +67,7 @@ public final class BridgePractice extends JavaPlugin {
             this.getLogger().severe("Disabling plugin");
             this.getLogger().severe("=================================================================");
             this.getPluginLoader().disablePlugin(this);
+            return;
         }
         plugin = this;
         Configuration.createConfiguration();
@@ -76,10 +88,15 @@ public final class BridgePractice extends JavaPlugin {
             {
                 getLogger().severe("Error while connecting to database. DISABLING PLUGIN");
                 getServer().getPluginManager().disablePlugin(this);
+                return;
             }
         } catch (SQLException e) {
+
             DataManager.setDatabaseOnline(false);
             e.printStackTrace();
+            getLogger().severe("Error while connecting to database. DISABLING PLUGIN");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
         }
         DataManager.setDatabaseOnline(true);
         Data.createDatabase();

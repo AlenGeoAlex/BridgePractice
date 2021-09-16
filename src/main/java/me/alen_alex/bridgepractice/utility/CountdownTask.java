@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-public class Countdown extends BukkitRunnable {
+public class CountdownTask extends BukkitRunnable {
 
     Player player;
     UUID playerUUID;
@@ -21,7 +21,7 @@ public class Countdown extends BukkitRunnable {
     final int checkTimer;
     double remaining;
     BossBar bossBar;
-    public Countdown(Player player, int checkTimer){
+    public CountdownTask(Player player, int checkTimer){
         this.player = player;
         this.time = 0;
         this.playerUUID =player.getUniqueId();
